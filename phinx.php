@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-use Phinx\Config\Config;
-
 $env = getenv('APP_ENV') ?: 'development';
 
-return new Config([
+return [
     'paths' => [
         'migrations' => 'migrations',
         'seeds' => 'seeds',
@@ -20,9 +18,9 @@ return new Config([
             'name' => getenv('DB_NAME'),
             'user' => getenv('DB_USER'),
             'pass' => getenv('DB_PASS'),
-            'port' => getenv('DB_PORT') ?: 3306,
+            'port' =>(int) getenv('DB_PORT') ?: 3307,
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
         ],
     ],
-]);
+];

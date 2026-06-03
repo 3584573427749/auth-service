@@ -1,15 +1,12 @@
-version: "3.9"
-
 services:
-  slim-service:
-    container_name: slim-service
+  auth-service:
+    container_name: auth-service
     build: .
     ports:
       - "8080:8080"
     volumes:
       - .:/var/www
-    environment:
-      DB_HOST: host.docker.internal
-      DB_NAME: slim_db
-      DB_USER: root
-      DB_PASS: root
+    env_file:
+      - .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

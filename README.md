@@ -1,414 +1,350 @@
-# Slim Service Template
+# 🔐 Auth Service
 
-Detta repository är en komplett template för mikrotjänster byggda på Slim 4.
+Auth Service ansvarar för autentisering, sessionshantering och användarhantering i plattformen.
 
-Den innehåller en fullständig grund för:
-
-*   Settings (.env + typcasting)
-*   ErrorHandler (standardiserat JSON‑format)
-*   DBAL‑bootstrap (Doctrine DBAL)
-*   Repositories (AbstractRepository)
-*   Actions (invokable, en per endpoint)
-*   Routing (grupper per domän)
-*   Middleware (JSON body parsing + CORS)
-*   Auth (gateway‑baserad)
-*   Role‑middleware
-*   AuthService‑integration (service‑to‑service säkerhet)
-*   OpenAPI‑kontrakt
-*   Docker + Makefile + Composer scripts
+Tjänsten är en central del av mikrotjänstarkitekturen och används av klienter som Admin UI, Web UI och PWA:er samt av övriga backend‑tjänster via Gateway Service.
 
-***
+## 📌 Översikt
 
-## Funktioner
+Auth Service hanterar två huvudområden:
 
-*   Slim 4 + PHP-DI
-*   Action‑baserad arkitektur
-*   Doctrine DBAL
-*   Phinx migrations
-*   PHPUnit, PHPStan, PHPCS, Infection, Rector
-*   Dockerfile + docker-compose
-*   VERSION‑fil (semver)
-*   OpenAPI-kontrakt (openapi.yaml)
-*   CI för OpenAPI (linter + validation + diff)
-*   Central ErrorHandler
-*   Monolog-loggning
-*   Settings-system (.env, castade variabler)
-*   Auth-middleware (gateway User‑auth)
-*   Role‑middleware (behörighet per route)
-*   AuthService-middleware (service‑to‑service autentisering)
+1. **Autentisering och sessioner**
+2. **Användare, roller och rättigheter**
 
-***
+Tjänsten fungerar som plattformens källa för identitet, inloggning och behörighetsinformation.
 
-## ErrorHandler
+## 🔑 Autentisering
 
-Systemet använder en central ErrorHandler som:
+Auth Service hanterar:
 
-*   returnerar JSON i fast struktur
-*   inkluderar “status”, “error”, “message” och valfri “details”
-*   loggar ALLA exceptions (logs/app.log)
-*   visar aldrig stacktraces i API‑svar
-*   använder egna exception-klasser:
-    *   ValidationException
-    *   UnauthorizedException
-    *   ForbiddenException
-    *   NotFoundException
-    *   InternalException
+- Passwordless login
+  - Magic link
+  - One-time password / engångskod
+- Utfärdande av JWT access tokens
+- Hantering av refresh tokens via httpOnly cookies
+- Token rotation
+- Verifiering av inloggad användare
+- Utloggning och invalidering av sessioner
 
-Exempel på felrespons:
+### Autentiseringsflöde
 
-{
-"status": 400,
-"error": {
-"type": "ValidationException",
-"message": "Felaktig input",
-"details": { ... }
-}
-}
+1. Användaren begär inloggning med e-postadress.
+2. Auth Service skapar en engångskod eller magic link.
+3. Användaren verifierar inloggningen.
+4. Auth Service utfärdar:
+   - JWT access token
+   - Refresh token som httpOnly cookie
+5. Klienten skickar access token vid skyddade anrop.
+6. Access token kan roteras automatiskt vid svar från API:et.
 
-***
+## 👥 Användarhantering
 
-## Settings
+Auth Service ansvarar också för administration av användare i plattformen.
 
-Settings-systemet:
+Det omfattar bland annat:
 
-*   läser `.env` via vlucas/phpdotenv
-*   finns i `src/Application/Settings.php`
-*   erbjuder `get(key, default)`
-*   castar automatiskt values beroende på key (int, bool, float, string)
+- Skapa användare
+- Visa användare
+- Lista användare
+- Uppdatera användarinformation
+- Aktivera/inaktivera användare
+- Radera användare (soft delete)
+- Koppla användare till roller
+- Hantera användarens behörigheter via roller och rättigheter
 
-Exempel:
+Användarhanteringen används framför allt av administrativa gränssnitt, men informationen kan även användas av andra tjänster för behörighetskontroll.
 
-$dbHost = $settings->get('DB\_HOST');
-$debug = $settings->get('APP\_DEBUG', false);
+## 🛡️ Roller och rättigheter
 
-***
+Auth Service ansvarar för plattformens grundläggande behörighetsmodell.
 
-## DBAL (Database)
+### Roller
 
-Doctrine DBAL‑bootstrap via singleton:
+En roll beskriver en uppsättning rättigheter som kan tilldelas en användare.
 
-*   Connection ligger i `src/Infrastructure/Database/Connection.php`
-*   Lazy-connection (ansluter först när query körs)
-*   Konfiguration läses från Settings
-*   Repositories får DB‑connection via DI
+Exempel på roller kan vara:
 
-***
+- `admin`
+- `trainer`
+- `official`
+- `user`
 
-## Repositories
+Exakta roller definieras i plattformens domänmodell och OpenAPI-kontrakt.
 
-AbstractRepository:
+### Rättigheter
 
-*   finns i `src/Infrastructure/Persistence/AbstractRepository.php`
-*   tillhandahåller:
-    *   `$this->db` (DBAL connection)
-    *   `qb()` (QueryBuilder helper)
-*   konkreta repositories anger tabellnamn själva
+Rättigheter beskriver vad en användare får göra i systemet.
 
-Exempel:
+Exempel på rättigheter kan vara:
 
-protected string $table = 'users';
+- Läsa användare
+- Skapa användare
+- Uppdatera användare
+- Hantera roller
+- Administrera tävlingar
+- Läsa resultat
+- Registrera tider
 
-***
+Roller används för att gruppera rättigheter och göra behörighetsstyrningen enklare att administrera.
 
-## Routing & Actions
+### Behörighetskontroll
 
-Routing organiseras i domän-grupper via `config/routes.php`.
+Auth Service kan användas för att:
 
-Varje endpoint har en egen Action‑klass:
+- Validera vem användaren är
+- Exponera användarens roller och rättigheter
+- Tillhandahålla claims i JWT
+- Ge andra tjänster underlag för åtkomstkontroll
 
-src/Application/Actions/<Domain>/<Action>.php
+Övriga mikrotjänster ansvarar för sin egen domänlogik, men kan basera sina behörighetsbeslut på information från Auth Service.
 
-Alla Actions är **invokable**:
+## 🧩 Teknisk kontext
 
-public function \_\_invoke(Request $request, Response $response)
+Auth Service följer plattformens gemensamma backend‑stack:
 
-Alla Actions returnerar konsekventa success‑responses:
+- Slim 4
+- PHP-DI
+- Doctrine DBAL
+- OpenAPI-specifikation
+- Docker / Docker Compose
+- Traefik
+- MariaDB
+- GitHub Actions för CI/CD
 
-{
-"status": 200,
-"data": {
-"user": {
-...
-}
-}
-}
+All kommunikation sker via tydliga API-kontrakt och varje tjänst har ett eget `openapi.yaml`.
 
-***
+## 🚀 Kom igång med lokal utvecklingsmiljö
 
-## Aggregat – Arkitekturprincip (Dokumentation)
-Denna template innehåller inga aggregat i kod. Det är ett medvetet och viktigt designbeslut.
-### Vad menas med aggregat?
-Ett aggregat är ett domänbegrepp från Domain‑Driven Design. Det beskriver den minsta gruppen av objekt som alltid måste vara konsistenta tillsammans, och som bara får ändras genom en tydligt definierad rot – en Aggregate Root.
-Aggregat är:
+### 1. Förutsättningar
 
-* knutna till affärsregler
-* bärare av domäninvariants
-* ansvariga för sin egen konsistens
-Detta betyder att aggregat alltid är domänspecifika.
+Installera:
 
-### Varför finns inga aggregat i mallen?
-Detta repository är en teknisk och arkitektonisk template, inte en färdig applikation. En template ska:
+* Git
+* Docker
+* Docker Compose
+* PHP/Composer, om tjänsten även ska köras utanför container
+* Node.js, om OpenAPI-generering eller frontend-typer ska köras lokalt
 
-* inte anta någon domän
-* inte innehålla affärsregler
-* inte innehålla domänentiteter
-* inte innehålla aggregat
+### 2. Klona repo
 
-Eftersom aggregat kräver kunskap om domänen hör de aldrig hemma i ett mall‑repo. De ska alltid implementeras i respektive mikrotjänst, där domänreglerna faktiskt är kända.
+```bash
+git clone <repo-url>
+cd auth-service
+```
 
-### Hur stöder templaten aggregat ändå?
-Även om inga aggregat finns i koden, är templaten byggd för att göra det enkelt och korrekt att skapa aggregat i varje tjänst:
+### 3. Skapa lokal miljöfil
 
-* AbstractId ger tydlig identitet för framtida Aggregate Roots
-* gemensamma Value Objects möjliggör invariants utan validering i actions
-* repository‑konventioner uppmuntrar arbete med hela entiteter
-* error‑hantering gör att invariants kan brytas säkert och konsekvent
-* Templaten etablerar förutsättningarna för aggregat, utan att definiera dem.
+Kopiera exempelkonfigurationen:
 
-### Rekommenderad praxis i respektive tjänst
-När du skapar en konkret tjänst baserat på denna template bör du:
-
-* Identifiera dina aggregat utifrån domänregler (inte tabeller)
-* Utse tydliga Aggregate Roots
-* Se till att endast Aggregate Roots har repositories
-* Implementera alla domänregler inne i aggregatet
-* Låta ändringar ske via metoder på Aggregate Root – aldrig direkt på interna objekt
-* Relationer till andra tjänster ska alltid ske via ID‑referenser (ValueObjects), aldrig via objekt.
-
-## Valideringsmodell
-
-I denna plattform ligger all validering i entiteterna i stället för i middleware eller actions. Varje entitet ansvarar för att säkerställa sina egna invariants och att inkommande data är korrekt innan en instans skapas. Detta ger en konsekvent och robust domänmodell där fel fångas tidigt och där alla tjänster följer samma valideringsprinciper.
-
-***
-
-## Entitetsbaserad validering
-
-All validering sker i domänlagret. Detta betyder att varje entitet är ansvarig för att kontrollera att den konstrueras med giltiga värden. Felaktiga värden leder till att en validerings‑exception kastas. Detta gör det omöjligt att skapa en ogiltig entitet, vilket garanterar att resten av applikationen alltid arbetar med korrekta och säkra data.
-
-***
-
-##️ FromRequest-fabriker
-
-Varje entitet implementerar en statisk metod `fromRequest`, vars ansvar är att:
-
-1.  Extrahera inkommande data (t.ex. från en HTTP‑request eller DTO)
-2.  Validera varje fält med en eller flera fältvaliderare
-3.  Skapa och returnera en *giltig* entitet
-4.  Vid fel, kasta en `ValidationException` med tydlig information om vad som är fel
-
-På detta sätt hålls Actions smala och rena, och all domänlogik hålls inom entiteterna.
-
-***
-
-## Fältvalidering i entiteter
-
-Validering sker fält för fält. Varje entitet kan anropa små dedikerade valideringsfunktioner, t.ex.:
-
-*   kontroll av att en sträng inte är tom
-*   kontroll av att en sträng är korrekt formaterad
-*   kontroll av att ett tal ligger inom ett intervall
-*   kontroll av att ett datum är korrekt och inte “rullar över”
-*   kontroll av att ett värde är inom domänens tillåtna regler
-
-Detta gör valideringslogiken explicit och enkel att följa.
-
-***
-
-##️ Återanvändbara fältvalidatorer
-
-För att undvika duplicering kan du skapa fristående små valideringsklasser eller funktioner, till exempel:
-
-*   DateStringIsValidFormat
-*   DateStringIsCorrectDate
-*   DateMustBeInFuture
-*   NonEmptyString
-*   ValidUuid
-
-Dessa kan kombineras i valfri ordning av varje entitet beroende på dess specifika invariants. Mallen innehåller inga validerare i sig, utan du skapar dem efter behov i respektive tjänst.
-
-***
-
-##️ Valideringsfel och exceptions
-
-Om valideringen misslyckas kastar entiteten en `ValidationException`. ErrorHandler fångar detta och returnerar ett strukturerat fel enligt standardformatet:
-
-{
-"status": 400,
-"error": {
-"type": "ValidationException",
-"message": "Felbeskrivning",
-"details": { "field": "detSpecifikaFältet" }
-}
-}
-
-Detta säkerställer enhetliga felsvar i alla tjänster.
-
-***
-
-## Actions och validering
-
-Actions ansvarar inte för validering. De gör endast följande:
-
-1.  Hämtar request‑data
-2.  Anropar entitetens `fromRequest`‑metod
-3.  Delegarar vidare till Service/Repository
-4.  Returnerar ett success‑svar
-
-Exempel:
-
-$entity = Event::fromRequest($request->getParsedBody());
-
-På så sätt blir Actions korta, tydliga och fria från valideringslogik.
-
-***
-
-## Services och domänlogik
-
-Services och Repositories får alltid en **giltig entitet**. Detta innebär:
-
-*   ingen validering i services
-*   inga defensiva kontroller
-*   inga if‑satser för att leta efter “edge cases”
-*   tydligare och renare affärslogik
-
-***
-
-## Middleware
-
-### JSON Body Parsing
-
-Slims inbyggda body parser:
-$app->addBodyParsingMiddleware();
-
-### CORS middleware
-
-Regex-baserad, konfigureras via `.env`:
-
-ENABLE\_CORS=true  
-CORS\_ALLOW\_ORIGIN\_PATTERN=^https\://(\[a-z0-9-]+.)\*example.com$  
-CORS\_ALLOW\_METHODS=GET,POST,PUT,PATCH,DELETE,OPTIONS  
-CORS\_ALLOW\_HEADERS=Authorization,Content-Type,Accept
-
-Stödjer credentials.
-
-***
-
-## AuthMiddleware (gateway‑auth)
-
-Validerar trusted headers från gateway:
-
-X-Auth-Verified: true  
-X-User-Id: <id>  
-X-User-Roles: role1,role2
-
-Om saknas → UnauthorizedException (401)
-
-Lägger userId och roles i request‑attributes.
-
-Appliceras per route‑group.
-
-***
-
-## RoleMiddleware
-
-Kräver minst en roll:
-
-new RequireRoleMiddleware(\['admin'])
-
-Case‑insensitiv jämförelse.
-
-Vid roll‑brist → ForbiddenException (403)
-
-Läggs på route‑grupper efter AuthMiddleware.
-
-***
-
-## AuthServiceMiddleware (service‑to‑service security)
-
-Varje mikrotjänst (utom auth‑service själv) måste kunna verifiera interna anrop från andra tjänster.
-
-Middleware kräver:
-
-X-Service-Token: <token>
-
-Och anropar auth‑servicen:
-
-POST /validate-service-token  
-{
-"token": "...",
-"service": "\<SERVICE\_NAME>"
-}
-
-Om ogiltig → UnauthorizedException (401)
-
-Konfigureras via `.env`:
-
-AUTH\_SERVICE\_URL=<http://auth-service:8080>  
-SERVICE\_NAME=time-service
-
-***
-
-## OpenAPI-kontrakt
-
-Varje mikrotjänst måste ha ett openapi.yaml:
-
-*   ligger i projektroten
-*   används av frontend (gen. typer)
-*   används av CI (breaking change-detektion)
-*   används av dokumentation
-
-Vid API‑ändringar:
-
-1.  Uppdatera openapi.yaml
-2.  Bumpa VERSION
-3.  Skicka PR — CI blockerar breaking changes
-
-***
-
-## Composer-scripts
-
-Kommandon för utveckling:
-
-composer up  
-composer down  
-composer start  
-composer shell  
-composer logs  
-composer test  
-composer stan  
-composer migrate  
-composer fix
-
-***
-
-## Lokal utveckling
-
-### Steg 1 – Installera beroenden via Docker
-
-docker compose up --build -d  
-docker compose exec slim-service composer install
-
-### Steg 2 – Kopiera miljöfil
-
+```bash
 cp .env.example .env
+```
 
-### Steg 3 – Starta tjänsten
+Kontrollera minst följande inställningar:
 
-composer up
+```env
+APP_ENV=dev
+APP_DEBUG=true
 
-### Tjänsten finns på:
+DB_HOST=mariadb
+DB_PORT=3306
+DB_DATABASE=auth
+DB_USERNAME=auth
+DB_PASSWORD=auth
 
-<http://localhost:8080/health>
+JWT_PRIVATE_KEY_PATH=/app/config/jwt/private.pem
+JWT_PUBLIC_KEY_PATH=/app/config/jwt/public.pem
+JWT_TTL=900
 
-### Shell i containern:
+REFRESH_TOKEN_TTL=1209600
+COOKIE_SECURE=false
+COOKIE_HTTP_ONLY=true
+COOKIE_SAME_SITE=Lax
+```
 
-composer shell
+Värdena ovan är exempel och ska anpassas efter aktuell Docker Compose‑miljö.
 
-***
+### 4. Starta tjänsten
 
-## Databas
+Auth Service körs i Docker, men ansluter till en databas som körs direkt på hostmaskinen.
 
-Kör migrations:
+Starta tjänsten med:
 
-composer migrate
+```bash
+docker compose up --build
+
+### 5. Installera PHP-beroenden
+
+Om beroenden inte installeras automatiskt i Docker-bygget:
+
+```bash
+docker compose exec auth-service composer install
+```
+
+### 6. Kör databasmigreringar
+
+```bash
+docker compose exec auth-service php bin/console migrations:migrate
+```
+
+Om projektet inte använder `bin/console`, använd projektets aktuella migreringskommando.
+
+### 7. Skapa JWT-nycklar
+
+Om nycklar inte redan finns lokalt:
+
+```bash
+docker compose exec auth-service mkdir -p config/jwt
+
+docker compose exec auth-service openssl genrsa \
+  -out config/jwt/private.pem 4096
+
+docker compose exec auth-service openssl rsa \
+  -in config/jwt/private.pem \
+  -pubout \
+  -out config/jwt/public.pem
+```
+
+### 8. Åtkomst lokalt
+
+Auth Service exponeras normalt via Gateway Service, exempelvis:
+
+```text
+http://localhost/api/auth
+```
+
+Exakta URL:er styrs av Docker Compose och Traefik-konfigurationen.
+
+## 📄 OpenAPI
+
+Auth Service ska ha ett eget OpenAPI-kontrakt:
+
+```text
+openapi.yaml
+```
+
+OpenAPI-kontraktet beskriver bland annat:
+
+* Inloggning
+* Token-refresh
+* Utloggning
+* Verifiering av aktuell användare
+* CRUD för användare
+* Hantering av roller
+* Hantering av rättigheter
+* Koppling mellan användare och roller
+
+All utveckling ska utgå från API-kontraktet.
+
+## 🔁 Utvecklingsflöde
+
+Rekommenderat arbetsflöde:
+
+1. Uppdatera `openapi.yaml`
+2. Validera kontraktet
+3. Implementera endpoint
+4. Skriv tester
+5. Kör lokal verifiering
+6. Skapa pull request
+
+Eftersom plattformen är kontraktsstyrd ska OpenAPI uppdateras innan implementationen ändras.
+
+## 🧪 Test och verifiering
+
+### Begär inloggning
+
+```bash
+curl -X POST http://localhost/api/auth/login/request \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com"}'
+```
+
+### Verifiera inloggning
+
+```bash
+curl -X POST http://localhost/api/auth/login/verify \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","code":"123456"}'
+```
+
+### Hämta aktuell användare
+
+```bash
+curl http://localhost/api/auth/me \
+  -H "Authorization: Bearer <access-token>"
+```
+
+### Lista användare
+
+```bash
+curl http://localhost/api/auth/users \
+  -H "Authorization: Bearer <access-token>"
+```
+
+### Skapa användare
+
+```bash
+curl -X POST http://localhost/api/auth/users \
+  -H "Authorization: Bearer <access-token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "new.user@example.com",
+    "displayName": "New User",
+    "roles": ["user"]
+  }'
+```
+
+Endpointnamnen ovan är exempel och ska stämmas av mot `openapi.yaml`.
+
+## 🔒 Säkerhet
+
+Auth Service ska hantera säkerhetskritisk logik på ett konsekvent sätt.
+
+Viktiga principer:
+
+* Passwordless login, inga användarlösenord lagras
+* JWT används för kortlivade access tokens
+* Refresh tokens lagras som httpOnly cookies
+* Access tokens roteras vid behov
+* Roller och rättigheter hanteras centralt
+* Endast behöriga användare får administrera användare, roller och rättigheter
+* Domäntjänster ska inte själva skapa identiteter
+* Känsliga värden ska ligga i miljövariabler eller secrets, inte i källkod
+
+## 🧱 Ansvarsgränser
+
+Auth Service ansvarar för:
+
+* Identitet
+* Autentisering
+* Sessioner
+* Användare
+* Roller
+* Rättigheter
+* Behörighetsinformation i tokens/claims
+
+Auth Service ansvarar inte för:
+
+* Resultat
+* Grupphantering
+* Tidsredovisning/uppföljning
+* Domänspecifika regler i andra tjänster
+
+Dessa hanteras av respektive mikrotjänst.
+
+## 📌 Sammanfattning
+
+Auth Service är plattformens centrala tjänst för identitet och behörighet.
+
+Tjänsten hanterar:
+
+* Passwordless inloggning
+* JWT access tokens
+* Refresh tokens
+* Sessionshantering
+* Användaradministration
+* Roller och rättigheter
+* Underlag för behörighetskontroll i övriga tjänster
+
+Målet är att samla autentisering och behörighetsinformation på ett ställe, samtidigt som övriga mikrotjänster förblir ansvariga för sin egen domänlogik.
 

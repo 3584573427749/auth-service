@@ -3,8 +3,8 @@ set -e
 
 echo "Running database migrations..."
 
-php vendor/bin/phinx migrate
+php vendor/bin/phinx migrate || echo "Phinx migrate failed or no database/migrations available. Continuing startup."
 
-echo "Starting application..."
+echo "Migrations done..."
 
 exec "$@"
