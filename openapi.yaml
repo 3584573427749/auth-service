@@ -1,0 +1,25 @@
+openapi: 3.0.3
+info:
+  title: Slim Service Template API
+  version: 1.0.0
+  description: >-
+    Bas-OpenAPI för Slim-template-tjänster. Ersätt detta med tjänstens riktiga API-kontrakt.
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok

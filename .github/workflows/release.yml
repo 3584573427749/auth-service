@@ -1,0 +1,34 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  docker-check:
+    runs-on: ubuntu-latest
+    outputs:
+      run_docker: ${{ steps.check.outputs.run_docker }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check docker deploy marker
+        id: check
+        run: |
+          if [ -f ".ci/dockerdeploy" ]; then
+            echo "run_docker=true" >> "$GITHUB_OUTPUT"
+            echo "Docker deploy enabled"
+          else
+            echo "run_docker=false" >> "$GITHUB_OUTPUT"
+            echo "Docker deploy not enabled, skipping"
+          fi
+
+  docker-release:
+    needs: docker-check
+    if: needs.docker-check.outputs.run_docker == 'true'
+    uses: 3584573427749/.github/.github/workflows/docker-release.yml@main
+    permissions:
+      contents: read
+      packages: write
