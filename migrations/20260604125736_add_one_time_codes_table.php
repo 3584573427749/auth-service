@@ -17,7 +17,7 @@ final class AddOneTimeCodesTable extends AbstractMigration {
      * with the Table class.
      */
     public function change():void {
-        $table = $this->table('magic_links', [
+        $table = $this->table('one_time_codes', [
             'id' => false,
             'primary_key' => ['id'],
         ]);

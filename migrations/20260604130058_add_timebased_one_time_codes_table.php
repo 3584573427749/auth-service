@@ -17,7 +17,7 @@ final class AddTimebasedOneTimeCodesTable extends AbstractMigration {
      * with the Table class.
      */
     public function change():void {
-        $table = $this->table('magic_links', [
+        $table = $this->table('totp_secrets', [
             'id' => false,
             'primary_key' => ['user_id'],
         ]);
@@ -32,6 +32,9 @@ final class AddTimebasedOneTimeCodesTable extends AbstractMigration {
               ])
               ->addColumn('created_at', 'datetime', [
                   'null' => false,
+              ])
+              ->addColumn('last_used_at', 'datetime', [
+                  'null' => true,
               ])
               ->addForeignKey('user_id', 'users', 'id', [
                   'constraint' => 'fk_totp_user_id',

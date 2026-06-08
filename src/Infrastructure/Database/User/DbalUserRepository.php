@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Database\User;
 
-use App\Domain\Repositories\User;
+use App\Domain\Entities\User;
 use App\Domain\Repositories\UserRepository;
 use App\Infrastructure\Database\AbstractDbRepository;
 
@@ -22,10 +22,10 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
     }
 
     public function save(User $user):void {
-        if ($user->getUpdatedAt()->getTimestamp()) {
-            $this->connection->update(self::TABLE, $user->toDBRow(), ['id' => $user->getId()->toString()]);
+        if ($user->getUpdatedAt() !== null) {
+            $this->connection->update(self::TABLE, $user->asDBRow(), ['id' => $user->getId()->toString()]);
         } else {
-            $this->connection->insert(self::TABLE, $user->toDBRow());
+            $this->connection->insert(self::TABLE, $user->asDBRow());
         }
     }
 }

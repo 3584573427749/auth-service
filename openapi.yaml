@@ -43,9 +43,6 @@ components:
         - email
         - firstName
         - lastName
-        - magicLinks
-        - otps
-        - totps
       properties:
         email:
           type: string
@@ -59,9 +56,7 @@ components:
           type: string
           minLength: 2
           example: Name
-        logins:
-          $ref: '#/components/schemas/UserLoginMethods'
-    
+
     User:
       type: object
       required:
@@ -88,31 +83,6 @@ components:
             type: string
           example:
             - user
-        logins:
-          $ref: '#/components/schemas/UserLoginMethods'
-        createdAt:
-          type: string
-          format: date-time
-
-
-    UserLoginMethods:
-      type: object
-      required:
-        - magicLinks
-        - otps
-        - totps
-      properties:
-        magicLinks:
-          type: boolean
-          description: Indicates whether the user can sign in using magic links.
-          example: true
-
-        otps:
-          type: boolean
-          description: Indicates whether the user can sign in using one-time passwords.
-          example: true
-
-        totps:
-          type: boolean
-          description: Indicates whether the user can sign in using time-based one-time passwords.
-          example: false
+          createdAt:
+            type: string
+            format: date-time

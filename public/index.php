@@ -1,12 +1,24 @@
 <?php
-use App\Application\Settings; use App\Application\ErrorHandler\ErrorMiddleware; use Slim\Factory\AppFactory;
+use App\Application\Settings;
+use App\Application\ErrorHandler\ErrorMiddleware;
+use DI\ContainerBuilder;
+use Slim\Factory\AppFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 // Initiera Settings (läser .env)
 Settings::getInstance();
 
-$container = require __DIR__ . '/../config/di.php';
+// Bygg containern korrekt
+$containerBuilder = new ContainerBuilder();
+(require __DIR__ . '/../config/dependencies.php')($containerBuilder);
+
+// Set up repositories
+$repositories = require __DIR__ . '/../config/repositories.php';
+$repositories($containerBuilder);
+
+$container = $containerBuilder->build();
+
 AppFactory::setContainer($container);
 $app = AppFactory::create();
 
@@ -14,8 +26,6 @@ $app = AppFactory::create();
 $app->add(ErrorMiddleware::class);
 
 (require __DIR__ . '/../config/middleware.php')($app);
-
 (require __DIR__ . '/../config/routes.php')($app);
 
 $app->run();
-

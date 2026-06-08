@@ -29,7 +29,7 @@ final class AddUserTable extends AbstractMigration {
             'null' => false,
         ])
               ->addColumn('email', 'string', [
-                  'limit' => 255,
+                  'limit' => 100,
                   'null' => false,
               ])
               ->addColumn('first_name', 'string', [

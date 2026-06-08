@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\ValueObject\AbstractId;
+use App\Domain\ValueObjects\AbstractId;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

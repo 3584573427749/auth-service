@@ -1,4 +1,4 @@
-FROM php:8.3-fpm-alpine
+FROM php:8.5-fpm-alpine
 
 RUN apk add --no-cache bash git curl mariadb-client oniguruma-dev \
     && docker-php-ext-install pdo pdo_mysql
