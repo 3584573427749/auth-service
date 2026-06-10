@@ -11,10 +11,10 @@ Settings::getInstance();
 
 // Bygg containern korrekt
 $containerBuilder = new ContainerBuilder();
-(require __DIR__ . '/../config/dependencies.php')($containerBuilder);
+(require __DIR__ . '/../app/dependencies.php')($containerBuilder);
 
 // Set up repositories
-$repositories = require __DIR__ . '/../config/repositories.php';
+$repositories = require __DIR__ . '/../app/repositories.php';
 $repositories($containerBuilder);
 
 $container = $containerBuilder->build();
@@ -25,7 +25,7 @@ $app = AppFactory::create();
 // ErrorMiddleware först
 $app->add(ErrorMiddleware::class);
 
-(require __DIR__ . '/../config/middleware.php')($app);
-(require __DIR__ . '/../config/routes.php')($app);
+(require __DIR__ . '/../app/middleware.php')($app);
+(require __DIR__ . '/../app/routes.php')($app);
 
 $app->run();

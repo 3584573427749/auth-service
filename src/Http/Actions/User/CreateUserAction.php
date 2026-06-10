@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Actions\User;
+namespace App\Http\Actions\User;
 
 use App\Application\Commands\User\CreateUserCommand;
 use App\Application\Handlers\User\CreateUserHandler;
@@ -10,9 +10,10 @@ use Psr\Log\LoggerInterface;
 
 class CreateUserAction extends UserAction {
 
-    public function __construct(LoggerInterface $logger,private CreateUserHandler $handler) {
+    public function __construct(LoggerInterface $logger, private CreateUserHandler $handler) {
         parent::__construct($logger);
     }
+
     protected function action(): Response {
         $data = $this->request->getParsedBody();
 
@@ -22,13 +23,13 @@ class CreateUserAction extends UserAction {
             return $this->respondWithData([
                 'error' => 'Validation failed.',
                 'fields' => $errors,
-                'indata'=>$data
+                'indata' => $data
             ], 422);
         }
 
-        $userCommand=CreateUserCommand::fromRequest($data);
+        $userCommand = CreateUserCommand::fromRequest($data);
 
-        $dto=$this->handler->handle($userCommand);
+        $dto = $this->handler->handle($userCommand);
 
         return $this->respondWithData($dto, 201);
 

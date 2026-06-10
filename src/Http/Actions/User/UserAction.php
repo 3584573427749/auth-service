@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Actions\User;
+namespace App\Http\Actions\User;
 
-use App\Application\Actions\Action;
-use App\Domain\User\UserRepository;
-use App\Infrastructure\Email\EmailService;
+use App\Http\Actions\Action;
 use Psr\Log\LoggerInterface;
 
 abstract class UserAction extends Action {

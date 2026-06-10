@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Domain\ValueObjects;
 
-use InvalidArgumentException;
-use JsonSerializable;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
+use InvalidArgumentException;
+use JsonSerializable;
 
 final class DateTimeValue implements JsonSerializable {
     private DateTimeImmutable $value;
@@ -22,12 +22,7 @@ final class DateTimeValue implements JsonSerializable {
      */
     public function __construct(string|DateTimeInterface $value) {
         if ($value instanceof DateTimeInterface) {
-<<<<<<< HEAD
             $this->value = (new DateTimeImmutable($value->format('Y-m-d H:i:s')));
-=======
-            $this->value = (new DateTimeImmutable($value->format(DateTimeInterface::ATOM)))
-                ->setTimezone(new \DateTimeZone('UTC'));
->>>>>>> 3514ea23110550671937378b74d086646a5c510c
 
             return;
         }
@@ -41,20 +36,16 @@ final class DateTimeValue implements JsonSerializable {
         $this->value = $dt->setTimezone(new \DateTimeZone('UTC'));
     }
 
-    public static function fromString(string $value):self {
+    public static function fromString(string $value): self {
         return new self($value);
     }
 
-    public function toDateTimeImmutable():DateTimeImmutable {
+    public function toDateTimeImmutable(): DateTimeImmutable {
         return $this->value;
     }
 
-    public function toString():string {
-<<<<<<< HEAD
+    public function toString(): string {
         return $this->value->format('Y-m-d H:i');
-=======
-        return $this->value->format(DateTimeInterface::ATOM); // always UTC Z
->>>>>>> 3514ea23110550671937378b74d086646a5c510c
     }
 
     public function __toString():string {
