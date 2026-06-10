@@ -22,7 +22,8 @@ final class DateTimeValue implements JsonSerializable {
      */
     public function __construct(string|DateTimeInterface $value) {
         if ($value instanceof DateTimeInterface) {
-            $this->value = (new DateTimeImmutable($value->format('Y-m-d H:i:s')));
+            $this->value = new DateTimeImmutable($value->format(DateTimeImmutable::ATOM));
+            $this->value = $this->value->setTimezone(new \DateTimeZone('Europe/Mariehamn'));
 
             return;
         }
@@ -45,18 +46,18 @@ final class DateTimeValue implements JsonSerializable {
     }
 
     public function toString(): string {
-        return $this->value->format('Y-m-d H:i');
+        return $this->value->format('Y-m-d H:i:s');
     }
 
-    public function __toString():string {
+    public function __toString(): string {
         return $this->toString();
     }
 
-    public function jsonSerialize():string {
+    public function jsonSerialize(): string {
         return $this->toString();
     }
 
-    public function equals(self $other):bool {
+    public function equals(self $other): bool {
         return $this->value->getTimestamp() === $other->value->getTimestamp();
     }
 }

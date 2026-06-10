@@ -1,23 +1,22 @@
 <?php
 
-use App\Domain\ValueObject\Email;
-use InvalidArgumentException;
+use App\Domain\ValueObjects\Email;
 use PHPUnit\Framework\TestCase;
 
 final class EmailTest extends TestCase {
-    public function testValidEmailIsNormalized():void {
+    public function testValidEmailIsNormalized(): void {
         $email = new Email('  TEST@Example.COM ');
 
         $this->assertSame('test@example.com', $email->toString());
     }
 
-    public function testInvalidEmailThrowsException():void {
+    public function testInvalidEmailThrowsException(): void {
         $this->expectException(InvalidArgumentException::class);
 
         new Email('not-an-email');
     }
 
-    public function testEquals():void {
+    public function testEquals(): void {
         $a = new Email('a@test.com');
         $b = new Email('A@test.com');
 
