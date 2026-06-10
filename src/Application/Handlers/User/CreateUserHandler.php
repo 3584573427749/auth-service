@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Handlers\User;
 
 use App\Application\Commands\User\CreateUserCommand;
@@ -10,8 +12,10 @@ use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\UserId;
 
-class CreateUserHandler extends UserHandler {
-    public function handle(CreateUserCommand $command): CreateUserDTO {
+class CreateUserHandler extends UserHandler
+{
+    public function handle(CreateUserCommand $command): CreateUserDTO
+    {
         $this->db->beginTransaction();
         try {
             if ($this->userRepository->existsByEmail($command->email)) {
@@ -25,7 +29,7 @@ class CreateUserHandler extends UserHandler {
                 $command->lastName,
                 true,
                 new DateTimeValue('now'),
-                null
+                null,
             );
 
             $this->userRepository->save($user);

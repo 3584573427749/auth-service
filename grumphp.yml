@@ -1,2 +1,35 @@
 grumphp:
-    tasks: {  }
+  stop_on_failure: true
+
+  hooks_preset: local
+
+  tasks:
+
+    composer:
+      no_check_publish: true
+
+    phpstan:
+      configuration: phpstan.neon
+      memory_limit: "1G"
+
+    phpunit:
+      always_execute: false
+      testsuite: Unit
+
+    phpcsfixer:
+      config: .php-cs-fixer.dist.php
+      verbose: false
+      diff: false
+
+
+    git_blacklist:
+      keywords:
+        - ' var_dump('
+        - ' dump('
+        - ' dd('
+        - ' die('
+        - ' exit('
+
+      ignore_patterns:
+        - 'bin/'
+        - 'migrations/'

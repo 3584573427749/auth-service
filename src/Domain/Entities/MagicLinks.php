@@ -1,21 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Entities;
 
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\MagicLinkId;
 use App\Domain\ValueObjects\UserId;
 
-class MagicLinks implements \JsonSerializable {
-    public function __construct(private MagicLinkId $id, private UserId $userId, private string $token_hash,
-        private string $clientType, private DateTimeValue $expiresAt, private DateTimeValue $consumedAt,
-        private DateTimeValue $createdAt) {
+class MagicLinks implements \JsonSerializable
+{
+    public function __construct(
+        private MagicLinkId $id,
+        private UserId $userId,
+        private string $token_hash,
+        private string $clientType,
+        private DateTimeValue $expiresAt,
+        private DateTimeValue $consumedAt,
+        private DateTimeValue $createdAt,
+    ) {
     }
 
     /**
      * @return array <string, string>
      */
-    public function asDBRow(): array {
+    public function asDBRow(): array
+    {
         return [
             'id' => $this->id->toString(),
             'user_id' => $this->userId->toString(),
@@ -28,10 +38,10 @@ class MagicLinks implements \JsonSerializable {
     }
 
     /**
-     * @param array<string, string|DateTimeValue> $row DB row with keys matching the database columns
-     * @return self
+     * @param array<string, mixed> $row DB row with keys matching the database columns
      */
-    public static function fromDBRow(array $row): self {
+    public static function fromDBRow(array $row): self
+    {
         return new self(
             new MagicLinkId($row['id']),
             new UserId($row['user_id']),
@@ -39,14 +49,15 @@ class MagicLinks implements \JsonSerializable {
             $row['client_type'],
             new DateTimeValue($row['expires_at']),
             new DateTimeValue($row['consumed_at']),
-            new DateTimeValue($row['created_at'])
+            new DateTimeValue($row['created_at']),
         );
     }
 
     /**
      * @return array<string, string>
      */
-    public function jsonSerialize(): array {
+    public function jsonSerialize(): array
+    {
         return [
             'id' => $this->id->toString(),
             'userId' => $this->userId->toString(),

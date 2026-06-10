@@ -47,13 +47,13 @@
     "start": "docker compose up",
     "shell": "docker compose exec slim-service sh",
     "logs": "docker compose logs -f",
-    "test": "docker compose exec slim-service vendor/bin/phpunit",
-    "stan": "docker compose exec slim-service vendor/bin/phpstan analyse src tests --level=7",
-    "fix": "docker compose exec slim-service vendor/bin/php-cs-fixer fix",
-    "fix:check": "docker compose exec slim-service vendor/bin/php-cs-fixer fix --dry-run --diff",
-    "lint": "docker compose exec slim-service vendor/bin/phpcs src tests",
-    "migrate": "docker compose exec slim-service vendor/bin/phinx migrate",
-    "rollback": "docker compose exec slim-service vendor/bin/phinx rollback",
-    "openapi:validate": "docker compose exec slim-service php bin/validate-openapi.php"
+    "test": "vendor/bin/phpunit",
+    "stan": "vendor/bin/phpstan analyse src tests --level=7 --memory-limit=1G",
+    "fix": "vendor/bin/php-cs-fixer fix",
+    "fix:check": "vendor/bin/php-cs-fixer fix --dry-run --diff",
+    "lint": "vendor/bin/phpcs src tests",
+    "migrate": "vendor/bin/phinx migrate",
+    "rollback": "vendor/bin/phinx rollback",
+    "openapi:validate": "php ./bin/validate-openapi.php"
   }
 }

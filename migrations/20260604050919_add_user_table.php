@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-final class AddUserTable extends AbstractMigration {
+final class AddUserTable extends AbstractMigration
+{
     /**
      * Change Method.
      *
@@ -16,7 +17,8 @@ final class AddUserTable extends AbstractMigration {
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change():void {
+    public function change(): void
+    {
 
         $table = $this->table('users', [
             'id' => false,

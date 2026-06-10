@@ -1,6 +1,7 @@
 <?php
-use App\Application\Settings;
+
 use App\Application\ErrorHandler\ErrorMiddleware;
+use App\Application\Validators\Settings;
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 

@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace App\Application\Middleware;
 
-use App\Application\Settings;
+use App\Application\Validators\Settings;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as Handler;
 
-final class CorsMiddleware implements MiddlewareInterface {
-    public function __construct(private Settings $settings) {
+final class CorsMiddleware implements MiddlewareInterface
+{
+    public function __construct(private Settings $settings)
+    {
     }
 
-    public function process(Request $request, Handler $handler): Response {
+    public function process(Request $request, Handler $handler): Response
+    {
         $origin = $request->getHeaderLine('Origin');
         $pattern = $this->settings->get('CORS_ALLOW_ORIGIN_PATTERN');
 

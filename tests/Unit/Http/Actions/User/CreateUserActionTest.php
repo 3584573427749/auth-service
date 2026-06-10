@@ -18,8 +18,10 @@ use Psr\Log\LoggerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
-final class CreateUserActionTest extends TestCase {
-    public function testReturns422WhenRequestBodyIsInvalid(): void {
+final class CreateUserActionTest extends TestCase
+{
+    public function testReturns422WhenRequestBodyIsInvalid(): void
+    {
         $logger = $this->createMock(LoggerInterface::class);
 
         $handler = $this->createMock(CreateUserHandler::class);
@@ -30,7 +32,7 @@ final class CreateUserActionTest extends TestCase {
 
         $action = new CreateUserAction($logger, $handler);
 
-        $request = (new ServerRequestFactory())
+        $request = new ServerRequestFactory()
             ->createServerRequest('POST', '/users')
             ->withParsedBody([
                 'email' => 'invalid-email',
@@ -38,7 +40,7 @@ final class CreateUserActionTest extends TestCase {
                 'lastName' => '',
             ]);
 
-        $response = (new ResponseFactory())->createResponse();
+        $response = new ResponseFactory()->createResponse();
 
         $result = $action($request, $response, []);
 
@@ -52,7 +54,7 @@ final class CreateUserActionTest extends TestCase {
 
         self::assertSame(
             'Validation failed.',
-            $payload['data']['error']
+            $payload['data']['error'],
         );
 
         self::assertArrayHasKey('fields', $payload['data']);
@@ -60,7 +62,8 @@ final class CreateUserActionTest extends TestCase {
         self::assertArrayHasKey('indata', $payload['data']);
     }
 
-    public function testCreatesUserAndReturns201WhenRequestBodyIsValid(): void {
+    public function testCreatesUserAndReturns201WhenRequestBodyIsValid(): void
+    {
         $logger = $this->createMock(LoggerInterface::class);
 
         $user = new User(
@@ -70,7 +73,7 @@ final class CreateUserActionTest extends TestCase {
             'Name',
             true,
             new DateTimeValue('2026-06-10 10:00:00'),
-            null
+            null,
         );
 
         $dto = CreateUserDTO::fromUser($user);
@@ -107,31 +110,35 @@ final class CreateUserActionTest extends TestCase {
 
         self::assertSame(
             '550e8400-e29b-41d4-a716-446655440000',
-            $payload['data']['userId']
+            $payload['data']['userId'],
         );
 
         self::assertSame(
             'test@example.com',
-            $payload['data']['email']
+            $payload['data']['email'],
         );
 
         self::assertSame(
             'User',
-            $payload['data']['firstName']
+            $payload['data']['firstName'],
         );
 
         self::assertSame(
             'Name',
-            $payload['data']['lastName']
+            $payload['data']['lastName'],
         );
 
         self::assertSame(
             ['user'],
-            $payload['data']['roles']
+            $payload['data']['roles'],
         );
     }
 
-    private function decodeJsonResponse(ResponseInterface $response): array {
+    /**
+     * @return array<string, mixed>
+     */
+    private function decodeJsonResponse(ResponseInterface $response): array
+    {
         $body = (string)$response->getBody();
 
         self::assertNotSame('', $body);

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-final class AddUserRolesTable extends AbstractMigration {
+final class AddUserRolesTable extends AbstractMigration
+{
     /**
      * Change Method.
      *
@@ -16,7 +17,8 @@ final class AddUserRolesTable extends AbstractMigration {
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change():void {
+    public function change(): void
+    {
         $table = $this->table('user_roles', [
             'id' => false,
             'primary_key' => ['user_id', 'role_id'],

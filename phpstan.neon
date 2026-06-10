@@ -1,4 +1,20 @@
 parameters:
-  level: max
-  paths:
-    - src
+    level: 7
+
+    paths:
+        - src
+        - tests
+
+    excludePaths:
+        - .phpstan
+        - .phpstan/cache (?)
+        - var/cache (?)
+        - vendor
+
+    tmpDir: .phpstan
+
+    treatPhpDocTypesAsCertain: true
+
+    inferPrivatePropertyTypeFromConstructor: true
+
+    reportUnmatchedIgnoredErrors: true

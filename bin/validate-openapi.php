@@ -4,25 +4,31 @@ declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
 
+use cebe\openapi\exceptions\IOException;
+use cebe\openapi\exceptions\TypeErrorException;
+use cebe\openapi\exceptions\UnresolvableReferenceException;
 use cebe\openapi\Reader;
 
-$openapi = Reader::readFromYamlFile(
-    __DIR__ . '/../openapi.yaml'
-);
+try {
+    $openapi = Reader::readFromYamlFile(__DIR__ . '/../openapi.yaml');
 
-if ($openapi === null) {
+    $errors = $openapi->getErrors();
+
+    if ($errors !== []) {
+        foreach ($errors as $error) {
+            fwrite(STDERR, $error . PHP_EOL);
+        }
+
+        exit(1);
+    }
+    echo "OpenAPI validation successful.\n";
+} catch (IOException $e) {
     fwrite(STDERR, "Failed to parse OpenAPI file.\n");
     exit(1);
-}
-
-$errors = $openapi->getErrors();
-
-if ($errors !== []) {
-    foreach ($errors as $error) {
-        fwrite(STDERR, $error . PHP_EOL);
-    }
-
+} catch (TypeErrorException $e) {
+    fwrite(STDERR, "Type error found in OpenAPI file.\n");
+    exit(1);
+} catch (UnresolvableReferenceException $e) {
+    fwrite(STDERR, "Unresolvable reference found in OpenAPI file.\n");
     exit(1);
 }
-
-echo "OpenAPI validation successful.\n";

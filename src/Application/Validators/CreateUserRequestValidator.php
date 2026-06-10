@@ -1,10 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Validators;
 
-class CreateUserRequestValidator {
-
-    public static function validate(array $data): array {
+class CreateUserRequestValidator
+{
+    /**
+     * @param string[] $data
+     * @return string[]
+     */
+    public static function validate(array $data): array
+    {
         $errors = [];
 
         if (!isset($data['email'])) {

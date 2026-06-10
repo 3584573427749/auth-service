@@ -1,11 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 use App\Application\ErrorHandler\ErrorHandler;
 use App\Application\ErrorHandler\ErrorMiddleware;
-use App\Application\Middleware\AuthServiceMiddleware;
-use App\Application\Settings;
-use App\Infrastructure\Auth\AuthServiceClient;
+use App\Application\Validators\Settings;
 use DI\ContainerBuilder;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
@@ -15,12 +14,12 @@ use Psr\Log\LoggerInterface;
 return function (ContainerBuilder $builder) {
 
     $builder->addDefinitions([
-        Settings::class => fn() => Settings::getInstance(),
-        'logger' => fn() => (require __DIR__ . '/logger.php')(),
-        LoggerInterface::class => fn($c) => $c->get('logger'),
+        Settings::class => fn () => Settings::getInstance(),
+        'logger' => fn () => (require __DIR__ . '/logger.php')(),
+        LoggerInterface::class => fn ($c) => $c->get('logger'),
 
-        ErrorHandler::class => fn($c) => new ErrorHandler($c->get('logger')),
-        ErrorMiddleware::class => fn($c) => new ErrorMiddleware($c->get(ErrorHandler::class)),
+        ErrorHandler::class => fn ($c) => new ErrorHandler($c->get('logger')),
+        ErrorMiddleware::class => fn ($c) => new ErrorMiddleware($c->get(ErrorHandler::class)),
 
         // Database Connection (singleton)
         Connection::class => function (ContainerInterface $c) {
@@ -37,11 +36,5 @@ return function (ContainerBuilder $builder) {
             return DriverManager::getConnection($connectionParams);
         },
 
-        AuthServiceClient::class => fn($c) => new AuthServiceClient($c->get(App\Application\Settings::class)),
-
-        AuthServiceMiddleware::class => fn($c) => new AuthServiceMiddleware(
-            $c->get(AuthServiceClient::class),
-            $c->get(App\Application\Settings::class)
-        ),
     ]);
 };
