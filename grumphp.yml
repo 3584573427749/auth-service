@@ -16,11 +16,6 @@ grumphp:
       always_execute: false
       testsuite: Unit
 
-    phpcsfixer:
-      config: .php-cs-fixer.dist.php
-      verbose: false
-      diff: false
-
 
     git_blacklist:
       keywords:
@@ -33,3 +28,7 @@ grumphp:
       ignore_patterns:
         - 'bin/'
         - 'migrations/'
+
+    shell:
+      scripts:
+        - [ 'vendor/bin/php-cs-fixer', 'fix', '--quiet' ]
