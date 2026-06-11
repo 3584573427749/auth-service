@@ -37,7 +37,7 @@ class CreateUserHandler extends UserHandler {
             $userDto = CreateUserDTO::fromUser($user);
 
             return $userDto;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->db->rollBack();
             throw $e;
         }
