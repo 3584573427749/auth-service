@@ -18,7 +18,7 @@ class CreateUserCommand {
                 |> trim(...)
                 |> strtolower(...);
         $firstName = trim($data['firstName']);
-        $lastName = trim($data['email']);
+        $lastName = trim($data['lastName']);
 
         return new self($email, $firstName, $lastName);
     }
