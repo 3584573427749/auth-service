@@ -15,14 +15,11 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Throwable;
 
-class ErrorHandler
-{
-    public function __construct(private Logger $logger)
-    {
+class ErrorHandler {
+    public function __construct(private Logger $logger) {
     }
 
-    public function __invoke(Request $request, Throwable $exception, bool $displayErrorDetails): Response
-    {
+    public function __invoke(Request $request, Throwable $exception, bool $displayErrorDetails) : Response {
         $status = $this->mapStatus($exception);
         $payload = $this->buildPayload($exception, $status);
 
@@ -38,8 +35,7 @@ class ErrorHandler
     /**
      * @return array<string, mixed>
      */
-    private function buildPayload(Throwable $exception, int $status): array
-    {
+    private function buildPayload(Throwable $exception, int $status) : array {
         return ['status' => $status,
             'error' => [
                 'type' => (new \ReflectionClass($exception))->getShortName(),
@@ -49,8 +45,7 @@ class ErrorHandler
         ];
     }
 
-    private function mapStatus(Throwable $exception): int
-    {
+    private function mapStatus(Throwable $exception) : int {
         return match (true) {
             $exception instanceof ValidationException => 400,
             $exception instanceof UnauthorizedException => 401,

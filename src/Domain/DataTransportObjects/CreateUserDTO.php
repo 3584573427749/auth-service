@@ -7,8 +7,7 @@ namespace App\Domain\DataTransportObjects;
 use App\Domain\Entities\User;
 use App\Domain\ValueObjects\UserId;
 
-class CreateUserDTO implements \JsonSerializable
-{
+class CreateUserDTO implements \JsonSerializable {
     /**
      * @param array <string> $roles
      */
@@ -21,8 +20,7 @@ class CreateUserDTO implements \JsonSerializable
     ) {
     }
 
-    public static function fromUser(User $user): self
-    {
+    public static function fromUser(User $user) : self {
         return new self(
             $user->getId(),
             $user->getEmail()->toString(),
@@ -35,8 +33,7 @@ class CreateUserDTO implements \JsonSerializable
     /**
      * @return array<string, string|array<string>>
      */
-    public function jsonSerialize(): array
-    {
+    public function jsonSerialize() : array {
         return [
             'userId' => $this->userId->toString(),
             'email' => $this->email,

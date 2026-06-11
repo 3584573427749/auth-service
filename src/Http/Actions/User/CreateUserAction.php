@@ -11,19 +11,16 @@ use App\Domain\Exception\UserAlreadyExistsException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
-class CreateUserAction extends UserAction
-{
-    public function __construct(LoggerInterface $logger, private CreateUserHandler $handler)
-    {
+class CreateUserAction extends UserAction {
+    public function __construct(LoggerInterface $logger, private CreateUserHandler $handler) {
         parent::__construct($logger);
     }
 
     /**
      * @throws UserAlreadyExistsException
      */
-    protected function action(): Response
-    {
-        $data = (array) $this->request->getParsedBody();
+    protected function action() : Response {
+        $data = (array)$this->request->getParsedBody();
 
         //Validera API-data
         $errors = CreateUserRequestValidator::validate($data);

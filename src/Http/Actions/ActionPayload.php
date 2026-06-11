@@ -6,8 +6,7 @@ namespace App\Http\Actions;
 
 use JsonSerializable;
 
-class ActionPayload implements JsonSerializable
-{
+class ActionPayload implements JsonSerializable {
     public function __construct(
         private int $statusCode = 200,
         private mixed $data = null,
@@ -15,26 +14,22 @@ class ActionPayload implements JsonSerializable
     ) {
     }
 
-    public function getStatusCode(): int
-    {
+    public function getStatusCode() : int {
         return $this->statusCode;
     }
 
-    public function getData(): mixed
-    {
+    public function getData() : mixed {
         return $this->data;
     }
 
-    public function getError(): ?ActionError
-    {
+    public function getError() : ?ActionError {
         return $this->error;
     }
 
     /**
      *  @return array<string, mixed>
      */
-    public function jsonSerialize(): array
-    {
+    public function jsonSerialize() : array {
         $payload = [
            'statusCode' => $this->statusCode,
         ];

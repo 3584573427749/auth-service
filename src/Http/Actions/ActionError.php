@@ -6,8 +6,7 @@ namespace App\Http\Actions;
 
 use JsonSerializable;
 
-class ActionError implements JsonSerializable
-{
+class ActionError implements JsonSerializable {
     public const BAD_REQUEST = 'BAD_REQUEST';
     public const INSUFFICIENT_PRIVILEGES = 'INSUFFICIENT_PRIVILEGES';
     public const NOT_ALLOWED = 'NOT_ALLOWED';
@@ -23,30 +22,25 @@ class ActionError implements JsonSerializable
 
     private ?string $description;
 
-    public function __construct(string $type, ?string $description = null)
-    {
+    public function __construct(string $type, ?string $description = null) {
         $this->type = $type;
         $this->description = $description;
     }
 
-    public function getType(): string
-    {
+    public function getType() : string {
         return $this->type;
     }
 
-    public function setType(string $type): self
-    {
+    public function setType(string $type) : self {
         $this->type = $type;
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
+    public function getDescription() : ?string {
         return $this->description;
     }
 
-    public function setDescription(?string $description = null): self
-    {
+    public function setDescription(?string $description = null) : self {
         $this->description = $description;
         return $this;
     }
@@ -54,8 +48,7 @@ class ActionError implements JsonSerializable
     /**
      * @return string[]
      */
-    public function jsonSerialize(): array
-    {
+    public function jsonSerialize() : array {
         return [
             'type' => $this->type,
             'description' => $this->description,

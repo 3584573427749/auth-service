@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace App\Application\Commands\User;
 
-class CreateUserCommand
-{
-    private function __construct(public string $email, public string $firstName, public string $lastName)
-    {
+class CreateUserCommand {
+    private function __construct(public string $email, public string $firstName, public string $lastName) {
 
     }
 
     /**
      * @param array<string, mixed> $data
      */
-    public static function fromRequest(array $data): self
-    {
+    public static function fromRequest(array $data) : self {
         // Normalisera
         $email = $data['email']
                 |> trim(...)

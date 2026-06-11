@@ -6,8 +6,7 @@ namespace App\Application\Validators;
 
 use Dotenv\Dotenv;
 
-class Settings
-{
+class Settings {
     private static ?Settings $instance = null;
 
     /**
@@ -27,8 +26,7 @@ class Settings
         'APP_DEBUG' => 'bool',
     ];
 
-    private function __construct()
-    {
+    private function __construct() {
         $dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
         $dotenv->load();
 
@@ -36,8 +34,7 @@ class Settings
         $this->data = $_ENV;
     }
 
-    public static function getInstance(): Settings
-    {
+    public static function getInstance() : Settings {
         if (self::$instance === null) {
             self::$instance = new Settings();
         }
@@ -48,8 +45,7 @@ class Settings
     /**
      * Hämta env‑värde med fallback.
      */
-    public function get(string $key, mixed $default = null): mixed
-    {
+    public function get(string $key, mixed $default = null) : mixed {
         if (!array_key_exists($key, $this->data)) {
             return $default;
         }
@@ -64,8 +60,7 @@ class Settings
         return $value;
     }
 
-    private function cast(string $value, string $type): mixed
-    {
+    private function cast(string $value, string $type) : mixed {
         return match ($type) {
             'int' => (int)$value,
             'bool' => filter_var($value, FILTER_VALIDATE_BOOLEAN),

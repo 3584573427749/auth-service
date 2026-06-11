@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\Application\Validators;
 
-class CreateUserRequestValidator
-{
+class CreateUserRequestValidator {
     /**
-     * @param string[] $data
+     * @param array<string, mixed> $data
      * @return string[]
      */
-    public static function validate(array $data): array
-    {
+    public static function validate(array $data) : array {
         $errors = [];
 
         if (!isset($data['email'])) {

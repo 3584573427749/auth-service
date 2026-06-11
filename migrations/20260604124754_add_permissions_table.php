@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-final class AddPermissionsTable extends AbstractMigration
-{
+final class AddPermissionsTable extends AbstractMigration {
     /**
      * Change Method.
      *
@@ -17,8 +16,7 @@ final class AddPermissionsTable extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void
-    {
+    public function change() : void {
         $table = $this->table('permissions', [
             'id' => false,
             'primary_key' => ['id'],

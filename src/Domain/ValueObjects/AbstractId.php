@@ -8,8 +8,7 @@ use InvalidArgumentException;
 use JsonSerializable;
 use Ramsey\Uuid\Uuid;
 
-abstract class AbstractId implements JsonSerializable
-{
+abstract class AbstractId implements JsonSerializable {
     private string $value;
 
     /**
@@ -18,8 +17,7 @@ abstract class AbstractId implements JsonSerializable
      * If $value is null → generate new UUID v7
      * If $value is provided → must be a valid UUID (any version)
      */
-    final public function __construct(?string $value = null)
-    {
+    final public function __construct(?string $value = null) {
         if ($value === null) {
             // Generate UUID v7 by default
             $this->value = Uuid::uuid7()->toString();
@@ -40,16 +38,14 @@ abstract class AbstractId implements JsonSerializable
     /**
      * Construct an ID from existing string (e.g. from database).
      */
-    public static function fromString(string $value): static
-    {
+    public static function fromString(string $value) : static {
         return new static($value);
     }
 
     /**
      * Generates a new ID using UUID v7.
      */
-    public static function random(): static
-    {
+    public static function random() : static {
         return new static(null);
     }
 
@@ -58,8 +54,7 @@ abstract class AbstractId implements JsonSerializable
      * - IDs must be the same concrete class
      * - and have identical UUID values
      */
-    public function equals(self $other): bool
-    {
+    public function equals(self $other) : bool {
         if (get_class($this) !== get_class($other)) {
             throw new InvalidArgumentException(sprintf(
                 'Cannot compare %s with %s',
@@ -74,24 +69,21 @@ abstract class AbstractId implements JsonSerializable
     /**
      * Returns the raw UUID string.
      */
-    public function toString(): string
-    {
+    public function toString() : string {
         return $this->value;
     }
 
     /**
      * Magic cast to string.
      */
-    public function __toString(): string
-    {
+    public function __toString() : string {
         return $this->value;
     }
 
     /**
      * JSON serialization returns the raw string.
      */
-    public function jsonSerialize(): string
-    {
+    public function jsonSerialize() : string {
         return $this->value;
     }
 }

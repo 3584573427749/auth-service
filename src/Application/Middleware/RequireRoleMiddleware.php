@@ -10,22 +10,19 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as Handler;
 
-final class RequireRoleMiddleware implements MiddlewareInterface
-{
+final class RequireRoleMiddleware implements MiddlewareInterface {
     /** @var string[] */
     private array $requiredRoles;
 
     /**
      * @param string[] $roles Minst en av dessa roller krävs
      */
-    public function __construct(array $roles)
-    {
+    public function __construct(array $roles) {
         // normalisera till lowercase för case‑insensitiv jämförelse
         $this->requiredRoles = array_map('strtolower', $roles);
     }
 
-    public function process(Request $request, Handler $handler): Response
-    {
+    public function process(Request $request, Handler $handler) : Response {
         $roles = $request->getAttribute('roles', []);
 
         // Normalisera roller från auth‑middleware

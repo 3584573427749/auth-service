@@ -12,10 +12,8 @@ use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\UserId;
 
-class CreateUserHandler extends UserHandler
-{
-    public function handle(CreateUserCommand $command): CreateUserDTO
-    {
+class CreateUserHandler extends UserHandler {
+    public function handle(CreateUserCommand $command) : CreateUserDTO {
         $this->db->beginTransaction();
         try {
             if ($this->userRepository->existsByEmail($command->email)) {

@@ -11,8 +11,7 @@ use Psr\Log\LoggerInterface;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 
-abstract class Action
-{
+abstract class Action {
     protected Request $request;
 
     protected Response $response;
@@ -22,15 +21,13 @@ abstract class Action
      */
     protected array $args;
 
-    public function __construct(protected LoggerInterface $logger)
-    {
+    public function __construct(protected LoggerInterface $logger) {
     }
 
     /**
      * @param string[] $args
      */
-    public function __invoke(Request $request, Response $response, array $args): Response
-    {
+    public function __invoke(Request $request, Response $response, array $args) : Response {
         $this->request = $request;
         $this->response = $response;
         $this->args = $args;
@@ -46,21 +43,19 @@ abstract class Action
      * @throws DomainRecordNotFoundException
      * @throws HttpBadRequestException
      */
-    abstract protected function action(): Response;
+    abstract protected function action() : Response;
 
     /**
      * @return string[]
      */
-    protected function getFormData(): array
-    {
+    protected function getFormData() : array {
         return (array)$this->request->getParsedBody();
     }
 
     /**
      * @throws HttpBadRequestException
      */
-    protected function resolveArg(string $name): string
-    {
+    protected function resolveArg(string $name) : string {
         if (!isset($this->args[$name])) {
             throw new HttpBadRequestException($this->request, "Could not resolve argument `{$name}`.");
         }
@@ -68,15 +63,13 @@ abstract class Action
         return $this->args[$name];
     }
 
-    protected function respondWithData(mixed $data = null, int $statusCode = 200): Response
-    {
+    protected function respondWithData(mixed $data = null, int $statusCode = 200) : Response {
         $payload = new ActionPayload($statusCode, $data);
 
         return $this->respond($payload);
     }
 
-    protected function respond(ActionPayload $payload): Response
-    {
+    protected function respond(ActionPayload $payload) : Response {
         $json = json_encode($payload, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
         $this->response->getBody()->write($json);
 

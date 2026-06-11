@@ -20,6 +20,17 @@ return (new Config())
     ->setRules([
         '@PSR12' => true,
 
+
+        // OVERRIDE PSR-12
+        'class_definition' => [
+            'single_line' => true,
+        ],
+
+        'braces_position' => [
+            'classes_opening_brace' => 'same_line',
+            'functions_opening_brace' => 'same_line',
+        ],
+
         'declare_strict_types' => true,
         'strict_param' => true,
 
@@ -66,7 +77,7 @@ return (new Config())
         'no_empty_phpdoc' => true,
 
         'return_type_declaration' => [
-            'space_before' => 'none',
+            'space_before' => 'one',
         ],
 
         'native_function_casing' => true,
