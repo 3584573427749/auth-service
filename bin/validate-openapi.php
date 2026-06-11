@@ -9,6 +9,8 @@ use cebe\openapi\exceptions\TypeErrorException;
 use cebe\openapi\exceptions\UnresolvableReferenceException;
 use cebe\openapi\Reader;
 
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+
 try {
     $openapi = Reader::readFromYamlFile(__DIR__ . '/../openapi.yaml');
 

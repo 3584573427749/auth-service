@@ -12,9 +12,9 @@ RUN composer install --no-dev --prefer-dist --no-interaction
 
 COPY . .
 
-# Entrypoint för att köra migration
-COPY docker/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Entrypoint för att köra uppstartsskriptet
+COPY docker/*.sh /
+RUN chmod +x /*.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
 

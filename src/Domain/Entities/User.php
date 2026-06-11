@@ -36,7 +36,7 @@ class User implements \JsonSerializable {
     }
 
     /**
-     * @return array<string|mixed>
+     * @return array<string,mixed>
      */
     public function asDBRow() : array {
         return [

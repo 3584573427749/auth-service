@@ -29,6 +29,5 @@ grumphp:
         - 'bin/'
         - 'migrations/'
 
-    shell:
-      scripts:
-        - [ 'vendor/bin/php-cs-fixer', 'fix', '--quiet' ]
+    composer_script:
+      script: cs-fix
