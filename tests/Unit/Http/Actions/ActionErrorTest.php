@@ -8,20 +8,20 @@ use App\Http\Actions\ActionError;
 use PHPUnit\Framework\TestCase;
 
 class ActionErrorTest extends TestCase {
-    public function testConstructorSetsValues(): void {
+    public function testConstructorSetsValues() : void {
         $error = new ActionError(ActionError::NOT_FOUND, 'Missing resource');
 
         $this->assertSame(ActionError::NOT_FOUND, $error->getType());
         $this->assertSame('Missing resource', $error->getDescription());
     }
 
-    public function testDescriptionDefaultsToNull(): void {
+    public function testDescriptionDefaultsToNull() : void {
         $error = new ActionError(ActionError::SERVER_ERROR);
 
         $this->assertNull($error->getDescription());
     }
 
-    public function testSettersWorkAndAreChainable(): void {
+    public function testSettersWorkAndAreChainable() : void {
         $error = new ActionError(ActionError::BAD_REQUEST);
 
         $result = $error
@@ -33,7 +33,7 @@ class ActionErrorTest extends TestCase {
         $this->assertSame('Invalid input', $error->getDescription());
     }
 
-    public function testCanResetDescriptionToNull(): void {
+    public function testCanResetDescriptionToNull() : void {
         $error = new ActionError(ActionError::BAD_REQUEST, 'Error');
 
         $error->setDescription(null);
@@ -41,7 +41,7 @@ class ActionErrorTest extends TestCase {
         $this->assertNull($error->getDescription());
     }
 
-    public function testJsonSerializeWithDescription(): void {
+    public function testJsonSerializeWithDescription() : void {
         $error = new ActionError(ActionError::NOT_FOUND, 'Not found');
 
         $data = $error->jsonSerialize();
@@ -52,7 +52,7 @@ class ActionErrorTest extends TestCase {
         ], $data);
     }
 
-    public function testJsonSerializeWithoutDescription(): void {
+    public function testJsonSerializeWithoutDescription() : void {
         $error = new ActionError(ActionError::SERVER_ERROR);
 
         $data = $error->jsonSerialize();
@@ -63,7 +63,7 @@ class ActionErrorTest extends TestCase {
         ], $data);
     }
 
-    public function testJsonEncodeWorks(): void {
+    public function testJsonEncodeWorks() : void {
         $error = new ActionError(ActionError::VALIDATION_ERROR, 'Invalid');
 
         $json = json_encode($error, JSON_THROW_ON_ERROR);
@@ -71,5 +71,4 @@ class ActionErrorTest extends TestCase {
         $this->assertStringContainsString('VALIDATION_ERROR', $json);
         $this->assertStringContainsString('Invalid', $json);
     }
-
 }

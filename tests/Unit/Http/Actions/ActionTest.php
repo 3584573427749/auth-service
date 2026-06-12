@@ -16,24 +16,23 @@ use Slim\Psr7\Response;
 class ActionTest extends TestCase {
     /**
      * @param array<string, mixed> $body
-     * @return ServerRequestInterface
      */
-    private function createRequest(array $body = []): ServerRequestInterface {
+    private function createRequest(array $body = []) : ServerRequestInterface {
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', '/');
 
         return $request->withParsedBody($body);
     }
 
-    private function createResponse(): Response {
+    private function createResponse() : Response {
         return new Response();
     }
 
-    private function createLogger(): LoggerInterface {
+    private function createLogger() : LoggerInterface {
         return $this->createMock(LoggerInterface::class);
     }
 
-    public function testInvokeReturnsResponse(): void {
+    public function testInvokeReturnsResponse() : void {
         $action = new ActionDummy($this->createLogger());
 
         $request = $this->createRequest();
@@ -44,11 +43,11 @@ class ActionTest extends TestCase {
         $this->assertSame($response, $result);
     }
 
-    public function testDomainExceptionIsConverted(): void {
+    public function testDomainExceptionIsConverted() : void {
         $this->expectException(HttpNotFoundException::class);
 
         $action = new class($this->createLogger()) extends ActionDummy {
-            protected function action(): \Psr\Http\Message\ResponseInterface {
+            protected function action() : \Psr\Http\Message\ResponseInterface {
                 throw new DomainRecordNotFoundException('Not found');
             }
         };
@@ -60,7 +59,7 @@ class ActionTest extends TestCase {
         );
     }
 
-    public function testGetFormData(): void {
+    public function testGetFormData() : void {
         $action = new ActionDummy($this->createLogger());
 
         $request = $this->createRequest(['foo' => 'bar']);
@@ -71,7 +70,7 @@ class ActionTest extends TestCase {
         $this->assertSame(['foo' => 'bar'], $action->publicGetFormData());
     }
 
-    public function testResolveArgSuccess(): void {
+    public function testResolveArgSuccess() : void {
         $action = new ActionDummy($this->createLogger());
 
         $action(
@@ -83,7 +82,7 @@ class ActionTest extends TestCase {
         $this->assertSame('123', $action->publicResolveArg('id'));
     }
 
-    public function testResolveArgThrows(): void {
+    public function testResolveArgThrows() : void {
         $this->expectException(HttpBadRequestException::class);
 
         $action = new ActionDummy($this->createLogger());
@@ -97,7 +96,7 @@ class ActionTest extends TestCase {
         $action->publicResolveArg('missing');
     }
 
-    public function testRespondWithData(): void {
+    public function testRespondWithData() : void {
         $action = new ActionDummy($this->createLogger());
 
         $request = $this->createRequest();
