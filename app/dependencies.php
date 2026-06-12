@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Application\ErrorHandler\ErrorHandler;
-use App\Application\ErrorHandler\ErrorMiddleware;
+use App\Application\Middleware\ErrorMiddleware;
 use DI\ContainerBuilder;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;

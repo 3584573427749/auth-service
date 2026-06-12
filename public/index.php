@@ -1,14 +1,11 @@
 <?php
 
-use App\Application\ErrorHandler\ErrorMiddleware;
-use App\Application\Validators\Settings;
+use App\Application\Middleware\ErrorMiddleware;
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-// Initiera Settings (läser .env)
-Settings::getInstance();
 
 // Bygg containern korrekt
 $containerBuilder = new ContainerBuilder();
