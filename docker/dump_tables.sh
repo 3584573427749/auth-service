@@ -15,7 +15,12 @@ DB_HOST="${DB_HOST:-db}"
 OUTPUT_DIR="/app/var/schema"
 mkdir -p "$OUTPUT_DIR"
 
-TABLES=$(mysql -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASSWORD" -N -e "SHOW TABLES FROM $DB_NAME" || true)
+TABLES=$(mariadb \
+  --ssl-mode=DISABLED \
+  -h"$DB_HOST" \
+  -u"$DB_USER" \
+  -p"$DB_PASSWORD" \
+  -N -e "SHOW TABLES FROM $DB_NAME" || true)
 
 if [ -z "$TABLES" ]; then
   echo "No tables found, skipping dump"
@@ -25,7 +30,8 @@ fi
 for TABLE in $TABLES; do
   echo "Dumping $TABLE..."
 
-  mysqldump \
+  mariadb-dump \
+    --ssl-mode=DISABLED \
     -h"$DB_HOST" \
     -u"$DB_USER" \
     -p"$DB_PASSWORD" \

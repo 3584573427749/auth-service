@@ -4,19 +4,15 @@ declare(strict_types=1);
 
 namespace App\Application\Middleware;
 
-use App\Application\Validators\Settings;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as Handler;
 
 final class CorsMiddleware implements MiddlewareInterface {
-    public function __construct(private Settings $settings) {
-    }
-
     public function process(Request $request, Handler $handler) : Response {
         $origin = $request->getHeaderLine('Origin');
-        $pattern = $this->settings->get('CORS_ALLOW_ORIGIN_PATTERN');
+        $pattern = $_ENV['CORS_ALLOW_ORIGIN_PATTERN'];
 
         // Preflight
         if ($request->getMethod() === 'OPTIONS') {
@@ -33,7 +29,7 @@ final class CorsMiddleware implements MiddlewareInterface {
         }
 
         return $response
-            ->withHeader('Access-Control-Allow-Methods', $this->settings->get('CORS_ALLOW_METHODS', 'GET,POST,PUT,PATCH,DELETE,OPTIONS'))
-            ->withHeader('Access-Control-Allow-Headers', $this->settings->get('CORS_ALLOW_HEADERS', 'Authorization,Content-Type,Accept'));
+            ->withHeader('Access-Control-Allow-Methods', $_ENV['CORS_ALLOW_METHODS'] ?? 'GET,POST,PUT,PATCH,DELETE,OPTIONS')
+            ->withHeader('Access-Control-Allow-Headers', $_ENV['CORS_ALLOW_HEADERS'] ?? 'Authorization,Content-Type,Accept');
     }
 }
