@@ -1,10 +1,20 @@
 #!/bin/sh
 set -e
 
-echo "Running database migrations..."
+#echo "[INIT] Waiting for DB..."
+#
+#until mysql -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASSWORD" -e "SELECT 1" >/dev/null 2>&1; do
+#  sleep 1
+#done
 
-php vendor/bin/phinx migrate
+#echo "[INIT] DB ready"
 
-echo "Starting application..."
+echo "[INIT] Running migrations..."
+/migrate.sh
+
+echo "[INIT] Dumping tables..."
+/dump_tables.sh
+
+echo "[INIT] Starting app..."
 
 exec "$@"

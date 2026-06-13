@@ -22,7 +22,7 @@ final class RequireRoleMiddleware implements MiddlewareInterface {
         $this->requiredRoles = array_map('strtolower', $roles);
     }
 
-    public function process(Request $request, Handler $handler): Response {
+    public function process(Request $request, Handler $handler) : Response {
         $roles = $request->getAttribute('roles', []);
 
         // Normalisera roller från auth‑middleware

@@ -1,39 +1,41 @@
 {
-  "name": "template/slim-service",
+  "name": "simning.ax/auth_service",
   "description": "User management backend service",
-  "license": "proprietary",
-  "type": "project",  
+  "license": "MIT",
+  "type": "project",
   "minimum-stability": "dev",
   "prefer-stable": true,
   "config": {
     "allow-plugins": {
-      "infection/extension-installer": true, 
-      "phpro/grumphp":true
+      "infection/extension-installer": true,
+      "phpro/grumphp": true
     }
   },
   "require": {
-    "php": "^8.3",
-    "slim/slim": "^4.0",
-    "php-di/php-di": "^7.0",
-    "slim/psr7": "^1.5",
-    "doctrine/dbal": "^3.6",
-    "robmorgan/phinx": "^0.15.0",
-    "monolog/monolog": "^3.0",
-    "vlucas/phpdotenv": "^5.5",
+    "php": "^8.5",
+    "slim/slim": "^4.15",
+    "php-di/php-di": "^7.1",
+    "slim/psr7": "^1.8",
+    "doctrine/dbal": "^4.4",
+    "robmorgan/phinx": "^0.16",
+    "monolog/monolog": "^3.10",
+    "vlucas/phpdotenv": "^5.6",
     "ramsey/uuid": "^4.9"
   },
   "require-dev": {
-    "phpunit/phpunit": "^10.0",
-    "phpstan/phpstan": "^1.10",
-    "squizlabs/php_codesniffer": "^3.7",
-    "friendsofphp/php-cs-fixer": "^3.0",
-    "infection/infection": "^0.27.0",
-    "rector/rector": "^1.0",
-    "phpro/grumphp": "^1.20"
+    "phpunit/phpunit": "^12.5",
+    "phpstan/phpstan": "^2.2",
+    "friendsofphp/php-cs-fixer": "^3.95",
+    "squizlabs/php_codesniffer": "^4.0",
+    "infection/infection": "^0.33.2",
+    "rector/rector": "^2.4",
+    "phpro/grumphp": "^2.21",
+    "cebe/php-openapi": "^1.8"
   },
   "autoload": {
     "psr-4": {
-      "App\\": "src/"
+      "App\\": "src/",
+      "Tests\\": "tests/"
     }
   },
   "scripts": {
@@ -45,10 +47,13 @@
     "start": "docker compose up",
     "shell": "docker compose exec slim-service sh",
     "logs": "docker compose logs -f",
-    "test": "docker compose exec slim-service vendor/bin/phpunit",
-    "stan": "docker compose exec slim-service vendor/bin/phpstan analyse src --level=max",
-    "fix": "docker compose exec slim-service vendor/bin/php-cs-fixer fix",
-    "migrate": "docker compose exec slim-service vendor/bin/phinx migrate",
-    "rollback": "docker compose exec slim-service vendor/bin/phinx rollback"
+    "test": "vendor/bin/phpunit",
+    "stan": "vendor/bin/phpstan analyse src tests --level=7 --memory-limit=1G",
+    "cs-fix": "vendor/bin/php-cs-fixer fix",
+    "cs-fix:check": "vendor/bin/php-cs-fixer fix --dry-run --diff",
+    "lint": "vendor/bin/phpcs src tests",
+    "migrate": "vendor/bin/phinx migrate",
+    "rollback": "vendor/bin/phinx rollback",
+    "openapi:validate": "php ./bin/validate-openapi.php"
   }
 }
