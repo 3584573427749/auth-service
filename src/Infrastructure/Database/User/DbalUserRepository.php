@@ -15,11 +15,11 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
     public function existsByEmail(string $email) : bool {
         $db = $this->connection->createQueryBuilder();
         $row = $db->select('*')
-                  ->from(self::TABLE)
-                  ->where('email=:email')
-                  ->setParameter('email', $email)
-                  ->executeQuery()
-                  ->rowCount();
+            ->from(self::TABLE)
+            ->where('email=:email')
+            ->setParameter('email', $email)
+            ->executeQuery()
+            ->rowCount();
 
         return ($row !== 0);
     }
@@ -33,11 +33,11 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
     }
 
     /**
-     * @return User[]
+     * @return list<User>
      * @throws Exception
      */
     public function getAll() : array {
-        $rows = $this->connection->executeQuery('SELECT * FROM {self::TABLE}')
+        $rows = $this->connection->executeQuery('SELECT * FROM ' . self::TABLE)
             ->fetchAllAssociative();
 
         return array_map(fn ($row) => User::fromDBRow($row), $rows);

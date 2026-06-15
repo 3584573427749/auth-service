@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Handlers\User;
 
 use App\Application\Commands\User\CreateUserCommand;
-use App\Domain\DataTransportObjects\CreateUserDTO;
+use App\Domain\DataTransportObjects\User\CreateUserDTO;
 use App\Domain\Entities\User;
 use App\Domain\Exception\UserAlreadyExistsException;
 use App\Domain\ValueObjects\DateTimeValue;

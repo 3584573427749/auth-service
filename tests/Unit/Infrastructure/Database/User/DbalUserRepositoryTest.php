@@ -85,4 +85,46 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
         self::assertNotFalse($row);
         self::assertSame('Updated', $row['first_name']);
     }
+
+    public function testGetAllReturnsEmptyArrayWhenNoUsers() : void {
+        $this->loadSchema('users');
+
+        $repository = new DbalUserRepository($this->connection);
+
+        $result = $repository->getAll();
+
+        self::assertSame([], $result);
+    }
+
+    public function testGetAllReturnsUsers() : void {
+        $this->seed('users', [
+            [
+                'id' => '660e8400-e29b-41d4-a716-446655440001',
+                'email' => 'a@test.com',
+                'first_name' => 'A',
+                'last_name' => 'User',
+                'is_active' => 1,
+                'created_at' => '2026-01-01 10:00:00',
+                'updated_at' => null,
+            ],
+            [
+                'id' => '660e8400-e29b-41d4-a716-446655440000',
+                'email' => 'b@test.com',
+                'first_name' => 'B',
+                'last_name' => 'User',
+                'is_active' => 1,
+                'created_at' => '2026-01-01 10:00:00',
+                'updated_at' => null,
+            ],
+        ]);
+
+        $repository = new DbalUserRepository($this->connection);
+
+        $result = $repository->getAll();
+
+        self::assertCount(2, $result);
+
+        self::assertSame('a@test.com', $result[0]->getEmail()->toString());
+        self::assertSame('b@test.com', $result[1]->getEmail()->toString());
+    }
 }

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\DataTransportObjects;
+namespace App\Domain\DataTransportObjects\User;
 
 use App\Domain\Entities\User;
 use App\Domain\ValueObjects\UserId;
 
 class CreateUserDTO implements \JsonSerializable {
     /**
-     * @param array <string> $roles
+     * @param array<string> $roles
      */
     private function __construct(
         private readonly UserId $userId,

@@ -6,7 +6,7 @@ namespace Tests\Unit\Http\Actions\User;
 
 use App\Application\Commands\User\CreateUserCommand;
 use App\Application\Handlers\User\CreateUserHandler;
-use App\Domain\DataTransportObjects\CreateUserDTO;
+use App\Domain\DataTransportObjects\User\CreateUserDTO;
 use App\Domain\Entities\User;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
