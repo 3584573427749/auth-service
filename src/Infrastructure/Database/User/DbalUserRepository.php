@@ -7,6 +7,7 @@ namespace App\Infrastructure\Database\User;
 use App\Domain\Entities\User;
 use App\Domain\Repositories\UserRepository;
 use App\Infrastructure\Database\AbstractDbRepository;
+use Doctrine\DBAL\Exception;
 
 class DbalUserRepository extends AbstractDbRepository implements UserRepository {
     private const TABLE = 'users';
@@ -29,5 +30,17 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
         } else {
             $this->connection->insert(self::TABLE, $user->asDBRow());
         }
+    }
+
+    /**
+     * @return User[]
+     * @throws Exception
+     */
+    public function getAll() : array {
+        $rows = $this->connection->executeQuery('SELECT * FROM {self::TABLE}')
+            ->fetchAllAssociative();
+
+        return array_map(fn ($row) => User::fromDBRow($row), $rows);
+
     }
 }

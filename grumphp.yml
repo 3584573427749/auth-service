@@ -2,6 +2,7 @@ grumphp:
   stop_on_failure: true
 
   hooks_preset: local
+  process_timeout: 300
 
   tasks:
 
