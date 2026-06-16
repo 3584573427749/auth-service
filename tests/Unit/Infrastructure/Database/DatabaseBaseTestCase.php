@@ -6,6 +6,7 @@ namespace Tests\Unit\Infrastructure\Database;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Exception;
 use PHPUnit\Framework\TestCase;
 
 abstract class DatabaseBaseTestCase extends TestCase {
@@ -36,5 +37,15 @@ abstract class DatabaseBaseTestCase extends TestCase {
         }
         $this->connection->executeStatement("DROP TABLE IF EXISTS {$table}");
         $this->connection->executeStatement($schema);
+    }
+
+    /**
+     * @param array<int, array<string, mixed>> $rows
+     * @throws Exception
+     */
+    protected function seed(string $table, array $rows) : void {
+        foreach ($rows as $row) {
+            $this->connection->insert($table, $row);
+        }
     }
 }

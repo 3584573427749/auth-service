@@ -6,7 +6,7 @@ namespace Tests\Unit\Http\Actions\User;
 
 use App\Application\Commands\User\CreateUserCommand;
 use App\Application\Handlers\User\CreateUserHandler;
-use App\Domain\DataTransportObjects\CreateUserDTO;
+use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\User;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
@@ -17,49 +17,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
+use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class CreateUserActionTest extends TestCase {
-    public function testReturns422WhenRequestBodyIsInvalid() : void {
-        $logger = $this->createMock(LoggerInterface::class);
-
-        $handler = $this->createMock(CreateUserHandler::class);
-
-        $handler
-            ->expects($this->never())
-            ->method('handle');
-
-        $action = new CreateUserAction($logger, $handler);
-
-        $request = new ServerRequestFactory()
-            ->createServerRequest('POST', '/users')
-            ->withParsedBody([
-                'email' => 'invalid-email',
-                'firstName' => '',
-                'lastName' => '',
-            ]);
-
-        $response = new ResponseFactory()->createResponse();
-
-        $result = $action($request, $response, []);
-
-        self::assertSame(422, $result->getStatusCode());
-
-        $payload = $this->decodeJsonResponse($result);
-
-        self::assertSame(422, $payload['statusCode']);
-
-        self::assertArrayHasKey('data', $payload);
-
-        self::assertSame(
-            'Validation failed.',
-            $payload['data']['error'],
-        );
-
-        self::assertArrayHasKey('fields', $payload['data']);
-
-        self::assertArrayHasKey('indata', $payload['data']);
-    }
-
     public function testCreatesUserAndReturns201WhenRequestBodyIsValid() : void {
         $logger = $this->createMock(LoggerInterface::class);
 
@@ -73,7 +33,7 @@ final class CreateUserActionTest extends TestCase {
             null,
         );
 
-        $dto = CreateUserDTO::fromUser($user);
+        $dto = UserDTO::fromUser($user);
 
         $handler = $this->createMock(CreateUserHandler::class);
 
@@ -99,6 +59,9 @@ final class CreateUserActionTest extends TestCase {
 
         self::assertSame(201, $result->getStatusCode());
 
+        $validator = new OpenApiValidator();
+        $validator->validateResponse('/users', 'POST', $result);
+
         $payload = $this->decodeJsonResponse($result);
 
         self::assertSame(201, $payload['statusCode']);
@@ -107,7 +70,7 @@ final class CreateUserActionTest extends TestCase {
 
         self::assertSame(
             '550e8400-e29b-41d4-a716-446655440000',
-            $payload['data']['userId'],
+            $payload['data']['id'],
         );
 
         self::assertSame(

@@ -10,4 +10,9 @@ interface UserRepository {
     public function existsByEmail(string $email) : bool;
 
     public function save(User $user) : void;
+
+    /**
+     * @return User[]
+     */
+    public function getAll() : array;
 }
