@@ -6,7 +6,7 @@ namespace Tests\Unit\Application\Handlers\User;
 
 use App\Application\Commands\User\CreateUserCommand;
 use App\Application\Handlers\User\CreateUserHandler;
-use App\Domain\DataTransportObjects\User\CreateUserDTO;
+use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Exception\UserAlreadyExistsException;
 use App\Domain\Repositories\UserRepository;
 use Doctrine\DBAL\Connection;
@@ -50,7 +50,7 @@ final class CreateUserHandlerTest extends TestCase {
 
         $result = $handler->handle($command);
 
-        self::assertInstanceOf(CreateUserDTO::class, $result);
+        self::assertInstanceOf(UserDTO::class, $result);
 
         $json = $result->jsonSerialize();
 

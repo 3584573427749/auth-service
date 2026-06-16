@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Handlers\User;
 
 use App\Application\Commands\User\CreateUserCommand;
-use App\Domain\DataTransportObjects\User\CreateUserDTO;
+use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\User;
 use App\Domain\Exception\UserAlreadyExistsException;
 use App\Domain\ValueObjects\DateTimeValue;
@@ -13,7 +13,7 @@ use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\UserId;
 
 class CreateUserHandler extends UserHandler {
-    public function handle(CreateUserCommand $command) : CreateUserDTO {
+    public function handle(CreateUserCommand $command) : UserDTO {
         $this->db->beginTransaction();
         try {
             if ($this->userRepository->existsByEmail($command->email)) {
@@ -34,7 +34,7 @@ class CreateUserHandler extends UserHandler {
 
             $this->db->commit();
 
-            $userDto = CreateUserDTO::fromUser($user);
+            $userDto = UserDTO::fromUser($user);
 
             return $userDto;
         } catch (\Throwable $e) {

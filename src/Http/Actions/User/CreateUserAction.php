@@ -8,6 +8,7 @@ use App\Application\Commands\User\CreateUserCommand;
 use App\Application\Handlers\User\CreateUserHandler;
 use App\Application\Validators\CreateUserRequestValidator;
 use App\Domain\Exception\UserAlreadyExistsException;
+use App\Domain\Exception\ValidationException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 
@@ -25,11 +26,7 @@ class CreateUserAction extends UserAction {
         //Validera API-data
         $errors = CreateUserRequestValidator::validate($data);
         if (count($errors) > 0) {
-            return $this->respondWithData([
-                'error' => 'Validation failed.',
-                'fields' => $errors,
-                'indata' => $data,
-            ], 422);
+            throw new ValidationException('Felaktig indata', $errors);
         }
 
         $userCommand = CreateUserCommand::fromRequest($data);

@@ -27,7 +27,7 @@ final class UserDTOTest extends TestCase {
 
         $data = $dto->jsonSerialize();
 
-        self::assertSame('550e8400-e29b-41d4-a716-446655440000', $data['userId']);
+        self::assertSame('550e8400-e29b-41d4-a716-446655440000', $data['id']);
         self::assertSame('test@example.com', $data['email']);
         self::assertSame('User', $data['firstName']);
         self::assertSame('Name', $data['lastName']);
@@ -49,7 +49,7 @@ final class UserDTOTest extends TestCase {
 
         $data = $dto->jsonSerialize();
 
-        self::assertArrayHasKey('userId', $data);
+        self::assertArrayHasKey('id', $data);
         self::assertArrayHasKey('email', $data);
         self::assertArrayHasKey('firstName', $data);
         self::assertArrayHasKey('lastName', $data);
