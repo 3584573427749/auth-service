@@ -30,7 +30,7 @@ final class GetUserActionTest extends TestCase {
             new DateTimeValue('2026-06-10 10:00:00'),
             null,
         );
-        $dto= UserDTO::fromUser($user);
+        $dto = UserDTO::fromUser($user);
 
         $handler = $this->createMock(GetUserHandler::class);
 
