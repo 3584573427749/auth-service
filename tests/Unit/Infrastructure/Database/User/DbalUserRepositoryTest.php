@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Infrastructure\Database\User;
 
 use App\Domain\Entities\User;
+use App\Domain\Exception\NotFoundException;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\UserId;
@@ -126,5 +127,49 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
 
         self::assertSame('a@test.com', $result[0]->getEmail()->toString());
         self::assertSame('b@test.com', $result[1]->getEmail()->toString());
+    }
+
+    public function testGetByIdReturnsUser() : void {
+        $this->loadSchema('users');
+
+        $this->seed('users', [
+            [
+                'id' => '550e8400-e29b-41d4-a716-446655440000',
+                'email' => 'test@example.com',
+                'first_name' => 'User',
+                'last_name' => 'Name',
+                'is_active' => 1,
+                'created_at' => '2026-01-01 10:00:00',
+                'updated_at' => null,
+            ],
+        ]);
+
+        $repository = new DbalUserRepository($this->connection);
+
+        $result = $repository->getById(
+            new UserId('550e8400-e29b-41d4-a716-446655440000'),
+        );
+
+        self::assertInstanceOf(User::class, $result);
+
+        self::assertSame(
+            'test@example.com',
+            $result->getEmail()->toString(),
+        );
+
+        self::assertSame('User', $result->getFirstName());
+        self::assertSame('Name', $result->getLastName());
+    }
+
+    public function testGetByIdThrowsNotFoundException() : void {
+        $this->loadSchema('users');
+
+        $repository = new DbalUserRepository($this->connection);
+
+        $this->expectException(NotFoundException::class);
+
+        $repository->getById(
+            new UserId('550e8400-e29b-41d4-a716-446655440000'),
+        );
     }
 }

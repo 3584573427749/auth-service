@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Handlers\User;
 
 use App\Domain\DataTransportObjects\User\UserDTO;
+use App\Domain\ValueObjects\UserId;
 
 class GetUserHandler extends UserHandler {
     /**
@@ -21,5 +22,11 @@ class GetUserHandler extends UserHandler {
         }
 
         return $userDTOs;
+    }
+
+    public function getById(UserId $id) : UserDTO {
+        $user = $this->userRepository->getById($id);
+
+        return UserDTO::fromUser($user);
     }
 }

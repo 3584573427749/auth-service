@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Infrastructure\Database\User;
 
 use App\Domain\Entities\User;
+use App\Domain\Exception\NotFoundException;
 use App\Domain\Repositories\UserRepository;
+use App\Domain\ValueObjects\UserId;
 use App\Infrastructure\Database\AbstractDbRepository;
 use Doctrine\DBAL\Exception;
 
@@ -42,5 +44,19 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
 
         return array_map(fn ($row) => User::fromDBRow($row), $rows);
 
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getById(UserId $id) : User {
+        $row = $this->connection->executeQuery('SELECT * FROM ' . self::TABLE . ' WHERE id=:id', ['id' => $id->toString()])
+            ->fetchAssociative();
+
+        if ($row === false) {
+            throw new NotFoundException('Användare med id ' . $id->toString() . ' hittades inte');
+        }
+
+        return User::fromDBRow($row);
     }
 }
