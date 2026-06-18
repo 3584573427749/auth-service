@@ -59,4 +59,12 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
 
         return User::fromDBRow($row);
     }
+
+    /**
+     * @throws Exception
+     */
+    public function softDelete(UserId $id) : void {
+        $this->connection->executeQuery('UPDATE ' . self::TABLE . ' SET is_active=0 WHERE id=:id', ['id' => $id->toString()]);
+
+    }
 }

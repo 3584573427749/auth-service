@@ -18,4 +18,6 @@ interface UserRepository {
     public function getAll() : array;
 
     public function getById(UserId $id) : User;
+
+    public function softDelete(UserId $id) : void;
 }

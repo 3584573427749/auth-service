@@ -172,4 +172,30 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
             new UserId('550e8400-e29b-41d4-a716-446655440000'),
         );
     }
+
+    public function testDeleteById() : void {
+        $this->loadSchema('users');
+
+        $this->seed('users', [
+            [
+                'id' => '550e8400-e29b-41d4-a716-446655440000',
+                'email' => 'test@example.com',
+                'first_name' => 'User',
+                'last_name' => 'Name',
+                'is_active' => 1,
+                'created_at' => '2026-01-01 10:00:00',
+                'updated_at' => null,
+            ],
+        ]);
+
+        $repository = new DbalUserRepository($this->connection);
+
+        $repository->softDelete(new UserId('550e8400-e29b-41d4-a716-446655440000'));
+        $row = $this->connection->fetchAssociative(
+            'SELECT * FROM users WHERE id = :id',
+            ['id' => '550e8400-e29b-41d4-a716-446655440000'],
+        );
+        self::assertNotFalse($row);
+        self::assertFalse((bool)$row['is_active']);
+    }
 }
