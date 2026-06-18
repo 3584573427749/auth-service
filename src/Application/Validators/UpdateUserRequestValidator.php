@@ -58,7 +58,7 @@ class UpdateUserRequestValidator {
             $errors['updatedAt'] = 'Invalid updated date.';
         }
 
-        if (count($data) > 9) {
+        if (count($data) > 8) {
             $errors['tooManyFields'] = 'Too many fields.';
         }
 
