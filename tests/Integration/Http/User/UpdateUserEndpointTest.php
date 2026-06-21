@@ -30,15 +30,56 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
                 '/users/550e8400-e29b-41d4-a716-446655440000',
             )
             ->withParsedBody([
-                'email' => 'new@example.com',
+                'id' => '550e8400-e29b-41d4-a716-446655440000',
+                'email' => 'old@example.com',
                 'firstName' => 'New',
                 'lastName' => 'Name',
-                'isActive' => true,
+                'isActive' => '1',
+                'createdAt' => '2026-06-10 10:00:00',
             ]);
 
         $response = $this->app->handle($request);
 
         self::assertSame(200, $response->getStatusCode());
+
+        (new OpenApiValidator())->validateResponse(
+            '/users/{id}',
+            'put',
+            $response,
+        );
+    }
+    public function testReturns404WhenUserIsNotFound() : void {
+        $this->loadSchema('users');
+
+        $this->seed('users', [
+            [
+                'id' => '550e8400-e29b-41d4-a716-446655440000',
+                'email' => 'old@example.com',
+                'first_name' => 'Old',
+                'last_name' => 'Name',
+                'is_active' => 1,
+                'created_at' => '2026-06-10 10:00:00',
+                'updated_at' => null,
+            ],
+        ]);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest(
+                'PUT',
+                '/users/550e8400-e29b-41d4-a716-446655440001',
+            )
+            ->withParsedBody([
+                'id' => '550e8400-e29b-41d4-a716-446655440001',
+                'email' => 'noone@example.com',
+                'firstName' => 'New',
+                'lastName' => 'Name',
+                'isActive' => '1',
+                'createdAt' => '2026-06-10 10:00:00',
+            ]);
+
+        $response = $this->app->handle($request);
+
+        self::assertSame(404, $response->getStatusCode());
 
         (new OpenApiValidator())->validateResponse(
             '/users/{id}',
@@ -77,10 +118,12 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
                 '/users/22222222-2222-2222-2222-222222222222',
             )
             ->withParsedBody([
+                'id' => '22222222-2222-2222-2222-222222222222',
                 'email' => 'existing@example.com',
                 'firstName' => 'Other',
                 'lastName' => 'User',
-                'isActive' => true,
+                'isActive' => '1',
+                'createdAt' => '2026-06-10 10:00:00',
             ]);
 
         $response = $this->app->handle($request);
@@ -115,10 +158,12 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
                 '/users/550e8400-e29b-41d4-a716-446655440000',
             )
             ->withParsedBody([
+                'id' => '550e8400-e29b-41d4-a716-446655440000',
                 'email' => 'invalid-email',
                 'firstName' => '',
                 'lastName' => '',
                 'isActive' => true,
+                'createdAt' => '2026-06-10 10:00:00',
             ]);
 
         $response = $this->app->handle($request);

@@ -61,7 +61,6 @@ class UpdateUserRequestValidator {
         if (count($data) > 8) {
             $errors['tooManyFields'] = 'Too many fields.';
         }
-
         return $errors;
     }
 }

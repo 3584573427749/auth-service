@@ -7,6 +7,7 @@ namespace Tests\Unit\Application\Handlers\User;
 use App\Application\Commands\User\UpdateUserCommand;
 use App\Application\Handlers\User\UpdateUserHandler;
 use App\Domain\DataTransportObjects\User\UserDTO;
+use App\Domain\Entities\User;
 use App\Domain\Exception\UserAlreadyExistsException;
 use App\Domain\Repositories\UserRepository;
 use Doctrine\DBAL\Connection;
@@ -23,10 +24,19 @@ final class UpdateUserHandlerTest extends TestCase {
                 'email' => 'test@example.com',
                 'firstName' => 'User',
                 'lastName' => 'Name',
-                'isActive' => true,
+                'isActive' => '1',
                 'createdAt' => '2026-01-01 10:00:00',
             ],
         );
+
+        $user=User::fromDBRow([
+            'id' => '550e8400-e29b-41d4-a716-446655440000',
+            'email' => 'test@example.com',
+            'first_name' => 'User',
+            'last_name' => 'Name',
+            'is_active' => '1',
+            'created_at' => '2026-01-01 10:00:00',
+        ]);
 
         $db->expects(self::once())->method('beginTransaction');
         $db->expects(self::once())->method('commit');
@@ -34,9 +44,15 @@ final class UpdateUserHandlerTest extends TestCase {
 
         $repository
             ->expects(self::once())
-            ->method('existsByEmail')
-            ->with('test@example.com')
+            ->method('emailExistsWithOtherUser')
+            ->with('test@example.com', '550e8400-e29b-41d4-a716-446655440000')
             ->willReturn(false);
+
+        $repository
+            ->expects(self::once())
+            ->method('getById')
+            ->with('550e8400-e29b-41d4-a716-446655440000')
+            ->willReturn($user);
 
         $repository
             ->expects(self::once())
@@ -84,7 +100,8 @@ final class UpdateUserHandlerTest extends TestCase {
 
         $repository
             ->expects(self::once())
-            ->method('existsByEmail')
+            ->method('emailExistsWithOtherUser')
+            ->with('test@example.com', '550e8400-e29b-41d4-a716-446655440000')
             ->willReturn(true);
 
         $handler = new class($db, $repository) extends UpdateUserHandler {
@@ -120,7 +137,8 @@ final class UpdateUserHandlerTest extends TestCase {
 
         $repository
             ->expects(self::once())
-            ->method('existsByEmail')
+            ->method('emailExistsWithOtherUser')
+            ->with('test@example.com', '550e8400-e29b-41d4-a716-446655440000')
             ->willReturn(false);
 
         $repository

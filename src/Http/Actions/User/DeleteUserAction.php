@@ -17,11 +17,11 @@ class DeleteUserAction extends UserAction {
     /**
      * @inheritDoc
      */
-    protected function action() : Response {
+    protected function action(): Response {
         $id = $this->request->getAttribute('id');
         $userId = new UserId($id);
         $this->handler->handle($userId);
 
-        return $this->respondWithData(null, 204);
+        return $this->response->withStatus(204);
     }
 }

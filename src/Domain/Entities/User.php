@@ -110,6 +110,13 @@ class User implements \JsonSerializable {
         return $this->createdAt;
     }
 
+    /**
+     * @param DateTimeValue $createdAt
+     */
+    public function setCreatedAt(DateTimeValue $createdAt): void {
+        $this->createdAt = $createdAt;
+    }
+
     public function getUpdatedAt() : ?DateTimeValue {
         return $this->updatedAt;
     }
