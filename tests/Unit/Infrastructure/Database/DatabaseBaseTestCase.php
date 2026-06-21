@@ -15,7 +15,8 @@ abstract class DatabaseBaseTestCase extends TestCase {
     protected function setUp() : void {
         $this->connection = DriverManager::getConnection([
             'driver' => 'pdo_mysql',
-            'host' => '127.0.0.1:3307',
+            'host' => 'localhost',
+            'port' => 3307,
             'user' => 'root',
             'password' => '',
         ]);

@@ -36,7 +36,7 @@ class ErrorHandler {
      * @return array<string, mixed>
      */
     private function buildPayload(Throwable $exception, int $status) : array {
-        return ['status' => $status,
+        return ['statusCode' => $status,
             'error' => [
                 'type' => (new \ReflectionClass($exception))->getShortName(),
                 'message' => $exception->getMessage(),
@@ -47,11 +47,12 @@ class ErrorHandler {
 
     private function mapStatus(Throwable $exception) : int {
         return match (true) {
-            $exception instanceof ValidationException => 400,
+            $exception instanceof \InvalidArgumentException => 400,
             $exception instanceof UnauthorizedException => 401,
             $exception instanceof ForbiddenException => 403,
             $exception instanceof NotFoundException => 404,
             $exception instanceof RecordExistsException => 409,
+            $exception instanceof ValidationException => 422,
             $exception instanceof InternalException => 500,
             default => 500,
         };

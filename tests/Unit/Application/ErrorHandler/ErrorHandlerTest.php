@@ -52,7 +52,7 @@ class ErrorHandlerTest extends TestCase {
     public function testValidationException() : void {
         $result = $this->handle(new ValidationException('Invalid'));
 
-        $this->assertSame(400, $result['status']);
+        $this->assertSame(422, $result['status']);
         $this->assertSame('ValidationException', $result['json']['error']['type']);
     }
 

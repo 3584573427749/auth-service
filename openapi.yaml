@@ -33,20 +33,7 @@ paths:
                     type: integer
                   data:
                     $ref: '#/components/schemas/User'
-        '400':
-          description: Invalid JSON
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - statusCode
-                  - data
-                properties:
-                  statusCode:
-                    type: integer
-                  data:
-                    $ref: '#/components/schemas/ValidationErrorResponse'
+
         '409':
           description: User already exists
           content:
@@ -55,12 +42,13 @@ paths:
                 type: object
                 required:
                   - statusCode
-                  - data
+                  - error
                 properties:
                   statusCode:
                     type: integer
-                  data:
-                    $ref: '#/components/schemas/ValidationErrorResponse'
+                    example: 409
+                  error:
+                    $ref: '#/components/schemas/ErrorResponse'
         '422':
           description: Validation error
           content:
@@ -69,12 +57,13 @@ paths:
                 type: object
                 required:
                   - statusCode
-                  - data
+                  - error
                 properties:
                   statusCode:
                     type: integer
-                  data:
-                    $ref: '#/components/schemas/ValidationErrorResponse'
+                    example: 422
+                  error:
+                    $ref: '#/components/schemas/ErrorResponse'
     get:
       summary: Get all users
       operationId: getAllUsers
@@ -128,6 +117,21 @@ paths:
                     example: 200
                   data:
                     $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - error
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 400
+                  error:
+                    $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: User not found
           content:
@@ -136,13 +140,13 @@ paths:
                 type: object
                 required:
                   - statusCode
-                  - data
+                  - error
                 properties:
                   statusCode:
                     type: integer
                     example: 404
-                  data:
-                    $ref: '#/components/schemas/ValidationErrorResponse'
+                  error:
+                    $ref: '#/components/schemas/ErrorResponse'
     put:
       summary: Update user
       operationId: updateUser
@@ -177,28 +181,7 @@ paths:
                     example: 200
                   data:
                     $ref: '#/components/schemas/User'
-        '400':
-          description: Invalid JSON
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - statusCode
-                  - data
-                properties:
-                  statusCode:
-                    type: integer
-                  data:
-                    $ref: '#/components/schemas/ValidationErrorResponse'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - statusCode
+
         '404':
           description: User not found
           content:
@@ -213,7 +196,37 @@ paths:
                     type: integer
                     example: 404
                   data:
-                    $ref: '#/components/schemas/ValidationErrorResponse'
+                    $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: User exists
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - data
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 409
+                  data:
+                    $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - data
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 422
+                  data:
+                    $ref: '#/components/schemas/ErrorResponse'
     delete:
       summary: Delete user
       operationId: deleteUser
@@ -237,36 +250,29 @@ paths:
                 type: object
                 required:
                   - statusCode
-                  - data
+                  - error
                 properties:
                   statusCode:
                     type: integer
                     example: 404
-                  data:
-                    $ref: '#/components/schemas/ValidationErrorResponse'
+                  error:
+                    $ref: '#/components/schemas/ErrorResponse'
 
 components:
   schemas:
-    ValidationErrorResponse:
+    ErrorResponse:
       type: object
       required:
-        - error
-        - fields
-        - indata
+        - type
+        - message
       properties:
-        error:
+        type:
           type: string
-          example: Validation failed.
-
-        fields:
+        message:
+          type: string
+        details:
           type: object
-          additionalProperties:
-            type: string
-          example:
-            email: Email is invalid.
-
-        indata:
-          type: object
+          nullable: true
           additionalProperties: true
 
     CreateUserRequest:

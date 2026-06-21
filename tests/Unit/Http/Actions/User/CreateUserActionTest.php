@@ -8,6 +8,7 @@ use App\Application\Commands\User\CreateUserCommand;
 use App\Application\Handlers\User\CreateUserHandler;
 use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\User;
+use App\Domain\Exception\ValidationException;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\UserId;
@@ -92,6 +93,34 @@ final class CreateUserActionTest extends TestCase {
             ['user'],
             $payload['data']['roles'],
         );
+    }
+
+    public function testCreatesUserAndThrowsExceptionWhenRequestBodyIsInvalid() : void {
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $handler = $this->createMock(CreateUserHandler::class);
+
+        $handler
+            ->expects($this->never())
+            ->method('handle');
+
+        $action = new CreateUserAction($logger, $handler);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', '/users')
+            ->withParsedBody([
+                'email' => 'test@',
+                'firstName' => 'User',
+                'lastName' => 'Name',
+            ]);
+
+        $response = (new ResponseFactory())->createResponse();
+
+
+        self::expectException(ValidationException::class);
+        self::expectExceptionMessage('Felaktig indata');
+
+        $result = $action($request, $response, []);
     }
 
     /**
