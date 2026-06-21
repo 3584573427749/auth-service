@@ -48,6 +48,7 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
             $response,
         );
     }
+
     public function testReturns404WhenUserIsNotFound() : void {
         $this->loadSchema('users');
 

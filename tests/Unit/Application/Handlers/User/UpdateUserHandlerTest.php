@@ -29,7 +29,7 @@ final class UpdateUserHandlerTest extends TestCase {
             ],
         );
 
-        $user=User::fromDBRow([
+        $user = User::fromDBRow([
             'id' => '550e8400-e29b-41d4-a716-446655440000',
             'email' => 'test@example.com',
             'first_name' => 'User',

@@ -9,6 +9,7 @@ use App\Domain\ValueObjects\UserId;
 
 interface UserRepository {
     public function existsByEmail(string $email) : bool;
+
     public function emailExistsWithOtherUser(string $email, UserId $id) : bool;
 
     public function save(User $user) : void;

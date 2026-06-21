@@ -14,7 +14,7 @@ use Doctrine\DBAL\Exception;
 class DbalUserRepository extends AbstractDbRepository implements UserRepository {
     private const TABLE = 'users';
 
-    public function existsByEmail(string $email): bool {
+    public function existsByEmail(string $email) : bool {
         $db = $this->connection->createQueryBuilder();
         $row = $db->select('*')
             ->from(self::TABLE)
@@ -26,7 +26,7 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
         return ($row !== 0);
     }
 
-    public function save(User $user): void {
+    public function save(User $user) : void {
         if ($user->getUpdatedAt() !== null) {
             $this->connection->update(self::TABLE, $user->asDBRow(), ['id' => $user->getId()->toString()]);
         } else {
@@ -38,18 +38,18 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
      * @return list<User>
      * @throws Exception
      */
-    public function getAll(): array {
+    public function getAll() : array {
         $rows = $this->connection->executeQuery('SELECT * FROM ' . self::TABLE)
             ->fetchAllAssociative();
 
-        return array_map(fn($row) => User::fromDBRow($row), $rows);
+        return array_map(fn ($row) => User::fromDBRow($row), $rows);
 
     }
 
     /**
      * @throws Exception
      */
-    public function getById(UserId $id): User {
+    public function getById(UserId $id) : User {
         $row = $this->connection->executeQuery('SELECT * FROM ' . self::TABLE . ' WHERE id=:id', ['id' => $id->toString()])
             ->fetchAssociative();
 
@@ -63,7 +63,7 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
     /**
      * @throws Exception
      */
-    public function softDelete(UserId $id): void {
+    public function softDelete(UserId $id) : void {
         $rows = $this->connection
             ->executeQuery('UPDATE ' . self::TABLE . ' SET is_active=0 WHERE id=:id', ['id' => $id->toString()])
             ->rowCount();
@@ -73,7 +73,7 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
         }
     }
 
-    public function emailExistsWithOtherUser(string $email, UserId $id): bool {
+    public function emailExistsWithOtherUser(string $email, UserId $id) : bool {
         $db = $this->connection->createQueryBuilder();
         $row = $db->select('*')
             ->from(self::TABLE)
