@@ -40,7 +40,7 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "@php -r \"if (!is_dir('.ci')) mkdir('.ci', 0777, true); if (!file_exists('.ci/php-service')) touch('.ci/php-service'); if (!file_exists('.ci/dockerdeploy')) touch('.ci/dockerdeploy');\""
+      "@php -r \"if (!is_dir('.ci')) mkdir('.ci', 0777, true); if (!file_exists('.ci/php-service')) touch('.ci/php-service');\""
     ],
     "up": "docker compose up --build",
     "down": "docker compose down",
