@@ -14,13 +14,13 @@ class CreateRoleRequestValidator {
 
         if (!isset($data['name'])) {
             $errors['name'] = 'Name is required.';
-        } elseif (strlen($data['name']) > 100) {
+        } elseif (mb_strlen($data['name']) > 100) {
             $errors['name'] = 'Name is too long (max 100 characters).';
         }
 
         if (!isset($data['description'])) {
             $errors['description'] = 'Description is required.';
-        } elseif (strlen($data['description']) > 255) {
+        } elseif (mb_strlen($data['description']) > 255) {
             $errors['description'] = 'Description is too long (max 255 characters).';
         }
 
@@ -28,6 +28,12 @@ class CreateRoleRequestValidator {
             $errors['adminLevel'] = 'AdminLevel is required.';
         } elseif (filter_var($data['adminLevel'], FILTER_VALIDATE_INT) === false) {
             $errors['adminLevel'] = 'AdminLevel must be a valid integer.';
+        } elseif ((int) $data['adminLevel'] < 0 || (int) $data['adminLevel'] > 100) {
+            $errors['adminLevel'] = 'AdminLevel must be between 0 and 100.';
+        }
+
+        if (count($data) > 3) {
+            $errors['tooManyFields'] = 'Too many fields.';
         }
 
         return $errors;

@@ -55,7 +55,7 @@ class Role implements \JsonSerializable {
             'id' => $this->getId()->toString(),
             'name' => $this->getName(),
             'description' => $this->getDescription(),
-            'admin_level' => $this->getAdminLevel(),
+            'adminLevel' => $this->getAdminLevel(),
             'createdAt' => $this->getCreatedAt()->toString(),
             'updatedAt' => $this->getUpdatedAt()?->toString(),
         ];
@@ -81,8 +81,25 @@ class Role implements \JsonSerializable {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTimeValue $createdAt) : void {
-        $this->createdAt = $createdAt;
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void {
+        $this->name = $name;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void {
+        $this->description = $description;
+    }
+
+    /**
+     * @param int $admin_level
+     */
+    public function setAdminLevel(int $admin_level): void {
+        $this->admin_level = $admin_level;
     }
 
     public function getUpdatedAt() : ?DateTimeValue {

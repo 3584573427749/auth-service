@@ -258,6 +258,64 @@ paths:
                     example: 404
                   error:
                     $ref: '#/components/schemas/ErrorResponse'
+  /roles:
+    post:
+      summary: Create role
+      operationId: createRole
+      tags:
+        - Roles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoleRequest'
+      responses:
+        '201':
+          description: Role created
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - data
+                properties:
+                  statusCode:
+                    type: integer
+                  data:
+                    $ref: '#/components/schemas/Role'
+
+        '409':
+          description: Role already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - error
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 409
+                  error:
+                    $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - error
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 422
+                  error:
+                    $ref: '#/components/schemas/ErrorResponse'
 
 components:
   schemas:
@@ -295,6 +353,22 @@ components:
           type: string
           minLength: 2
           example: Name
+    CreateRoleRequest:
+      type: object
+      required:
+        - name
+        - description
+        - adminLevel
+      properties:
+        name:
+          type: string
+          example: test
+        description:
+          type: string
+          example: test
+        adminLevel:
+          type: integer
+          example: 100
 
     User:
       type: object
@@ -327,6 +401,40 @@ components:
             type: string
           example:
             - user
+
+        createdAt:
+          type: string
+          format: date-time
+
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+    Role:
+      type: object
+      required:
+        - id
+        - name
+        - description
+        - adminLevel
+        - updatedAt
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+
+        name:
+          type: string
+          example: Test
+
+        description:
+          type: string
+          example: Test
+
+        adminLevel:
+          type: integer
+          example: 100
 
         createdAt:
           type: string

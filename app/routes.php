@@ -18,8 +18,9 @@ return function (App $app) : void {
     $app->put('/users/{id}', UpdateUserAction::class);
     $app->delete('/users/{id}', DeleteUserAction::class);
     $app->post('/roles', CreateRoleAction::class);
-/*    $app->get('/roles', GetAllRolesAction::class);
-    $app->get('/roles/{id}', GetRoleAction::class);
-    $app->put('/roles/{id}', UpdateRoleAction::class);
-    $app->delete('/roles/{id}', DeleteRoleAction::class);
-*/};
+    /*    $app->get('/roles', GetAllRolesAction::class);
+        $app->get('/roles/{id}', GetRoleAction::class);
+        $app->put('/roles/{id}', UpdateRoleAction::class);
+        $app->delete('/roles/{id}', DeleteRoleAction::class);
+    */
+};
