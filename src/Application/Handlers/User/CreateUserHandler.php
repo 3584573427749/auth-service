@@ -34,13 +34,13 @@ class CreateUserHandler extends UserHandler {
 
             $this->db->commit();
 
-            $userDto = UserDTO::fromUser($user);
-
-            return $userDto;
         } catch (\Throwable $e) {
             $this->db->rollBack();
             throw $e;
         }
+        $userDto = UserDTO::fromUser($user);
+
+        return $userDto;
 
     }
 }
