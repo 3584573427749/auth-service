@@ -81,24 +81,15 @@ class Role implements \JsonSerializable {
         return $this->createdAt;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName(string $name): void {
+    public function setName(string $name) : void {
         $this->name = $name;
     }
 
-    /**
-     * @param string $description
-     */
-    public function setDescription(string $description): void {
+    public function setDescription(string $description) : void {
         $this->description = $description;
     }
 
-    /**
-     * @param int $admin_level
-     */
-    public function setAdminLevel(int $admin_level): void {
+    public function setAdminLevel(int $admin_level) : void {
         $this->admin_level = $admin_level;
     }
 

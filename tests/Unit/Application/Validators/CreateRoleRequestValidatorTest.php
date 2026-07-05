@@ -7,7 +7,6 @@ namespace Tests\Validators\CreateUserRequestValidator;
 namespace Tests\Unit\Application\Validators;
 
 use App\Application\Validators\CreateRoleRequestValidator;
-use App\Application\Validators\CreateUserRequestValidator;
 use PHPUnit\Framework\TestCase;
 
 final class CreateRoleRequestValidatorTest extends TestCase {

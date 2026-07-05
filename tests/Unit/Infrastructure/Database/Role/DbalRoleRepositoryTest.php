@@ -5,14 +5,10 @@ declare(strict_types=1);
 namespace Infrastructure\Database\Role;
 
 use App\Domain\Entities\Role;
-use App\Domain\Entities\User;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\ValueObjects\DateTimeValue;
-use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\RoleId;
-use App\Domain\ValueObjects\UserId;
 use App\Infrastructure\Database\Role\DbalRoleRepository;
-use App\Infrastructure\Database\User\DbalUserRepository;
 use Tests\Unit\Infrastructure\Database\DatabaseBaseTestCase;
 
 final class DbalRoleRepositoryTest extends DatabaseBaseTestCase {

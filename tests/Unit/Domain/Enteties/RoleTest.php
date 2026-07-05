@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Domain\Entities;
 
 use App\Domain\Entities\Role;
-use App\Domain\Entities\User;
 use App\Domain\ValueObjects\DateTimeValue;
-use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\RoleId;
-use App\Domain\ValueObjects\UserId;
 use PHPUnit\Framework\TestCase;
 
 final class RoleTest extends TestCase {
@@ -38,7 +35,7 @@ final class RoleTest extends TestCase {
             $this->description,
             $this->adminLevel,
             $this->createdAt,
-            null
+            null,
         );
 
         self::assertSame($this->id, $role->getId());
@@ -46,6 +43,7 @@ final class RoleTest extends TestCase {
         self::assertSame($this->description, $role->getDescription());
         self::assertSame($this->adminLevel, $role->getAdminLevel());
     }
+
     public function testSetters() : void {
         $role = new Role(
             $this->id,
@@ -53,7 +51,7 @@ final class RoleTest extends TestCase {
             $this->description,
             $this->adminLevel,
             $this->createdAt,
-            null
+            null,
         );
 
         $newName = 'NewUser';
@@ -69,6 +67,7 @@ final class RoleTest extends TestCase {
         self::assertSame($newDescription, $role->getDescription());
         self::assertSame($newAdminLevel, $role->getAdminLevel());
     }
+
     public function testSetUpdatedAt() : void {
         $role = new Role(
             $this->id,
@@ -76,7 +75,7 @@ final class RoleTest extends TestCase {
             $this->description,
             $this->adminLevel,
             $this->createdAt,
-            null
+            null,
         );
 
         $updatedAt = new DateTimeValue('2026-06-11 10:00:00');
@@ -111,7 +110,7 @@ final class RoleTest extends TestCase {
             $this->description,
             $this->adminLevel,
             $this->createdAt,
-            null
+            null,
         );
 
         $row = $role->asDBRow();
@@ -123,6 +122,7 @@ final class RoleTest extends TestCase {
         self::assertSame('2026-06-10 10:00:00', $row['created_at']);
         self::assertNull($row['updated_at']);
     }
+
     public function testJsonSerialize() : void {
         $role = new Role(
             $this->id,
@@ -130,7 +130,7 @@ final class RoleTest extends TestCase {
             $this->description,
             $this->adminLevel,
             $this->createdAt,
-            null
+            null,
         );
 
         $data = $role->jsonSerialize();

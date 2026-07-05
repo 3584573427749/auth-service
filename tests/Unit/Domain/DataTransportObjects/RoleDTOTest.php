@@ -5,13 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\Domain\DataTransportObjects\User;
 
 use App\Domain\DataTransportObjects\Role\RoleDTO;
-use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\Role;
-use App\Domain\Entities\User;
 use App\Domain\ValueObjects\DateTimeValue;
-use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\RoleId;
-use App\Domain\ValueObjects\UserId;
 use PHPUnit\Framework\TestCase;
 
 final class RoleDTOTest extends TestCase {
@@ -22,7 +18,7 @@ final class RoleDTOTest extends TestCase {
             'Name',
             1,
             new DateTimeValue('2026-01-01 10:00:00'),
-            null
+            null,
         );
 
         $dto = RoleDTO::fromRole($role);
@@ -42,7 +38,7 @@ final class RoleDTOTest extends TestCase {
             'User',
             1,
             new DateTimeValue('2026-01-01 10:00:00'),
-            null
+            null,
         );
 
         $dto = RoleDTO::fromRole($role);
