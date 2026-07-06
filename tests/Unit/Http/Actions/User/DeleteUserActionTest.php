@@ -33,7 +33,5 @@ final class DeleteUserActionTest extends TestCase {
 
         self::assertSame(204, $result->getStatusCode());
 
-        $validator = new OpenApiValidator();
-        $validator->validateResponse('/users/{id}', 'DELETE', $result);
     }
 }

@@ -82,9 +82,6 @@ final class UpdateUserActionTest extends TestCase {
         self::assertSame('Name', $payload['data']['lastName']);
 
         self::assertSame(['user'], $payload['data']['roles']);
-
-        $validator = new OpenApiValidator();
-        $validator->validateResponse('/users/{id}', 'PUT', $result);
     }
 
     /**

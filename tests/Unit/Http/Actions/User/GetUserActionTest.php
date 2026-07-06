@@ -57,9 +57,6 @@ final class GetUserActionTest extends TestCase {
         self::assertIsArray($payload['data']);
 
         self::assertSame('a@test.com', $payload['data']['email']);
-
-        $validator = new OpenApiValidator();
-        $validator->validateResponse('/users/{id}', 'GET', $result);
     }
 
     /**

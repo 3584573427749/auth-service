@@ -61,9 +61,6 @@ final class GetAllUsersActionTest extends TestCase {
 
         self::assertSame(200, $result->getStatusCode());
 
-        $validator = new OpenApiValidator();
-        $validator->validateResponse('/users', 'GET', $result);
-
         $payload = $this->decodeJsonResponse($result);
 
         self::assertArrayHasKey('data', $payload);

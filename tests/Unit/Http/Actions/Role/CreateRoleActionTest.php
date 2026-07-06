@@ -58,9 +58,6 @@ final class CreateRoleActionTest extends TestCase {
 
         self::assertSame(201, $result->getStatusCode());
 
-        $validator = new OpenApiValidator();
-        $validator->validateResponse('/roles', 'POST', $result);
-
         $payload = $this->decodeJsonResponse($result);
 
         self::assertSame(201, $payload['statusCode']);

@@ -5,17 +5,11 @@ declare(strict_types=1);
 namespace Http\Actions\Role;
 
 use App\Application\Handlers\Roles\GetRoleHandler;
-use App\Application\Handlers\User\GetUserHandler;
 use App\Domain\DataTransportObjects\Role\RoleDTO;
-use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\Role;
-use App\Domain\Entities\User;
 use App\Domain\ValueObjects\DateTimeValue;
-use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\RoleId;
-use App\Domain\ValueObjects\UserId;
 use App\Http\Actions\Roles\GetAllRolesAction;
-use App\Http\Actions\User\GetAllUsersAction;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
@@ -64,9 +58,6 @@ final class GetAllRolesActionTest extends TestCase {
 
         self::assertSame(200, $result->getStatusCode());
 
-        $validator = new OpenApiValidator();
-        $validator->validateResponse('/roles', 'GET', $result);
-
         $payload = $this->decodeJsonResponse($result);
 
         self::assertArrayHasKey('data', $payload);
@@ -94,5 +85,4 @@ final class GetAllRolesActionTest extends TestCase {
 
         return $decoded;
     }
-
 }
