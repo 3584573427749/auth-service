@@ -18,7 +18,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
-use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class CreateUserActionTest extends TestCase {
     public function testCreatesUserAndReturns201WhenRequestBodyIsValid() : void {
@@ -60,7 +59,7 @@ final class CreateUserActionTest extends TestCase {
 
         self::assertSame(201, $result->getStatusCode());
 
-           $payload = $this->decodeJsonResponse($result);
+        $payload = $this->decodeJsonResponse($result);
 
         self::assertSame(201, $payload['statusCode']);
 

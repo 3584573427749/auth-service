@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
-use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class DeleteUserActionTest extends TestCase {
     public function testReturnsVoid() : void {

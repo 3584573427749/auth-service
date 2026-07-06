@@ -17,7 +17,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
-use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class UpdateUserActionTest extends TestCase {
     public function testUpdatesUserAndReturns200WhenRequestBodyIsValid() : void {
