@@ -21,7 +21,7 @@ class UpdateRoleRequestValidator {
         }
         if (!isset($data['name'])) {
             $errors['name'] = 'Name is required.';
-        } elseif (mb_strlen( $data['name'])>100) {
+        } elseif (mb_strlen($data['name']) > 100) {
             $errors['name'] = 'Name is too long.';
         }
 

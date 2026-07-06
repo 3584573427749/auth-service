@@ -6,9 +6,7 @@ namespace Tests\Validators\CreateUserRequestValidator;
 
 namespace Tests\Unit\Application\Validators;
 
-use App\Application\Validators\CreateUserRequestValidator;
 use App\Application\Validators\UpdateRoleRequestValidator;
-use App\Application\Validators\UpdateUserRequestValidator;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateRoleRequestValidatorTest extends TestCase {
@@ -102,7 +100,6 @@ final class UpdateRoleRequestValidatorTest extends TestCase {
         self::assertArrayHasKey('adminLevel', $errors);
         self::assertSame('AdminLevel must be between 0 and 100.', $errors['adminLevel']);
     }
-
 
     public function testCreatedAtInvalid() : void {
         $data = [

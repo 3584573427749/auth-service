@@ -81,10 +81,7 @@ class Role implements \JsonSerializable {
         return $this->createdAt;
     }
 
-    /**
-     * @param DateTimeValue $createdAt
-     */
-    public function setCreatedAt(DateTimeValue $createdAt): void {
+    public function setCreatedAt(DateTimeValue $createdAt) : void {
         $this->createdAt = $createdAt;
     }
 

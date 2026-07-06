@@ -5,17 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\Application\Handlers\Role;
 
 use App\Application\Commands\Role\UpdateRoleCommand;
-use App\Application\Commands\User\UpdateUserCommand;
 use App\Application\Handlers\Roles\UpdateRoleHandler;
-use App\Application\Handlers\User\UpdateUserHandler;
 use App\Domain\DataTransportObjects\Role\RoleDTO;
-use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\Role;
-use App\Domain\Entities\User;
 use App\Domain\Exception\RoleAlreadyExistsException;
-use App\Domain\Exception\UserAlreadyExistsException;
 use App\Domain\Repositories\RoleRepository;
-use App\Domain\Repositories\UserRepository;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 

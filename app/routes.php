@@ -23,7 +23,7 @@ return function (App $app) : void {
     $app->post('/roles', CreateRoleAction::class);
     $app->get('/roles', GetAllRolesAction::class);
     $app->get('/roles/{id}', GetRoleAction::class);
-       $app->put('/roles/{id}', UpdateRoleAction::class);
-   /*    $app->delete('/roles/{id}', DeleteRoleAction::class);
-   */
+    $app->put('/roles/{id}', UpdateRoleAction::class);
+    /*    $app->delete('/roles/{id}', DeleteRoleAction::class);
+    */
 };
