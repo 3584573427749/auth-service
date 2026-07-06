@@ -2,16 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Validators\CreateUserRequestValidator;
-
 namespace Tests\Unit\Application\Validators;
 
-use App\Application\Validators\CreateUserRequestValidator;
 use App\Application\Validators\UpdateUserRequestValidator;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateUserRequestValidatorTest extends TestCase {
-    public function testValidDataReturnsNoErrors() : void {
+    public function testValidDataReturnsNoErrors(): void {
         $data = [
             'userId' => '550e8400-e29b-41d4-a716-446655440000',
             'id' => '550e8400-e29b-41d4-a716-446655440000',
@@ -27,7 +24,7 @@ final class UpdateUserRequestValidatorTest extends TestCase {
         self::assertSame([], $errors);
     }
 
-    public function testMissingEmail() : void {
+    public function testMissingEmail(): void {
         $data = [
             'userId' => '550e8400-e29b-41d4-a716-446655440000',
             'id' => '550e8400-e29b-41d4-a716-446655440000',
@@ -43,7 +40,7 @@ final class UpdateUserRequestValidatorTest extends TestCase {
         self::assertSame('Email is required.', $errors['email']);
     }
 
-    public function testInvalidEmail() : void {
+    public function testInvalidEmail(): void {
         $data = [
             'userId' => '550e8400-e29b-41d4-a716-446655440000',
             'id' => '550e8400-e29b-41d4-a716-446655440000',
@@ -54,13 +51,13 @@ final class UpdateUserRequestValidatorTest extends TestCase {
             'createdAt' => '2026-01-01 10:00:00',
         ];
 
-        $errors = CreateUserRequestValidator::validate($data);
+        $errors = UpdateUserRequestValidator::validate($data);
 
         self::assertArrayHasKey('email', $errors);
         self::assertSame('Email is invalid.', $errors['email']);
     }
 
-    public function testMissingFirstName() : void {
+    public function testMissingFirstName(): void {
         $data = [
             'userId' => '550e8400-e29b-41d4-a716-446655440000',
             'id' => '550e8400-e29b-41d4-a716-446655440000',
@@ -70,13 +67,13 @@ final class UpdateUserRequestValidatorTest extends TestCase {
             'createdAt' => '2026-01-01 10:00:00',
         ];
 
-        $errors = CreateUserRequestValidator::validate($data);
+        $errors = UpdateUserRequestValidator::validate($data);
 
         self::assertArrayHasKey('firstName', $errors);
         self::assertSame('First name is required.', $errors['firstName']);
     }
 
-    public function testFirstNameTooShort() : void {
+    public function testFirstNameTooShort(): void {
         $data = [
             'userId' => '550e8400-e29b-41d4-a716-446655440000',
             'id' => '550e8400-e29b-41d4-a716-446655440000',
@@ -93,7 +90,7 @@ final class UpdateUserRequestValidatorTest extends TestCase {
         self::assertSame('First name must be at least 2 characters.', $errors['firstName']);
     }
 
-    public function testMissingLastName() : void {
+    public function testMissingLastName(): void {
         $data = [
             'userId' => '550e8400-e29b-41d4-a716-446655440000',
             'id' => '550e8400-e29b-41d4-a716-446655440000',
@@ -109,7 +106,7 @@ final class UpdateUserRequestValidatorTest extends TestCase {
         self::assertSame('Last name is required.', $errors['lastName']);
     }
 
-    public function testLastNameTooShort() : void {
+    public function testLastNameTooShort(): void {
         $data = [
             'userId' => '550e8400-e29b-41d4-a716-446655440000',
             'id' => '550e8400-e29b-41d4-a716-446655440000',
@@ -126,7 +123,7 @@ final class UpdateUserRequestValidatorTest extends TestCase {
         self::assertSame('Last name must be at least 2 characters.', $errors['lastName']);
     }
 
-    public function testIsActiveInvalid() : void {
+    public function testIsActiveInvalid(): void {
         $data = [
             'userId' => '550e8400-e29b-41d4-a716-446655440000',
             'id' => '550e8400-e29b-41d4-a716-446655440000',
@@ -143,7 +140,7 @@ final class UpdateUserRequestValidatorTest extends TestCase {
         self::assertSame('Is active must be a boolean.', $errors['isActive']);
     }
 
-    public function testCreatedAtInvalid() : void {
+    public function testCreatedAtInvalid(): void {
         $data = [
             'userId' => '550e8400-e29b-41d4-a716-446655440000',
             'id' => '550e8400-e29b-41d4-a716-446655440000',
@@ -160,7 +157,7 @@ final class UpdateUserRequestValidatorTest extends TestCase {
         self::assertSame('Invalid created date.', $errors['createdAt']);
     }
 
-    public function testUpdatedAtInvalid() : void {
+    public function testUpdatedAtInvalid(): void {
         $data = [
             'userId' => '550e8400-e29b-41d4-a716-446655440000',
             'id' => '550e8400-e29b-41d4-a716-446655440000',
@@ -178,7 +175,7 @@ final class UpdateUserRequestValidatorTest extends TestCase {
         self::assertSame('Invalid updated date.', $errors['updatedAt']);
     }
 
-    public function testTooManyFields() : void {
+    public function testTooManyFields(): void {
         $data = [
             'userId' => '550e8400-e29b-41d4-a716-446655440000',
             'id' => '550e8400-e29b-41d4-a716-446655440000',
@@ -197,7 +194,7 @@ final class UpdateUserRequestValidatorTest extends TestCase {
         self::assertSame('Too many fields.', $errors['tooManyFields']);
     }
 
-    public function testMultipleErrors() : void {
+    public function testMultipleErrors(): void {
         $data = [
             'userId' => '550e8400-e29b-41d4-a716-446655440011',
             'id' => '550e8400-e29b-41d4-a716-446655440000',

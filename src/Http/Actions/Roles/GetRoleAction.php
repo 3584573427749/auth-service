@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Actions\Roles;
 
 use App\Application\Handlers\Roles\GetRoleHandler;
-use App\Application\Handlers\User\GetUserHandler;
 use App\Domain\ValueObjects\RoleId;
-use App\Domain\ValueObjects\UserId;
-use App\Http\Actions\User\UserAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 

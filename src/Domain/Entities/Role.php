@@ -12,7 +12,7 @@ class Role implements \JsonSerializable {
         private RoleId $id,
         private string $name,
         private string $description,
-        private int $admin_level,
+        private int $adminLevel,
         private DateTimeValue $createdAt,
         private ?DateTimeValue $updatedAt,
     ) {
@@ -74,11 +74,18 @@ class Role implements \JsonSerializable {
     }
 
     public function getAdminLevel() : int {
-        return $this->admin_level;
+        return $this->adminLevel;
     }
 
     public function getCreatedAt() : DateTimeValue {
         return $this->createdAt;
+    }
+
+    /**
+     * @param DateTimeValue $createdAt
+     */
+    public function setCreatedAt(DateTimeValue $createdAt): void {
+        $this->createdAt = $createdAt;
     }
 
     public function setName(string $name) : void {
@@ -89,8 +96,8 @@ class Role implements \JsonSerializable {
         $this->description = $description;
     }
 
-    public function setAdminLevel(int $admin_level) : void {
-        $this->admin_level = $admin_level;
+    public function setAdminLevel(int $adminLevel) : void {
+        $this->adminLevel = $adminLevel;
     }
 
     public function getUpdatedAt() : ?DateTimeValue {

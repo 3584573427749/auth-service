@@ -25,6 +25,7 @@ class DbalRoleRepository extends AbstractDbRepository implements RoleRepository 
             } else {
                 $this->connection->insert(self::TABLE, $role->asDBRow());
             }
+            return;
         } catch (Exception\UniqueConstraintViolationException $e) {
             throw new RoleAlreadyExistsException('Rollen finns redan');
         }
