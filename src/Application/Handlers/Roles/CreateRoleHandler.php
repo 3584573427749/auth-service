@@ -7,11 +7,13 @@ namespace App\Application\Handlers\Roles;
 use App\Application\Commands\Role\CreateRoleCommand;
 use App\Domain\DataTransportObjects\Role\RoleDTO;
 use App\Domain\Entities\Role;
+use App\Domain\Exception\RoleAlreadyExistsException;
+use App\Domain\Exception\ValidationException;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\RoleId;
 
 class CreateRoleHandler extends RoleHandler {
-    public function handle(CreateRoleCommand $command) : RoleDTO {
+    public function handle(CreateRoleCommand $command): RoleDTO {
         $this->db->beginTransaction();
         try {
             $role = new Role(
@@ -27,10 +29,14 @@ class CreateRoleHandler extends RoleHandler {
 
             $this->db->commit();
 
+        } catch (RoleAlreadyExistsException $e) {
+            $this->db->rollBack();
+            throw $e;
         } catch (\Throwable $e) {
             $this->db->rollBack();
             throw $e;
         }
+
         $roleDto = RoleDTO::fromRole($role);
 
         return $roleDto;

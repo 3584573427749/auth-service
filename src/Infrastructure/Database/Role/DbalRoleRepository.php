@@ -6,6 +6,8 @@ namespace App\Infrastructure\Database\Role;
 
 use App\Domain\Entities\Role;
 use App\Domain\Exception\NotFoundException;
+use App\Domain\Exception\RoleAlreadyExistsException;
+use App\Domain\Exception\ValidationException;
 use App\Domain\Repositories\RoleRepository;
 use App\Domain\ValueObjects\RoleId;
 use App\Infrastructure\Database\AbstractDbRepository;
@@ -15,13 +17,17 @@ class DbalRoleRepository extends AbstractDbRepository implements RoleRepository 
     private const TABLE = 'roles';
 
     /**
-     * @throws Exception
+     * @throws RoleAlreadyExistsException
      */
     public function save(Role $role) : void {
-        if ($role->getUpdatedAt() !== null) {
-            $this->connection->update(self::TABLE, $role->asDBRow(), ['id' => $role->getId()->toString()]);
-        } else {
-            $this->connection->insert(self::TABLE, $role->asDBRow());
+        try {
+            if ($role->getUpdatedAt() !== null) {
+                $this->connection->update(self::TABLE, $role->asDBRow(), ['id' => $role->getId()->toString()]);
+            } else {
+                $this->connection->insert(self::TABLE, $role->asDBRow());
+            }
+        } catch (Exception\UniqueConstraintViolationException $e) {
+            throw new RoleAlreadyExistsException('Rollen finns redan');
         }
     }
 

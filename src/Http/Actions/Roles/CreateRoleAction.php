@@ -7,6 +7,7 @@ namespace App\Http\Actions\Roles;
 use App\Application\Commands\Role\CreateRoleCommand;
 use App\Application\Handlers\Roles\CreateRoleHandler;
 use App\Application\Validators\CreateRoleRequestValidator;
+use App\Domain\Exception\RoleAlreadyExistsException;
 use App\Domain\Exception\ValidationException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
@@ -16,6 +17,10 @@ class CreateRoleAction extends RoleAction {
         parent::__construct($logger);
     }
 
+    /**
+     * @throws RoleAlreadyExistsException
+     * @throws \Throwable
+     */
     protected function action() : Response {
         $data = (array)$this->request->getParsedBody();
 
@@ -30,6 +35,5 @@ class CreateRoleAction extends RoleAction {
         $dto = $this->handler->handle($roleCommand);
 
         return $this->respondWithData($dto, 201);
-
     }
 }

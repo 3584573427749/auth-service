@@ -35,9 +35,7 @@ final class OpenApiValidator {
         );
     }
 
-    public function validateRequest(
-        ServerRequestInterface $request,
-    ) : void {
+    public function validateRequest(ServerRequestInterface $request) : void {
         $this->requestValidator->validate($request);
     }
 }
