@@ -23,9 +23,7 @@ final class CreateUserEndpointTest extends BaseApiTestCases {
             ->createServerRequest('POST', '/users')
             ->withHeader('Content-Type', 'application/json');
 
-        $request->getBody()->write(
-            json_encode($requestBody, JSON_THROW_ON_ERROR)
-        );
+        $request->getBody()->write(json_encode($requestBody, JSON_THROW_ON_ERROR));
 
         $request = $request->withParsedBody($requestBody);
 

@@ -9,7 +9,7 @@ use Tests\Integration\BaseApiTestCases;
 use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class UpdateUserEndpointTest extends BaseApiTestCases {
-    public function testReturns200WhenRequestIsValid(): void {
+    public function testReturns200WhenRequestIsValid() : void {
         $this->loadSchema('users');
 
         $this->seed('users', [
@@ -40,9 +40,7 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
             ->createServerRequest('PUT', '/users/550e8400-e29b-41d4-a716-446655440000')
             ->withHeader('Content-Type', 'application/json');
 
-        $request->getBody()->write(
-            json_encode($requestBody, JSON_THROW_ON_ERROR)
-        );
+        $request->getBody()->write(json_encode($requestBody, JSON_THROW_ON_ERROR));
 
         $request = $request->withParsedBody($requestBody);
 
@@ -59,7 +57,7 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns404WhenUserIsNotFound(): void {
+    public function testReturns404WhenUserIsNotFound() : void {
         $this->loadSchema('users');
 
         $this->seed('users', [
@@ -99,7 +97,7 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns409WhenEmailAlreadyExists(): void {
+    public function testReturns409WhenEmailAlreadyExists() : void {
         $this->loadSchema('users');
 
         $this->seed('users', [
@@ -148,7 +146,7 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns422WhenValidationFails(): void {
+    public function testReturns422WhenValidationFails() : void {
         $this->loadSchema('users');
 
         $this->seed('users', [

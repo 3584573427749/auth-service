@@ -24,7 +24,7 @@ class CreateRoleHandler extends RoleHandler {
                 null,
             );
 
-            $this->roleRepository->save($role);
+            $this->repository->save($role);
 
             $this->db->commit();
 

@@ -8,7 +8,7 @@ use App\Domain\Repositories\RoleRepository;
 use Doctrine\DBAL\Connection;
 
 abstract class RoleHandler {
-    public function __construct(protected Connection $db, protected RoleRepository $roleRepository) {
+    public function __construct(protected Connection $db, protected RoleRepository $repository) {
 
     }
 }

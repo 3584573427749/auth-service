@@ -37,7 +37,7 @@ final class CreateRoleHandlerTest extends TestCase {
         $handler = new class($db, $repository) extends CreateRoleHandler {
             public function __construct(Connection $db, RoleRepository $roleRepository) {
                 $this->db = $db;
-                $this->roleRepository = $roleRepository;
+                $this->repository = $roleRepository;
             }
         };
 
@@ -75,7 +75,7 @@ final class CreateRoleHandlerTest extends TestCase {
         $handler = new class($db, $repository) extends CreateRoleHandler {
             public function __construct(Connection $db, RoleRepository $roleRepository) {
                 $this->db = $db;
-                $this->roleRepository = $roleRepository;
+                $this->repository = $roleRepository;
             }
         };
 

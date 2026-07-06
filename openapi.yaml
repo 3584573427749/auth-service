@@ -317,6 +317,30 @@ paths:
                     example: 422
                   error:
                     $ref: '#/components/schemas/ErrorResponse'
+    get:
+      summary: Get all roles
+      operationId: getAllRoles
+      tags:
+        - Roles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - data
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Role'
+
 
 components:
   schemas:
