@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Tests\Integration\Http\Role;
 
 use Slim\Psr7\Factory\ServerRequestFactory;
-use Slim\Psr7\Stream;
 use Tests\Integration\BaseApiTestCases;
 use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class CreateRoleEndpointTest extends BaseApiTestCases {
-    public function testReturns201WhenRequestIsValid(): void {
+    public function testReturns201WhenRequestIsValid() : void {
         $this->loadSchema('roles');
         $requestBody = [
             'name' => 'Test',
@@ -25,7 +24,7 @@ final class CreateRoleEndpointTest extends BaseApiTestCases {
             ->withHeader('Content-Type', 'application/json');
 
         $request->getBody()->write(
-            json_encode($requestBody, JSON_THROW_ON_ERROR)
+            json_encode($requestBody, JSON_THROW_ON_ERROR),
         );
 
         $request = $request->withParsedBody($requestBody);
@@ -43,7 +42,7 @@ final class CreateRoleEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns409WhenRoleAlreadyExists(): void {
+    public function testReturns409WhenRoleAlreadyExists() : void {
         $this->loadSchema('roles');
 
         $this->seed('roles', [
@@ -79,7 +78,7 @@ final class CreateRoleEndpointTest extends BaseApiTestCases {
 
     }
 
-    public function testReturns422WhenValidationFails(): void {
+    public function testReturns422WhenValidationFails() : void {
         $this->loadSchema('roles');
 
         $request = new ServerRequestFactory()

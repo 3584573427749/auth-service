@@ -386,6 +386,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+          nullable: true
 
     CreateRoleRequest:
       type: object

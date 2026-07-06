@@ -30,7 +30,7 @@ final class CreateUserActionTest extends TestCase {
             'User',
             'Name',
             true,
-            new DateTimeValue('2026-06-10 10:00:00'),
+            new DateTimeValue('2026-06-10T10:00:00+00:00'),
             null,
         );
 

@@ -19,7 +19,7 @@ final class UserDTOTest extends TestCase {
             'User',
             'Name',
             true,
-            new DateTimeValue('2026-01-01 10:00:00'),
+            new DateTimeValue('2026-01-01T10:00:00+00:00'),
             null,
         );
 
@@ -41,7 +41,7 @@ final class UserDTOTest extends TestCase {
             'Another',
             'User',
             true,
-            new DateTimeValue('2026-01-01 10:00:00'),
+            new DateTimeValue('2026-01-01T10:00:00+00:00'),
             null,
         );
 
@@ -63,7 +63,7 @@ final class UserDTOTest extends TestCase {
             'Role',
             'User',
             true,
-            new DateTimeValue('2026-01-01 10:00:00'),
+            new DateTimeValue('2026-01-01T10:00:00+00:00'),
             null,
         );
 

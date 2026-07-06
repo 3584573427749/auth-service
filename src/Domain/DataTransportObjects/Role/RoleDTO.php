@@ -39,8 +39,8 @@ readonly class RoleDTO implements \JsonSerializable {
             'name' => $this->name,
             'description' => $this->description,
             'adminLevel' => $this->adminLevel,
-            'updatedAt' => $this->updatedAt?->toDateTimeImmutable()->format(DATE_ATOM),
-            'createdAt' => $this->createdAt->toDateTimeImmutable()->format(DATE_ATOM),
+            'updatedAt' => $this->updatedAt?->toISOString(),
+            'createdAt' => $this->createdAt->toISOString(),
         ];
     }
 }

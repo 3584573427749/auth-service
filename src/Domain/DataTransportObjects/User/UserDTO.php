@@ -45,8 +45,8 @@ readonly class UserDTO implements \JsonSerializable {
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,
             'roles' => $this->roles,
-            'updatedAt' => $this->updatedAt?->toDateTimeImmutable()->format(DATE_ATOM),
-            'createdAt' => $this->createdAt->toDateTimeImmutable()->format(DATE_ATOM),
+            'updatedAt' => $this->updatedAt?->toISOString(),
+            'createdAt' => $this->createdAt->toISOString(),
         ];
     }
 }

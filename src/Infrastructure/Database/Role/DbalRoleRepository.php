@@ -7,7 +7,6 @@ namespace App\Infrastructure\Database\Role;
 use App\Domain\Entities\Role;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\Exception\RoleAlreadyExistsException;
-use App\Domain\Exception\ValidationException;
 use App\Domain\Repositories\RoleRepository;
 use App\Domain\ValueObjects\RoleId;
 use App\Infrastructure\Database\AbstractDbRepository;
