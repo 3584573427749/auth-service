@@ -341,6 +341,59 @@ paths:
                     items:
                       $ref: '#/components/schemas/Role'
 
+  /roles/{id}:
+    get:
+      summary: Get role by id
+      operationId: getRole
+      tags:
+        - Roles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - data
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/Role'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - error
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 400
+                  error:
+                    $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Role not found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - error
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  error:
+                    $ref: '#/components/schemas/ErrorResponse'
+
 
 components:
   schemas:
