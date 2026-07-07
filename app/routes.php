@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Actions\Roles\CreateRoleAction;
+use App\Http\Actions\Roles\DeleteRoleAction;
 use App\Http\Actions\Roles\GetAllRolesAction;
 use App\Http\Actions\Roles\GetRoleAction;
 use App\Http\Actions\Roles\UpdateRoleAction;
@@ -13,7 +14,7 @@ use App\Http\Actions\User\GetUserAction;
 use App\Http\Actions\User\UpdateUserAction;
 use Slim\App;
 
-return function (App $app) : void {
+return function (App $app): void {
 
     $app->post('/users', CreateUserAction::class);
     $app->get('/users', GetAllUsersAction::class);
@@ -24,6 +25,5 @@ return function (App $app) : void {
     $app->get('/roles', GetAllRolesAction::class);
     $app->get('/roles/{id}', GetRoleAction::class);
     $app->put('/roles/{id}', UpdateRoleAction::class);
-    /*    $app->delete('/roles/{id}', DeleteRoleAction::class);
-    */
+    $app->delete('/roles/{id}', DeleteRoleAction::class);
 };

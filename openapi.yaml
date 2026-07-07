@@ -473,7 +473,36 @@ paths:
                     example: 422
                   error:
                     $ref: '#/components/schemas/ErrorResponse'
-
+    delete:
+      summary: Delete role
+      operationId: deleteRole
+      tags:
+        - Roles
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: User deleted
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - error
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  error:
+                    $ref: '#/components/schemas/ErrorResponse'
 
 components:
   schemas:

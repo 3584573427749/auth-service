@@ -7,6 +7,7 @@ namespace App\Infrastructure\Database\Role;
 use App\Domain\Entities\Role;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\Exception\RoleAlreadyExistsException;
+use App\Domain\Exception\RoleInUseException;
 use App\Domain\Repositories\RoleRepository;
 use App\Domain\ValueObjects\RoleId;
 use App\Infrastructure\Database\AbstractDbRepository;
@@ -18,13 +19,14 @@ class DbalRoleRepository extends AbstractDbRepository implements RoleRepository 
     /**
      * @throws RoleAlreadyExistsException
      */
-    public function save(Role $role) : void {
+    public function save(Role $role): void {
         try {
             if ($role->getUpdatedAt() !== null) {
                 $this->connection->update(self::TABLE, $role->asDBRow(), ['id' => $role->getId()->toString()]);
             } else {
                 $this->connection->insert(self::TABLE, $role->asDBRow());
             }
+
             return;
         } catch (Exception\UniqueConstraintViolationException $e) {
             throw new RoleAlreadyExistsException('Rollen finns redan');
@@ -35,18 +37,18 @@ class DbalRoleRepository extends AbstractDbRepository implements RoleRepository 
      * @return list<Role>
      * @throws Exception
      */
-    public function getAll() : array {
+    public function getAll(): array {
         $rows = $this->connection->executeQuery('SELECT * FROM ' . self::TABLE)
             ->fetchAllAssociative();
 
-        return array_map(fn ($row) => Role::fromDBRow($row), $rows);
+        return array_map(fn($row) => Role::fromDBRow($row), $rows);
 
     }
 
     /**
      * @throws Exception
      */
-    public function getById(RoleId $id) : Role {
+    public function getById(RoleId $id): Role {
         $row = $this->connection->executeQuery('SELECT * FROM ' . self::TABLE . ' WHERE id=:id', ['id' => $id->toString()])
             ->fetchAssociative();
 
@@ -58,15 +60,19 @@ class DbalRoleRepository extends AbstractDbRepository implements RoleRepository 
     }
 
     /**
-     * @throws Exception
+     * @throws RoleInUseException
      */
-    public function delete(RoleId $id) : void {
-        $rows = $this->connection
-            ->executeQuery('DELETE FROM ' . self::TABLE . ' WHERE id=:id', ['id' => $id->toString()])
-            ->rowCount();
+    public function delete(RoleId $id): void {
+        try {
+            $rows = $this->connection
+                ->executeQuery('DELETE FROM ' . self::TABLE . ' WHERE id=:id', ['id' => $id->toString()])
+                ->rowCount();
 
-        if ($rows === 0) {
-            throw new NotFoundException('Roll med id ' . $id->toString() . ' hittades inte');
+            if ($rows === 0) {
+                throw new NotFoundException('Roll med id ' . $id->toString() . ' hittades inte');
+            }
+        } catch (Exception\ForeignKeyConstraintViolationException $e) {
+            throw new RoleInUseException('Kan inte ta bort roll som har användare kopplade till sig');
         }
     }
 }
