@@ -49,9 +49,9 @@ final class CreateUserEndpointTest extends BaseApiTestCases {
                 'email' => 'test@example.com',
                 'first_name' => 'User',
                 'last_name' => 'Name',
-                'is_active' => 1,
                 'created_at' => '2026-06-10 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
         ]);
 

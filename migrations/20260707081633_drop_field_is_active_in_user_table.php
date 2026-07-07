@@ -16,7 +16,7 @@ final class DropFieldIsActiveInUserTable extends AbstractMigration {
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void {
+    public function change() : void {
         $this->table('users')->removeColumn('is_active')->update();
     }
 }

@@ -31,6 +31,6 @@ final class DeleteUserHandlerTest extends TestCase {
             }
         };
 
-        $handler->handle($userId);
+        $handler->softDelete($userId);
     }
 }

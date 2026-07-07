@@ -24,7 +24,6 @@ final class UpdateUserHandlerTest extends TestCase {
                 'email' => 'test@example.com',
                 'firstName' => 'User',
                 'lastName' => 'Name',
-                'isActive' => '1',
                 'createdAt' => '2026-01-01 10:00:00',
             ],
         );
@@ -34,7 +33,6 @@ final class UpdateUserHandlerTest extends TestCase {
             'email' => 'test@example.com',
             'first_name' => 'User',
             'last_name' => 'Name',
-            'is_active' => '1',
             'created_at' => '2026-01-01 10:00:00',
         ]);
 
@@ -89,7 +87,6 @@ final class UpdateUserHandlerTest extends TestCase {
                 'email' => 'test@example.com',
                 'firstName' => 'User',
                 'lastName' => 'Name',
-                'isActive' => true,
                 'createdAt' => '2026-01-01 10:00:00',
             ],
         );
@@ -126,7 +123,6 @@ final class UpdateUserHandlerTest extends TestCase {
                 'email' => 'test@example.com',
                 'firstName' => 'User',
                 'lastName' => 'Name',
-                'isActive' => true,
                 'createdAt' => '2026-01-01 10:00:00',
             ],
         );

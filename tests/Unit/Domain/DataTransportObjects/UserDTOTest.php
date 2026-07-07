@@ -18,8 +18,8 @@ final class UserDTOTest extends TestCase {
             new Email('test@example.com'),
             'User',
             'Name',
-            true,
             new DateTimeValue('2026-01-01T10:00:00+00:00'),
+            null,
             null,
         );
 
@@ -40,8 +40,8 @@ final class UserDTOTest extends TestCase {
             new Email('another@example.com'),
             'Another',
             'User',
-            true,
             new DateTimeValue('2026-01-01T10:00:00+00:00'),
+            null,
             null,
         );
 
@@ -62,8 +62,8 @@ final class UserDTOTest extends TestCase {
             new Email('role@test.com'),
             'Role',
             'User',
-            true,
             new DateTimeValue('2026-01-01T10:00:00+00:00'),
+            null,
             null,
         );
 

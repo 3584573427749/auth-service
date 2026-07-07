@@ -16,7 +16,7 @@ final class AddFieldDeletedAtInUsersTable extends AbstractMigration {
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void {
+    public function change() : void {
         $this->table('users')
             ->addColumn('deleted_at', 'datetime', ['null' => true])
             ->update();

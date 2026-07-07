@@ -30,7 +30,6 @@ class UpdateUserCommand {
                 |> strtolower(...);
         $firstName = trim($data['firstName']);
         $lastName = trim($data['lastName']);
-        $isActive = $data['isActive'] ? 1 : 0;
         $createdAt = new DateTimeValue($data['createdAt']);
 
         return new self($id, $email, $firstName, $lastName, $isActive, $createdAt);

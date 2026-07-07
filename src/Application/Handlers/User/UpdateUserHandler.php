@@ -23,8 +23,6 @@ class UpdateUserHandler extends UserHandler {
             $user->setEmail(Email::fromString($command->email));
             $user->setfirstName($command->firstName);
             $user->setLastName($command->lastName);
-            (bool)$command->isActive ? $user->activate() : $user->deactivate();
-            $user->setCreatedAt($command->createdAt);
             $user->setUpdatedAt(new DateTimeValue('now'));
 
             $this->userRepository->save($user);

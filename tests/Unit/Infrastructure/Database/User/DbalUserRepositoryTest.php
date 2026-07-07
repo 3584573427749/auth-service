@@ -29,9 +29,9 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
             new Email('test@example.com'),
             'User',
             'Name',
-            true,
             new DateTimeValue('2026-01-01 10:00:00'),
             $updatedAt,
+            null,
         );
     }
 
@@ -104,18 +104,18 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
                 'email' => 'a@test.com',
                 'first_name' => 'A',
                 'last_name' => 'User',
-                'is_active' => 1,
                 'created_at' => '2026-01-01 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
             [
                 'id' => '660e8400-e29b-41d4-a716-446655440000',
                 'email' => 'b@test.com',
                 'first_name' => 'B',
                 'last_name' => 'User',
-                'is_active' => 1,
                 'created_at' => '2026-01-01 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
         ]);
 
@@ -138,9 +138,9 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
                 'email' => 'test@example.com',
                 'first_name' => 'User',
                 'last_name' => 'Name',
-                'is_active' => 1,
                 'created_at' => '2026-01-01 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
         ]);
 
@@ -182,9 +182,9 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
                 'email' => 'test@example.com',
                 'first_name' => 'User',
                 'last_name' => 'Name',
-                'is_active' => 1,
                 'created_at' => '2026-01-01 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
         ]);
 
@@ -196,6 +196,6 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
             ['id' => '550e8400-e29b-41d4-a716-446655440000'],
         );
         self::assertNotFalse($row);
-        self::assertFalse((bool)$row['is_active']);
+        self::assertNotNull($row['deleted_at']);
     }
 }

@@ -36,11 +36,7 @@ class UpdateUserRequestValidator {
         } elseif (mb_strlen($data['lastName']) < 2) {
             $errors['lastName'] = 'Last name must be at least 2 characters.';
         }
-        if (!isset($data['isActive'])) {
-            $errors['isActive'] = 'Is active is required.';
-        } elseif ($data['isActive'] !== '0' && $data['isActive'] !== '1') {
-            $errors['isActive'] = 'Is active must be a boolean.';
-        }
+
         try {
             if (!isset($data['createdAt'])) {
                 $errors['createdAt'] = 'Created at is required.';

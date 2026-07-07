@@ -18,9 +18,9 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
                 'email' => 'old@example.com',
                 'first_name' => 'Old',
                 'last_name' => 'Name',
-                'is_active' => 1,
                 'created_at' => '2026-06-10 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
         ]);
 
@@ -29,7 +29,6 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
             'email' => 'old@example.com',
             'firstName' => 'New',
             'lastName' => 'Name',
-            'isActive' => '1',
             'createdAt' => '2026-06-10T10:00:00+00:00',
             'updatedAt' => null,
         ];
@@ -66,9 +65,9 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
                 'email' => 'old@example.com',
                 'first_name' => 'Old',
                 'last_name' => 'Name',
-                'is_active' => 1,
                 'created_at' => '2026-06-10 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
         ]);
 
@@ -82,7 +81,6 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
                 'email' => 'noone@example.com',
                 'firstName' => 'New',
                 'lastName' => 'Name',
-                'isActive' => '1',
                 'createdAt' => '2026-06-10 10:00:00',
             ]);
 
@@ -106,18 +104,18 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
                 'email' => 'existing@example.com',
                 'first_name' => 'Existing',
                 'last_name' => 'User',
-                'is_active' => 1,
                 'created_at' => '2026-06-10 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
             [
                 'id' => '22222222-2222-2222-2222-222222222222',
                 'email' => 'other@example.com',
                 'first_name' => 'Other',
                 'last_name' => 'User',
-                'is_active' => 1,
                 'created_at' => '2026-06-10 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
         ]);
 
@@ -131,7 +129,6 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
                 'email' => 'existing@example.com',
                 'firstName' => 'Other',
                 'lastName' => 'User',
-                'isActive' => '1',
                 'createdAt' => '2026-06-10 10:00:00',
             ]);
 
@@ -155,9 +152,9 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
                 'email' => 'user@example.com',
                 'first_name' => 'User',
                 'last_name' => 'Name',
-                'is_active' => 1,
                 'created_at' => '2026-06-10 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
         ]);
 
@@ -171,7 +168,6 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
                 'email' => 'invalid-email',
                 'firstName' => '',
                 'lastName' => '',
-                'isActive' => true,
                 'createdAt' => '2026-06-10 10:00:00',
             ]);
 

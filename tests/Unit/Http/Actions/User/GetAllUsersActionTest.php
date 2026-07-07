@@ -25,8 +25,8 @@ final class GetAllUsersActionTest extends TestCase {
             new Email('a@test.com'),
             'User',
             'Name',
-            true,
             new DateTimeValue('2026-06-10 10:00:00'),
+            null,
             null,
         );
         $users[] = UserDTO::fromUser($user);
@@ -36,9 +36,9 @@ final class GetAllUsersActionTest extends TestCase {
             new Email('b@test.com'),
             'User',
             'Name',
-            true,
             new DateTimeValue('2026-06-10 10:00:00'),
             new DateTimeValue('2026-06-11 11:00:00'),
+            null,
         );
         $users[] = UserDTO::fromUser($user);
 

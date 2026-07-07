@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Http\Actions\User;
 
 use App\Application\Handlers\User\DeleteUserHandler;
-use App\Http\Actions\User\DeleteUserAction;
+use App\Http\Actions\User\SoftDeleteUserAction;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
@@ -19,9 +19,9 @@ final class DeleteUserActionTest extends TestCase {
 
         $handler
             ->expects($this->once())
-            ->method('handle');
+            ->method('softDelete');
 
-        $action = new DeleteUserAction($logger, $handler);
+        $action = new SoftDeleteUserAction($logger, $handler);
 
         $request = new ServerRequestFactory()
             ->createServerRequest('DELETE', '/users/550e8400-e29b-41d4-a716-446655440000');

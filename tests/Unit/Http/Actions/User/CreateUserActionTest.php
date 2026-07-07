@@ -28,8 +28,8 @@ final class CreateUserActionTest extends TestCase {
             new Email('test@example.com'),
             'User',
             'Name',
-            true,
             new DateTimeValue('2026-06-10T10:00:00+00:00'),
+            null,
             null,
         );
 

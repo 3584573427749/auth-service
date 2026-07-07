@@ -39,7 +39,7 @@ final class DeleteRoleEndpointTest extends BaseApiTestCases {
 
         $count = $this->connection
             ->executeQuery(
-                'SELECT COUNT(*) FROM roles WHERE id = ? and is_active = 1',
+                'SELECT COUNT(*) FROM roles WHERE id = ?',
                 ['550e8400-e29b-41d4-a716-446655440000'],
             )
             ->fetchOne();

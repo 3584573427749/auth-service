@@ -25,8 +25,8 @@ final class GetUserActionTest extends TestCase {
             new Email('a@test.com'),
             'User',
             'Name',
-            true,
             new DateTimeValue('2026-06-10 10:00:00'),
+            null,
             null,
         );
         $dto = UserDTO::fromUser($user);
