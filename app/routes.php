@@ -14,7 +14,7 @@ use App\Http\Actions\User\GetUserAction;
 use App\Http\Actions\User\UpdateUserAction;
 use Slim\App;
 
-return function (App $app): void {
+return function (App $app) : void {
 
     $app->post('/users', CreateUserAction::class);
     $app->get('/users', GetAllUsersAction::class);
