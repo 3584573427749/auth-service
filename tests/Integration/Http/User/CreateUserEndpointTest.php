@@ -12,19 +12,26 @@ final class CreateUserEndpointTest extends BaseApiTestCases {
     public function testReturns201WhenRequestIsValid() : void {
         $this->loadSchema('users');
 
-        $request = (new ServerRequestFactory())
-            ->createServerRequest('POST', '/users')
-            ->withParsedBody([
+        $requestBody = [
                 'email' => 'test@example.com',
                 'firstName' => 'User',
                 'lastName' => 'Name',
-            ]);
+            ];
+        $validator = new OpenApiValidator();
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', '/users')
+            ->withHeader('Content-Type', 'application/json');
+
+        $request->getBody()->write(json_encode($requestBody, JSON_THROW_ON_ERROR));
+
+        $request = $request->withParsedBody($requestBody);
+
+        $validator->validateRequest($request);
 
         $response = $this->app->handle($request);
 
         self::assertSame(201, $response->getStatusCode());
-
-        $validator = new OpenApiValidator();
 
         $validator->validateResponse(
             '/users',

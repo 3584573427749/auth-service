@@ -15,7 +15,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
-use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class GetAllUsersActionTest extends TestCase {
     public function testReturnsAllUsers() : void {
@@ -60,9 +59,6 @@ final class GetAllUsersActionTest extends TestCase {
         $result = $action($request, $response, []);
 
         self::assertSame(200, $result->getStatusCode());
-
-        $validator = new OpenApiValidator();
-        $validator->validateResponse('/users', 'GET', $result);
 
         $payload = $this->decodeJsonResponse($result);
 

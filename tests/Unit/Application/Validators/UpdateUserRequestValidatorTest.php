@@ -2,11 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Tests\Validators\CreateUserRequestValidator;
-
 namespace Tests\Unit\Application\Validators;
 
-use App\Application\Validators\CreateUserRequestValidator;
 use App\Application\Validators\UpdateUserRequestValidator;
 use PHPUnit\Framework\TestCase;
 
@@ -54,7 +51,7 @@ final class UpdateUserRequestValidatorTest extends TestCase {
             'createdAt' => '2026-01-01 10:00:00',
         ];
 
-        $errors = CreateUserRequestValidator::validate($data);
+        $errors = UpdateUserRequestValidator::validate($data);
 
         self::assertArrayHasKey('email', $errors);
         self::assertSame('Email is invalid.', $errors['email']);
@@ -70,7 +67,7 @@ final class UpdateUserRequestValidatorTest extends TestCase {
             'createdAt' => '2026-01-01 10:00:00',
         ];
 
-        $errors = CreateUserRequestValidator::validate($data);
+        $errors = UpdateUserRequestValidator::validate($data);
 
         self::assertArrayHasKey('firstName', $errors);
         self::assertSame('First name is required.', $errors['firstName']);

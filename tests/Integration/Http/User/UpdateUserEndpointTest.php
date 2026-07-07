@@ -24,19 +24,27 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
             ],
         ]);
 
+        $requestBody = [
+            'id' => '550e8400-e29b-41d4-a716-446655440000',
+            'email' => 'old@example.com',
+            'firstName' => 'New',
+            'lastName' => 'Name',
+            'isActive' => '1',
+            'createdAt' => '2026-06-10T10:00:00+00:00',
+            'updatedAt' => null,
+        ];
+
+        $validator = new OpenApiValidator();
+
         $request = (new ServerRequestFactory())
-            ->createServerRequest(
-                'PUT',
-                '/users/550e8400-e29b-41d4-a716-446655440000',
-            )
-            ->withParsedBody([
-                'id' => '550e8400-e29b-41d4-a716-446655440000',
-                'email' => 'old@example.com',
-                'firstName' => 'New',
-                'lastName' => 'Name',
-                'isActive' => '1',
-                'createdAt' => '2026-06-10 10:00:00',
-            ]);
+            ->createServerRequest('PUT', '/users/550e8400-e29b-41d4-a716-446655440000')
+            ->withHeader('Content-Type', 'application/json');
+
+        $request->getBody()->write(json_encode($requestBody, JSON_THROW_ON_ERROR));
+
+        $request = $request->withParsedBody($requestBody);
+
+        $validator->validateRequest($request);
 
         $response = $this->app->handle($request);
 

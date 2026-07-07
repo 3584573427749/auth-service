@@ -27,13 +27,13 @@ class UpdateUserRequestValidator {
 
         if (!isset($data['firstName'])) {
             $errors['firstName'] = 'First name is required.';
-        } elseif (strlen($data['firstName']) < 2) {
+        } elseif (mb_strlen($data['firstName']) < 2) {
             $errors['firstName'] = 'First name must be at least 2 characters.';
         }
 
         if (!isset($data['lastName'])) {
             $errors['lastName'] = 'Last name is required.';
-        } elseif (strlen($data['lastName']) < 2) {
+        } elseif (mb_strlen($data['lastName']) < 2) {
             $errors['lastName'] = 'Last name must be at least 2 characters.';
         }
         if (!isset($data['isActive'])) {

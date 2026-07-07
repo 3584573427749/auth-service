@@ -37,7 +37,6 @@ final class GetAllUsersEndpointTest extends BaseApiTestCases {
             ->createServerRequest('GET', '/users');
 
         $response = $this->app->handle($request);
-        echo (string)$response->getBody();
 
         self::assertSame(200, $response->getStatusCode());
 
