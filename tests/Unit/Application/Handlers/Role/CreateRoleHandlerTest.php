@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Application\Handlers\Role;
 
 use App\Application\Commands\Role\CreateRoleCommand;
-use App\Application\Handlers\Roles\CreateRoleHandler;
+use App\Application\Handlers\Role\CreateRoleHandler;
 use App\Domain\DataTransportObjects\Role\RoleDTO;
 use App\Domain\Repositories\RoleRepository;
 use Doctrine\DBAL\Connection;

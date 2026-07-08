@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Handlers\Roles;
+namespace App\Application\Handlers\Role;
 
 use App\Domain\Exception\RoleInUseException;
 use App\Domain\ValueObjects\RoleId;

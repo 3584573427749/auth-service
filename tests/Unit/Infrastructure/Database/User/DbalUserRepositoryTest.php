@@ -9,7 +9,7 @@ use App\Domain\Exception\NotFoundException;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\UserId;
-use App\Infrastructure\Database\User\DbalUserRepository;
+use App\Infrastructure\Database\DbalUserRepository;
 use Tests\Unit\Infrastructure\Database\DatabaseBaseTestCase;
 
 final class DbalUserRepositoryTest extends DatabaseBaseTestCase {

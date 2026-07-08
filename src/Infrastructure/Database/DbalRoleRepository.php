@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Database\Role;
+namespace App\Infrastructure\Database;
 
 use App\Domain\Entities\Role;
 use App\Domain\Exception\NotFoundException;
@@ -10,7 +10,6 @@ use App\Domain\Exception\RoleAlreadyExistsException;
 use App\Domain\Exception\RoleInUseException;
 use App\Domain\Repositories\RoleRepository;
 use App\Domain\ValueObjects\RoleId;
-use App\Infrastructure\Database\AbstractDbRepository;
 use Doctrine\DBAL\Exception;
 
 class DbalRoleRepository extends AbstractDbRepository implements RoleRepository {

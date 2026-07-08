@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Database\User;
+namespace App\Infrastructure\Database;
 
 use App\Domain\Entities\User;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\Exception\UserInUseException;
 use App\Domain\Repositories\UserRepository;
 use App\Domain\ValueObjects\UserId;
-use App\Infrastructure\Database\AbstractDbRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Actions\Roles;
+namespace App\Http\Actions\Role;
 
-use App\Application\Handlers\Roles\GetRoleHandler;
+use App\Application\Handlers\Role\GetRoleHandler;
 use App\Domain\ValueObjects\RoleId;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;

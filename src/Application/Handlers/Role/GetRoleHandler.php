@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Handlers\Roles;
+namespace App\Application\Handlers\Role;
 
 use App\Domain\DataTransportObjects\Role\RoleDTO;
 use App\Domain\ValueObjects\RoleId;

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Http\Actions\Role;
 
 use App\Application\Commands\Role\UpdateRoleCommand;
-use App\Application\Handlers\Roles\UpdateRoleHandler;
+use App\Application\Handlers\Role\UpdateRoleHandler;
 use App\Domain\DataTransportObjects\Role\RoleDTO;
 use App\Domain\Entities\Role;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\RoleId;
-use App\Http\Actions\Roles\UpdateRoleAction;
+use App\Http\Actions\Role\UpdateRoleAction;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;

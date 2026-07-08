@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Application\Handlers\Role;
 
 use App\Application\Commands\Role\UpdateRoleCommand;
-use App\Application\Handlers\Roles\UpdateRoleHandler;
+use App\Application\Handlers\Role\UpdateRoleHandler;
 use App\Domain\DataTransportObjects\Role\RoleDTO;
 use App\Domain\Entities\Role;
 use App\Domain\Exception\RoleAlreadyExistsException;

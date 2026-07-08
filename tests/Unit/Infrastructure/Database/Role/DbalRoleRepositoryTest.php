@@ -8,7 +8,7 @@ use App\Domain\Entities\Role;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\RoleId;
-use App\Infrastructure\Database\Role\DbalRoleRepository;
+use App\Infrastructure\Database\DbalRoleRepository;
 use Tests\Unit\Infrastructure\Database\DatabaseBaseTestCase;
 
 final class DbalRoleRepositoryTest extends DatabaseBaseTestCase {

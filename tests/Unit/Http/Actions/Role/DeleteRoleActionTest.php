@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Http\Actions\Role;
 
-use App\Application\Handlers\Roles\DeleteRoleHandler;
-use App\Http\Actions\Roles\DeleteRoleAction;
+use App\Application\Handlers\Role\DeleteRoleHandler;
+use App\Http\Actions\Role\DeleteRoleAction;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
