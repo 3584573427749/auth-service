@@ -54,6 +54,14 @@ class UpdateUserRequestValidator {
             $errors['updatedAt'] = 'Invalid updated date.';
         }
 
+        try {
+            if (isset($data['deletedAt'])) {
+                $deletedAt = new \DateTimeImmutable($data['deletedAt']);
+            }
+        } catch (DateMalformedStringException $e) {
+            $errors['deletedAt'] = 'Invalid deleted date.';
+        }
+
         if (count($data) > 8) {
             $errors['tooManyFields'] = 'Too many fields.';
         }

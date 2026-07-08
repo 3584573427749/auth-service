@@ -141,6 +141,7 @@ final class UpdateUserRequestValidatorTest extends TestCase {
             'lastName' => 'b',
             'createdAt' => '2026-01-01 10:00:00',
             'updatedAt' => 'Invalid',
+            'deletedAt' => null,
         ];
 
         $errors = UpdateUserRequestValidator::validate($data);
@@ -157,7 +158,8 @@ final class UpdateUserRequestValidatorTest extends TestCase {
             'firstName' => 'User',
             'lastName' => 'Name',
             'createdAt' => '2026-01-01 10:00:00',
-            'updateAt' => '2026-01-01 10:00:00',
+            'updatedAt' => '2026-01-01 10:00:00',
+            'deletedAt' => '2026-01-01 10:00:00',
             'extra' => '2026-01-01 10:00:00',
         ];
 

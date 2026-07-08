@@ -20,7 +20,7 @@ readonly class UserDTO implements \JsonSerializable {
         private array $roles,
         private ?DateTimeValue $updatedAt,
         private DateTimeValue $createdAt,
-        private DateTimeValue $deletedAt,
+        private ?DateTimeValue $deletedAt,
     ) {
     }
 
