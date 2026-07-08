@@ -12,7 +12,7 @@ class CreateRoleCommand {
     /**
      * @param array<string, mixed> $data
      */
-    public static function fromRequest(array $data) : self {
+    public static function fromRequest(array $data): self {
         // Normalisera
         $name = $data['name']
                 |> trim(...)

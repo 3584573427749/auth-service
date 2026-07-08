@@ -9,7 +9,7 @@ use Tests\Integration\BaseApiTestCases;
 use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class GetAllRolesEndpointTest extends BaseApiTestCases {
-    public function testReturnsAllRoles() : void {
+    public function testReturnsAllRoles(): void {
         $this->loadSchema('roles');
 
         $this->seed('roles', [
@@ -57,7 +57,7 @@ final class GetAllRolesEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturnsEmptyArrayWhenNoRolesExist() : void {
+    public function testReturnsEmptyArrayWhenNoRolesExist(): void {
         $this->loadSchema('roles');
 
         $request = (new ServerRequestFactory())

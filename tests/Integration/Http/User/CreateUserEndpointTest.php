@@ -9,17 +9,17 @@ use Tests\Integration\BaseApiTestCases;
 use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class CreateUserEndpointTest extends BaseApiTestCases {
-    public function testReturns201WhenRequestIsValid() : void {
+    public function testReturns201WhenRequestIsValid(): void {
         $this->loadSchema('users');
 
         $requestBody = [
-                'email' => 'test@example.com',
-                'firstName' => 'User',
-                'lastName' => 'Name',
-            ];
+            'email' => 'test@example.com',
+            'firstName' => 'User',
+            'lastName' => 'Name',
+        ];
         $validator = new OpenApiValidator();
 
-        $request = (new ServerRequestFactory())
+        $request = new ServerRequestFactory()
             ->createServerRequest('POST', '/users')
             ->withHeader('Content-Type', 'application/json');
 
@@ -40,7 +40,7 @@ final class CreateUserEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns409WhenUserAlreadyExists() : void {
+    public function testReturns409WhenUserAlreadyExists(): void {
         $this->loadSchema('users');
 
         $this->seed('users', [
@@ -55,7 +55,7 @@ final class CreateUserEndpointTest extends BaseApiTestCases {
             ],
         ]);
 
-        $request = (new ServerRequestFactory())
+        $request = new ServerRequestFactory()
             ->createServerRequest('POST', '/users')
             ->withParsedBody([
                 'email' => 'test@example.com',
@@ -76,7 +76,7 @@ final class CreateUserEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns422WhenValidationFails() : void {
+    public function testReturns422WhenValidationFails(): void {
         $this->loadSchema('users');
 
         $request = (new ServerRequestFactory())

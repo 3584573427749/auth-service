@@ -12,15 +12,15 @@ use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 
 final class CreateRoleHandlerTest extends TestCase {
-    public function testHandleCreatesRoleSuccessfully() : void {
+    public function testHandleCreatesRoleSuccessfully(): void {
         $db = $this->createMock(Connection::class);
         $repository = $this->createMock(RoleRepository::class);
 
         $command = CreateRoleCommand::fromRequest(
             [
-            'name' => 'Test',
-            'description' => 'Test role',
-            'adminLevel' => 1],
+                'name' => 'Test',
+                'description' => 'Test role',
+                'adminLevel' => 1],
         );
 
         $db->expects(self::once())->method('beginTransaction');
@@ -52,7 +52,7 @@ final class CreateRoleHandlerTest extends TestCase {
         self::assertSame(1, $json['adminLevel']);
     }
 
-    public function testHandleRollsBackOnSaveError() : void {
+    public function testHandleRollsBackOnSaveError(): void {
         $db = $this->createMock(Connection::class);
         $repository = $this->createMock(RoleRepository::class);
 

@@ -9,7 +9,7 @@ use Tests\Integration\BaseApiTestCases;
 use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class UpdateUserEndpointTest extends BaseApiTestCases {
-    public function testReturns200WhenRequestIsValid() : void {
+    public function testReturns200WhenRequestIsValid(): void {
         $this->loadSchema('users');
 
         $this->seed('users', [
@@ -31,6 +31,7 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
             'lastName' => 'Name',
             'createdAt' => '2026-06-10T10:00:00+00:00',
             'updatedAt' => null,
+            'deletedAt' => null,
         ];
 
         $validator = new OpenApiValidator();
@@ -56,7 +57,7 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns404WhenUserIsNotFound() : void {
+    public function testReturns404WhenUserIsNotFound(): void {
         $this->loadSchema('users');
 
         $this->seed('users', [
@@ -82,6 +83,8 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
                 'firstName' => 'New',
                 'lastName' => 'Name',
                 'createdAt' => '2026-06-10 10:00:00',
+                'updatedAt' => null,
+                'deletedAt' => null,
             ]);
 
         $response = $this->app->handle($request);
@@ -95,7 +98,7 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns409WhenEmailAlreadyExists() : void {
+    public function testReturns409WhenEmailAlreadyExists(): void {
         $this->loadSchema('users');
 
         $this->seed('users', [
@@ -130,6 +133,8 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
                 'firstName' => 'Other',
                 'lastName' => 'User',
                 'createdAt' => '2026-06-10 10:00:00',
+                'updatedAt' => null,
+                'deletedAt' => null,
             ]);
 
         $response = $this->app->handle($request);
@@ -143,7 +148,7 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns422WhenValidationFails() : void {
+    public function testReturns422WhenValidationFails(): void {
         $this->loadSchema('users');
 
         $this->seed('users', [
@@ -169,6 +174,8 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
                 'firstName' => '',
                 'lastName' => '',
                 'createdAt' => '2026-06-10 10:00:00',
+                'updatedAt' => null,
+                'deletedAt' => null,
             ]);
 
         $response = $this->app->handle($request);

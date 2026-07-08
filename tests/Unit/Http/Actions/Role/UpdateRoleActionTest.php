@@ -18,7 +18,7 @@ use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class UpdateRoleActionTest extends TestCase {
-    public function testUpdatesRoleAndReturns200WhenRequestBodyIsValid() : void {
+    public function testUpdatesRoleAndReturns200WhenRequestBodyIsValid(): void {
         $logger = $this->createMock(LoggerInterface::class);
 
         $role = new Role(
@@ -81,7 +81,7 @@ final class UpdateRoleActionTest extends TestCase {
     /**
      * @return array<string, mixed>
      */
-    private function decodeJsonResponse(ResponseInterface $response) : array {
+    private function decodeJsonResponse(ResponseInterface $response): array {
         $body = (string)$response->getBody();
 
         self::assertNotSame('', $body);

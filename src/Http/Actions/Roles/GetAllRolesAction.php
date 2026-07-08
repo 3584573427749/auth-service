@@ -16,7 +16,7 @@ class GetAllRolesAction extends RoleAction {
     /**
      * @inheritDoc
      */
-    protected function action() : Response {
+    protected function action(): Response {
         $RoleDTOs = $this->handler->getAll();
 
         return $this->respondWithData($RoleDTOs);

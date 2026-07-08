@@ -9,7 +9,7 @@ use Tests\Integration\BaseApiTestCases;
 use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class UpdateRoleEndpointTest extends BaseApiTestCases {
-    public function testReturns200WhenRequestIsValid() : void {
+    public function testReturns200WhenRequestIsValid(): void {
         $this->loadSchema('roles');
 
         $this->seed('roles', [
@@ -55,7 +55,7 @@ final class UpdateRoleEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns404WhenRoleIsNotFound() : void {
+    public function testReturns404WhenRoleIsNotFound(): void {
         $this->loadSchema('roles');
 
         $this->seed('roles', [
@@ -93,7 +93,7 @@ final class UpdateRoleEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns409WhenNameAlreadyExists() : void {
+    public function testReturns409WhenNameAlreadyExists(): void {
         $this->loadSchema('roles');
 
         $this->seed('roles', [
@@ -139,7 +139,7 @@ final class UpdateRoleEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns422WhenValidationFails() : void {
+    public function testReturns422WhenValidationFails(): void {
         $this->loadSchema('roles');
 
         $this->seed('roles', [

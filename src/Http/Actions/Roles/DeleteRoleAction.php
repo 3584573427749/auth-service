@@ -17,7 +17,7 @@ class DeleteRoleAction extends RoleAction {
     /**
      * @inheritDoc
      */
-    protected function action() : Response {
+    protected function action(): Response {
         $id = $this->request->getAttribute('id');
         $roleId = new RoleId($id);
         $this->handler->handle($roleId);

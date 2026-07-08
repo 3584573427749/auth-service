@@ -4,5 +4,4 @@ declare(strict_types=1);
 
 namespace App\Domain\ValueObjects;
 
-class RoleId extends AbstractId {
-}
+class RoleId extends AbstractId {}

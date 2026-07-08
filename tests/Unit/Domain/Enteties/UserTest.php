@@ -17,13 +17,7 @@ final class UserTest extends TestCase {
 
     private DateTimeValue $createdAt;
 
-    protected function setUp() : void {
-        $this->id = new UserId('550e8400-e29b-41d4-a716-446655440000');
-        $this->email = new Email('test@example.com');
-        $this->createdAt = new DateTimeValue('2026-06-10 10:00:00');
-    }
-
-    public function testConstructorAndGetters() : void {
+    public function testConstructorAndGetters(): void {
         $user = new User(
             $this->id,
             $this->email,
@@ -42,7 +36,7 @@ final class UserTest extends TestCase {
         self::assertNull($user->getUpdatedAt());
     }
 
-    public function testSetters() : void {
+    public function testSetters(): void {
         $user = new User(
             $this->id,
             $this->email,
@@ -64,7 +58,7 @@ final class UserTest extends TestCase {
         self::assertSame('NewLast', $user->getLastName());
     }
 
-    public function testSetUpdatedAt() : void {
+    public function testSetUpdatedAt(): void {
         $user = new User(
             $this->id,
             $this->email,
@@ -81,7 +75,7 @@ final class UserTest extends TestCase {
         self::assertSame($updatedAt, $user->getUpdatedAt());
     }
 
-    public function testFromDBRow() : void {
+    public function testFromDBRow(): void {
         $row = [
             'id' => '550e8400-e29b-41d4-a716-446655440000',
             'email' => 'test@example.com',
@@ -100,7 +94,7 @@ final class UserTest extends TestCase {
         self::assertSame('Name', $user->getLastName());
     }
 
-    public function testAsDBRow() : void {
+    public function testAsDBRow(): void {
         $user = new User(
             $this->id,
             $this->email,
@@ -122,7 +116,7 @@ final class UserTest extends TestCase {
         self::assertNull($row['deleted_at']);
     }
 
-    public function testJsonSerialize() : void {
+    public function testJsonSerialize(): void {
         $user = new User(
             $this->id,
             $this->email,
@@ -142,5 +136,11 @@ final class UserTest extends TestCase {
         self::assertSame('2026-06-10 10:00:00', $data['createdAt']);
         self::assertNull($data['updatedAt']);
         self::assertNull($data['deletedAt']);
+    }
+
+    protected function setUp(): void {
+        $this->id = new UserId('550e8400-e29b-41d4-a716-446655440000');
+        $this->email = new Email('test@example.com');
+        $this->createdAt = new DateTimeValue('2026-06-10 10:00:00');
     }
 }

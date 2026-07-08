@@ -37,31 +37,31 @@ final class DateTimeValue implements JsonSerializable {
         $this->value = $dt->setTimezone(new \DateTimeZone('UTC'));
     }
 
-    public static function fromString(string $value) : self {
+    public static function fromString(string $value): self {
         return new self($value);
     }
 
-    public function toDateTimeImmutable() : DateTimeImmutable {
+    public function toDateTimeImmutable(): DateTimeImmutable {
         return $this->value;
     }
 
-    public function toString() : string {
-        return $this->value->format('Y-m-d H:i:s');
-    }
-
-    public function toISOString() : string {
+    public function toISOString(): string {
         return $this->value->format(DATE_ATOM);
     }
 
-    public function __toString() : string {
+    public function __toString(): string {
         return $this->toString();
     }
 
-    public function jsonSerialize() : string {
+    public function toString(): string {
+        return $this->value->format('Y-m-d H:i:s');
+    }
+
+    public function jsonSerialize(): string {
         return $this->toString();
     }
 
-    public function equals(self $other) : bool {
+    public function equals(self $other): bool {
         return $this->value->getTimestamp() === $other->value->getTimestamp();
     }
 }

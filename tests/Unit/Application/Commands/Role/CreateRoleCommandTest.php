@@ -8,7 +8,7 @@ use App\Application\Commands\Role\CreateRoleCommand;
 use PHPUnit\Framework\TestCase;
 
 final class CreateRoleCommandTest extends TestCase {
-    public function testFromRequestMapsValuesCorrectly() : void {
+    public function testFromRequestMapsValuesCorrectly(): void {
         $data = [
             'name' => 'Test',
             'description' => 'Test role',
@@ -22,7 +22,7 @@ final class CreateRoleCommandTest extends TestCase {
         self::assertSame(1, $command->adminLevel);
     }
 
-    public function testNameIsTrimmedAndFirstCharacherUpper() : void {
+    public function testNameIsTrimmedAndFirstCharacherUpper(): void {
         $data = [
             'name' => '  TEST  ',
             'description' => 'Test user role',
@@ -34,7 +34,7 @@ final class CreateRoleCommandTest extends TestCase {
         self::assertSame('Test', $command->name);
     }
 
-    public function testNamesAreTrimmed() : void {
+    public function testNamesAreTrimmed(): void {
         $data = [
             'name' => 'Test',
             'description' => '  Test user role ',
@@ -46,7 +46,7 @@ final class CreateRoleCommandTest extends TestCase {
         self::assertSame('Test user role', $command->description);
     }
 
-    public function testAdminLevelIsCastToInt() : void {
+    public function testAdminLevelIsCastToInt(): void {
         $data = [
             'name' => 'Test',
             'description' => 'Test user role',

@@ -11,7 +11,7 @@ use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 
 final class DeleteRoleHandlerTest extends TestCase {
-    public function testHandleCallsSoftDelete() : void {
+    public function testHandleCallsSoftDelete(): void {
         $roleId = new RoleId(
             '550e8400-e29b-41d4-a716-446655440000',
         );

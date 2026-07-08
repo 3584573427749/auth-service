@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 
 final class OpenApiVersionTest extends TestCase {
-    public function testOpenApiVersionMatchesVersionFile() : void {
+    public function testOpenApiVersionMatchesVersionFile(): void {
         $version = trim(file_get_contents(__DIR__ . '/../../../VERSION') ?: '');
 
         $openApi = Yaml::parseFile(

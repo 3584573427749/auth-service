@@ -19,7 +19,7 @@ class ErrorHandler {
     public function __construct(private Logger $logger) {
     }
 
-    public function __invoke(Request $request, Throwable $exception, bool $displayErrorDetails) : Response {
+    public function __invoke(Request $request, Throwable $exception, bool $displayErrorDetails): Response {
         $status = $this->mapStatus($exception);
         $payload = $this->buildPayload($exception, $status);
 
@@ -32,20 +32,7 @@ class ErrorHandler {
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    private function buildPayload(Throwable $exception, int $status) : array {
-        return ['statusCode' => $status,
-            'error' => [
-                'type' => (new \ReflectionClass($exception))->getShortName(),
-                'message' => $exception->getMessage(),
-                'details' => method_exists($exception, 'getDetails') ? $exception->getDetails() : null,
-            ],
-        ];
-    }
-
-    private function mapStatus(Throwable $exception) : int {
+    private function mapStatus(Throwable $exception): int {
         return match (true) {
             $exception instanceof \InvalidArgumentException => 400,
             $exception instanceof UnauthorizedException => 401,
@@ -56,5 +43,18 @@ class ErrorHandler {
             $exception instanceof InternalException => 500,
             default => 500,
         };
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function buildPayload(Throwable $exception, int $status): array {
+        return ['statusCode' => $status,
+            'error' => [
+                'type' => (new \ReflectionClass($exception))->getShortName(),
+                'message' => $exception->getMessage(),
+                'details' => method_exists($exception, 'getDetails') ? $exception->getDetails() : null,
+            ],
+        ];
     }
 }

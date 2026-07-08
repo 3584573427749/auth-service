@@ -20,7 +20,7 @@ class UpdateUserAction extends UserAction {
     /**
      * @throws UserAlreadyExistsException
      */
-    protected function action() : Response {
+    protected function action(): Response {
         $data = (array)$this->request->getParsedBody();
         $data['userId'] = $this->request->getAttribute('id');
 

@@ -21,7 +21,7 @@ class UpdateUserCommand {
     /**
      * @param array<string, mixed> $data
      */
-    public static function fromRequest(array $data) : self {
+    public static function fromRequest(array $data): self {
         // Normalisera
         $id = new UserId($data['id']);
         $email = $data['email']

@@ -10,7 +10,7 @@ use App\Domain\Exception\RoleAlreadyExistsException;
 use App\Domain\ValueObjects\DateTimeValue;
 
 class UpdateRoleHandler extends RoleHandler {
-    public function handle(UpdateRoleCommand $command) : RoleDTO {
+    public function handle(UpdateRoleCommand $command): RoleDTO {
         $this->db->beginTransaction();
         try {
             $role = $this->repository->getById($command->id);

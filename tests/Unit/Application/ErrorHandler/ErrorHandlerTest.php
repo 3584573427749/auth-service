@@ -17,20 +17,18 @@ use Psr\Http\Message\ServerRequestInterface;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
 class ErrorHandlerTest extends TestCase {
-    private function createRequest() : ServerRequestInterface {
-        return (new ServerRequestFactory())
-            ->createServerRequest('GET', '/test');
-    }
+    public function testValidationException(): void {
+        $result = $this->handle(new ValidationException('Invalid'));
 
-    private function createLogger() : Logger {
-        return $this->createMock(Logger::class);
+        $this->assertSame(422, $result['status']);
+        $this->assertSame('ValidationException', $result['json']['error']['type']);
     }
 
     /**
      * @return array<string, mixed>
      * @throws \JsonException
      */
-    private function handle(\Throwable $exception) : array {
+    private function handle(\Throwable $exception): array {
         $logger = $this->createLogger();
 
         $handler = new ErrorHandler($logger);
@@ -41,7 +39,7 @@ class ErrorHandlerTest extends TestCase {
             false,
         );
 
-        $body = (string) $response->getBody();
+        $body = (string)$response->getBody();
 
         return [
             'status' => $response->getStatusCode(),
@@ -49,57 +47,59 @@ class ErrorHandlerTest extends TestCase {
         ];
     }
 
-    public function testValidationException() : void {
-        $result = $this->handle(new ValidationException('Invalid'));
-
-        $this->assertSame(422, $result['status']);
-        $this->assertSame('ValidationException', $result['json']['error']['type']);
+    private function createLogger(): Logger {
+        return $this->createMock(Logger::class);
     }
 
-    public function testUnauthorizedException() : void {
+    private function createRequest(): ServerRequestInterface {
+        return (new ServerRequestFactory())
+            ->createServerRequest('GET', '/test');
+    }
+
+    public function testUnauthorizedException(): void {
         $result = $this->handle(new UnauthorizedException('No auth'));
 
         $this->assertSame(401, $result['status']);
     }
 
-    public function testForbiddenException() : void {
+    public function testForbiddenException(): void {
         $result = $this->handle(new ForbiddenException('Forbidden'));
 
         $this->assertSame(403, $result['status']);
     }
 
-    public function testNotFoundException() : void {
+    public function testNotFoundException(): void {
         $result = $this->handle(new NotFoundException('Missing'));
 
         $this->assertSame(404, $result['status']);
     }
 
-    public function testRecordExistsException() : void {
+    public function testRecordExistsException(): void {
         $result = $this->handle(new RecordExistsException('Exists'));
 
         $this->assertSame(409, $result['status']);
     }
 
-    public function testInternalException() : void {
+    public function testInternalException(): void {
         $result = $this->handle(new InternalException('Error'));
 
         $this->assertSame(500, $result['status']);
     }
 
-    public function testUnknownExceptionDefaultsTo500() : void {
+    public function testUnknownExceptionDefaultsTo500(): void {
         $result = $this->handle(new \RuntimeException('Unknown'));
 
         $this->assertSame(500, $result['status']);
         $this->assertSame('RuntimeException', $result['json']['error']['type']);
     }
 
-    public function testPayloadContainsMessage() : void {
+    public function testPayloadContainsMessage(): void {
         $result = $this->handle(new ValidationException('Bad input'));
 
         $this->assertSame('Bad input', $result['json']['error']['message']);
     }
 
-    public function testPayloadContainsDetails() : void {
+    public function testPayloadContainsDetails(): void {
         $exception = new ValidationException('Invalid', ['field' => 'email']);
 
         $result = $this->handle($exception);
@@ -107,7 +107,7 @@ class ErrorHandlerTest extends TestCase {
         $this->assertSame(['field' => 'email'], $result['json']['error']['details']);
     }
 
-    public function testLogsError() : void {
+    public function testLogsError(): void {
         $logger = $this->createMock(Logger::class);
 
         $logger->expects($this->once())

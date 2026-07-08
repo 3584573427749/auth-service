@@ -15,14 +15,14 @@ use App\Http\Actions\User\SoftDeleteUserAction;
 use App\Http\Actions\User\UpdateUserAction;
 use Slim\App;
 
-return function (App $app) : void {
+return function (App $app): void {
 
     $app->post('/users', CreateUserAction::class);
     $app->get('/users', GetAllUsersAction::class);
-    $app->delete('/users', RemoveUserAction::class);
     $app->get('/users/{id}', GetUserAction::class);
     $app->put('/users/{id}', UpdateUserAction::class);
     $app->delete('/users/{id}', SoftDeleteUserAction::class);
+    $app->delete('/users/{id}/permanent', RemoveUserAction::class);
     $app->post('/roles', CreateRoleAction::class);
     $app->get('/roles', GetAllRolesAction::class);
     $app->get('/roles/{id}', GetRoleAction::class);

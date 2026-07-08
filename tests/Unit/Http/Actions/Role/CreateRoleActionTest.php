@@ -19,7 +19,7 @@ use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class CreateRoleActionTest extends TestCase {
-    public function testCreatesRoleAndReturns201WhenRequestBodyIsValid() : void {
+    public function testCreatesRoleAndReturns201WhenRequestBodyIsValid(): void {
         $logger = $this->createMock(LoggerInterface::class);
 
         $role = new Role(
@@ -84,7 +84,22 @@ final class CreateRoleActionTest extends TestCase {
         );
     }
 
-    public function testCreateRoleAndThrowsExceptionWhenRequestBodyIsInvalid() : void {
+    /**
+     * @return array<string, mixed>
+     */
+    private function decodeJsonResponse(ResponseInterface $response): array {
+        $body = (string)$response->getBody();
+
+        self::assertNotSame('', $body);
+
+        $decoded = json_decode($body, true);
+
+        self::assertIsArray($decoded);
+
+        return $decoded;
+    }
+
+    public function testCreateRoleAndThrowsExceptionWhenRequestBodyIsInvalid(): void {
         $logger = $this->createMock(LoggerInterface::class);
 
         $handler = $this->createMock(CreateRoleHandler::class);
@@ -110,20 +125,5 @@ final class CreateRoleActionTest extends TestCase {
         self::expectExceptionMessage('Felaktig indata');
 
         $result = $action($request, $response, []);
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function decodeJsonResponse(ResponseInterface $response) : array {
-        $body = (string)$response->getBody();
-
-        self::assertNotSame('', $body);
-
-        $decoded = json_decode($body, true);
-
-        self::assertIsArray($decoded);
-
-        return $decoded;
     }
 }

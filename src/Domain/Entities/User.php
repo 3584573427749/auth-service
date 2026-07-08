@@ -23,7 +23,7 @@ class User implements \JsonSerializable {
     /**
      * @param array<string,mixed> $row
      */
-    public static function fromDBRow(array $row) : self {
+    public static function fromDBRow(array $row): self {
         return new self(
             new UserId($row['id']),
             new Email($row['email']),
@@ -38,7 +38,7 @@ class User implements \JsonSerializable {
     /**
      * @return array<string,mixed>
      */
-    public function asDBRow() : array {
+    public function asDBRow(): array {
         return [
             'id' => $this->getId()->toString(),
             'email' => $this->getEmail()->toString(),
@@ -51,10 +51,38 @@ class User implements \JsonSerializable {
 
     }
 
+    public function getId(): UserId {
+        return $this->id;
+    }
+
+    public function getEmail(): Email {
+        return $this->email;
+    }
+
+    public function getFirstName(): string {
+        return $this->firstName;
+    }
+
+    public function getLastName(): string {
+        return $this->lastName;
+    }
+
+    public function getCreatedAt(): DateTimeValue {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): ?DateTimeValue {
+        return $this->updatedAt;
+    }
+
+    public function getDeletedAt(): ?DateTimeValue {
+        return $this->deletedAt;
+    }
+
     /**
      * @inheritDoc
      */
-    public function jsonSerialize() : mixed {
+    public function jsonSerialize(): mixed {
         return [
             'id' => $this->getId()->toString(),
             'email' => $this->getEmail()->toString(),
@@ -66,47 +94,19 @@ class User implements \JsonSerializable {
         ];
     }
 
-    public function getId() : UserId {
-        return $this->id;
-    }
-
-    public function getEmail() : Email {
-        return $this->email;
-    }
-
-    public function setEmail(Email $email) : void {
+    public function setEmail(Email $email): void {
         $this->email = $email;
     }
 
-    public function getFirstName() : string {
-        return $this->firstName;
-    }
-
-    public function setFirstName(string $firstName) : void {
+    public function setFirstName(string $firstName): void {
         $this->firstName = $firstName;
     }
 
-    public function getLastName() : string {
-        return $this->lastName;
-    }
-
-    public function setLastName(string $lastName) : void {
+    public function setLastName(string $lastName): void {
         $this->lastName = $lastName;
     }
 
-    public function getCreatedAt() : DateTimeValue {
-        return $this->createdAt;
-    }
-
-    public function getUpdatedAt() : ?DateTimeValue {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(DateTimeValue $updatedAt) : void {
+    public function setUpdatedAt(DateTimeValue $updatedAt): void {
         $this->updatedAt = $updatedAt;
-    }
-
-    public function getDeletedAt() : ?DateTimeValue {
-        return $this->deletedAt;
     }
 }

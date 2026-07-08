@@ -16,12 +16,12 @@ final class AddFieldsToRolesTable extends AbstractMigration {
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change() : void {
+    public function change(): void {
         $table = $this->table('roles');
         $table->addColumn('admin_level', 'integer', ['default' => 0])
-              ->addColumn('created_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
-              ->addColumn('updated_at', 'datetime', ['null' => true, 'update' => 'CURRENT_TIMESTAMP'])
-              ->addIndex(['name'], ['unique' => true]);
+            ->addColumn('created_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn('updated_at', 'datetime', ['null' => true, 'update' => 'CURRENT_TIMESTAMP'])
+            ->addIndex(['name'], ['unique' => true]);
         $table->update();
     }
 }

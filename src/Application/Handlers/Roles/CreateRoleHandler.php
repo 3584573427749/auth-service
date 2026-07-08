@@ -12,7 +12,7 @@ use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\RoleId;
 
 class CreateRoleHandler extends RoleHandler {
-    public function handle(CreateRoleCommand $command) : RoleDTO {
+    public function handle(CreateRoleCommand $command): RoleDTO {
         $this->db->beginTransaction();
         try {
             $role = new Role(

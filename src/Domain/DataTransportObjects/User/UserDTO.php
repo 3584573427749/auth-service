@@ -24,7 +24,7 @@ readonly class UserDTO implements \JsonSerializable {
     ) {
     }
 
-    public static function fromUser(User $user) : self {
+    public static function fromUser(User $user): self {
         return new self(
             $user->getId(),
             $user->getEmail()->toString(),
@@ -40,7 +40,7 @@ readonly class UserDTO implements \JsonSerializable {
     /**
      * @return array<string, string|array<string>>
      */
-    public function jsonSerialize() : array {
+    public function jsonSerialize(): array {
         return [
             'id' => $this->id->toString(),
             'email' => $this->email,

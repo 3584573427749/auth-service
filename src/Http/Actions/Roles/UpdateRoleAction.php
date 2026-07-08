@@ -20,7 +20,7 @@ class UpdateRoleAction extends RoleAction {
     /**
      * @throws RoleAlreadyExistsException
      */
-    protected function action() : Response {
+    protected function action(): Response {
         $data = (array)$this->request->getParsedBody();
         $data['roleId'] = $this->request->getAttribute('id');
 

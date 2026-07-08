@@ -21,7 +21,7 @@ class Role implements \JsonSerializable {
     /**
      * @param array<string,mixed> $row
      */
-    public static function fromDBRow(array $row) : self {
+    public static function fromDBRow(array $row): self {
         return new self(
             new RoleId($row['id']),
             $row['name'],
@@ -35,7 +35,7 @@ class Role implements \JsonSerializable {
     /**
      * @return array<string,mixed>
      */
-    public function asDBRow() : array {
+    public function asDBRow(): array {
         return [
             'id' => $this->getId()->toString(),
             'name' => $this->getName(),
@@ -47,10 +47,34 @@ class Role implements \JsonSerializable {
 
     }
 
+    public function getId(): RoleId {
+        return $this->id;
+    }
+
+    public function getName(): string {
+        return $this->name;
+    }
+
+    public function getDescription(): string {
+        return $this->description;
+    }
+
+    public function getAdminLevel(): int {
+        return $this->adminLevel;
+    }
+
+    public function getCreatedAt(): DateTimeValue {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): ?DateTimeValue {
+        return $this->updatedAt;
+    }
+
     /**
      * @inheritDoc
      */
-    public function jsonSerialize() : mixed {
+    public function jsonSerialize(): mixed {
         return [
             'id' => $this->getId()->toString(),
             'name' => $this->getName(),
@@ -61,47 +85,23 @@ class Role implements \JsonSerializable {
         ];
     }
 
-    public function getId() : RoleId {
-        return $this->id;
-    }
-
-    public function getName() : string {
-        return $this->name;
-    }
-
-    public function getDescription() : string {
-        return $this->description;
-    }
-
-    public function getAdminLevel() : int {
-        return $this->adminLevel;
-    }
-
-    public function getCreatedAt() : DateTimeValue {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(DateTimeValue $createdAt) : void {
+    public function setCreatedAt(DateTimeValue $createdAt): void {
         $this->createdAt = $createdAt;
     }
 
-    public function setName(string $name) : void {
+    public function setName(string $name): void {
         $this->name = $name;
     }
 
-    public function setDescription(string $description) : void {
+    public function setDescription(string $description): void {
         $this->description = $description;
     }
 
-    public function setAdminLevel(int $adminLevel) : void {
+    public function setAdminLevel(int $adminLevel): void {
         $this->adminLevel = $adminLevel;
     }
 
-    public function getUpdatedAt() : ?DateTimeValue {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(DateTimeValue $updatedAt) : void {
+    public function setUpdatedAt(DateTimeValue $updatedAt): void {
         $this->updatedAt = $updatedAt;
     }
 }

@@ -17,12 +17,12 @@ class RemoveUserAction extends UserAction {
     /**
      * @inheritDoc
      */
-    protected function action() : Response {
-        $data = (array)$this->request->getParsedBody();
-
-        $userId = new UserId($data['id']);
+    protected function action(): Response {
+        $id = $this->request->getAttribute('id');
+        $userId = new UserId($id);
         $this->handler->removeUser($userId);
 
         return $this->response->withStatus(204);
     }
+
 }

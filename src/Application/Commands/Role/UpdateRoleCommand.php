@@ -22,7 +22,7 @@ class UpdateRoleCommand {
     /**
      * @param array<string, mixed> $data
      */
-    public static function fromRequest(array $data) : self {
+    public static function fromRequest(array $data): self {
         // Normalisera
         $id = new RoleId($data['id']);
         $name = $data['name']

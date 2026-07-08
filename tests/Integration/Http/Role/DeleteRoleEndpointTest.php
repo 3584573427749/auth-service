@@ -13,7 +13,7 @@ final class DeleteRoleEndpointTest extends BaseApiTestCases {
     /**
      * @throws Exception
      */
-    public function testReturns204WhenRoleIsDeleted() : void {
+    public function testReturns204WhenRoleIsDeleted(): void {
         $this->loadSchema('roles');
 
         $this->seed('roles', [
@@ -55,7 +55,7 @@ final class DeleteRoleEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns404WhenRoleDoesNotExist() : void {
+    public function testReturns404WhenRoleDoesNotExist(): void {
         $this->loadSchema('roles');
 
         $request = new ServerRequestFactory()

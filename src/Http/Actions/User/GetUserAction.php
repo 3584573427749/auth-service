@@ -17,7 +17,7 @@ class GetUserAction extends UserAction {
     /**
      * @inheritDoc
      */
-    protected function action() : Response {
+    protected function action(): Response {
         $id = $this->request->getAttribute('id');
         $userId = new UserId($id);
         $userDTO = $this->handler->getById($userId);

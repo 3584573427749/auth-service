@@ -12,7 +12,7 @@ use App\Domain\ValueObjects\UserId;
 use PHPUnit\Framework\TestCase;
 
 final class UserDTOTest extends TestCase {
-    public function testFromUserCreatesDto() : void {
+    public function testFromUserCreatesDto(): void {
         $user = new User(
             new UserId('550e8400-e29b-41d4-a716-446655440000'),
             new Email('test@example.com'),
@@ -34,7 +34,7 @@ final class UserDTOTest extends TestCase {
         self::assertSame(['user'], $data['roles']);
     }
 
-    public function testJsonSerializeReturnsCorrectStructure() : void {
+    public function testJsonSerializeReturnsCorrectStructure(): void {
         $user = new User(
             new UserId('660e8400-e29b-41d4-a716-446655440000'),
             new Email('another@example.com'),
@@ -56,7 +56,7 @@ final class UserDTOTest extends TestCase {
         self::assertArrayHasKey('roles', $data);
     }
 
-    public function testRolesAlwaysContainsDefaultUserRole() : void {
+    public function testRolesAlwaysContainsDefaultUserRole(): void {
         $user = new User(
             new UserId(),
             new Email('role@test.com'),

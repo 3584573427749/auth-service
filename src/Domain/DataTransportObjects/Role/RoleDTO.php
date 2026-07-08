@@ -19,7 +19,7 @@ readonly class RoleDTO implements \JsonSerializable {
     ) {
     }
 
-    public static function fromRole(Role $role) : self {
+    public static function fromRole(Role $role): self {
         return new self(
             $role->getId(),
             $role->getName(),
@@ -33,7 +33,7 @@ readonly class RoleDTO implements \JsonSerializable {
     /**
      * @return array<string, string|int>
      */
-    public function jsonSerialize() : array {
+    public function jsonSerialize(): array {
         return [
             'id' => $this->id->toString(),
             'name' => $this->name,

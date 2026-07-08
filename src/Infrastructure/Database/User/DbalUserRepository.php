@@ -16,7 +16,7 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 class DbalUserRepository extends AbstractDbRepository implements UserRepository {
     private const TABLE = 'users';
 
-    public function existsByEmail(string $email) : bool {
+    public function existsByEmail(string $email): bool {
         $db = $this->connection->createQueryBuilder();
         $row = $db->select('*')
             ->from(self::TABLE)
@@ -28,7 +28,7 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
         return ($row !== 0);
     }
 
-    public function save(User $user) : void {
+    public function save(User $user): void {
         if ($user->getUpdatedAt() !== null) {
             $this->connection->update(self::TABLE, $user->asDBRow(), ['id' => $user->getId()->toString()]);
         } else {
@@ -40,18 +40,18 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
      * @return list<User>
      * @throws Exception
      */
-    public function getAll() : array {
+    public function getAll(): array {
         $rows = $this->connection->executeQuery('SELECT * FROM ' . self::TABLE . ' WHERE deleted_at IS NULL')
             ->fetchAllAssociative();
 
-        return array_map(fn ($row) => User::fromDBRow($row), $rows);
+        return array_map(fn($row) => User::fromDBRow($row), $rows);
 
     }
 
     /**
      * @throws Exception
      */
-    public function getById(UserId $id) : User {
+    public function getById(UserId $id): User {
         $row = $this->connection->executeQuery('SELECT * FROM ' . self::TABLE . ' WHERE id=:id AND deleted_at IS NULL', ['id' => $id->toString()])
             ->fetchAssociative();
 
@@ -65,7 +65,7 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
     /**
      * @throws Exception
      */
-    public function softDelete(UserId $id) : void {
+    public function softDelete(UserId $id): void {
         $rows = $this->connection
             ->executeQuery('UPDATE ' . self::TABLE . ' SET deleted_at=:now WHERE id=:id', ['id' => $id->toString(), 'now' => date('Y-m-d H:i:s')])
             ->rowCount();
@@ -75,7 +75,7 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
         }
     }
 
-    public function emailExistsWithOtherUser(string $email, UserId $id) : bool {
+    public function emailExistsWithOtherUser(string $email, UserId $id): bool {
         $db = $this->connection->createQueryBuilder();
         $row = $db->select('*')
             ->from(self::TABLE)
@@ -89,7 +89,7 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
         return ($row !== 0);
     }
 
-    public function remove(UserId $id) : void {
+    public function remove(UserId $id): void {
         try {
             $rows = $this->connection->delete(self::TABLE, ['id' => $id->toString()]);
 

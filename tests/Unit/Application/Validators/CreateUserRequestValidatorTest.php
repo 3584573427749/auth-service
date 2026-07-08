@@ -10,7 +10,7 @@ use App\Application\Validators\CreateUserRequestValidator;
 use PHPUnit\Framework\TestCase;
 
 final class CreateUserRequestValidatorTest extends TestCase {
-    public function testValidDataReturnsNoErrors() : void {
+    public function testValidDataReturnsNoErrors(): void {
         $data = [
             'email' => 'test@example.com',
             'firstName' => 'User',
@@ -22,7 +22,7 @@ final class CreateUserRequestValidatorTest extends TestCase {
         self::assertSame([], $errors);
     }
 
-    public function testMissingEmail() : void {
+    public function testMissingEmail(): void {
         $data = [
             'firstName' => 'User',
             'lastName' => 'Name',
@@ -34,7 +34,7 @@ final class CreateUserRequestValidatorTest extends TestCase {
         self::assertSame('Email is required.', $errors['email']);
     }
 
-    public function testInvalidEmail() : void {
+    public function testInvalidEmail(): void {
         $data = [
             'email' => 'invalid-email',
             'firstName' => 'User',
@@ -47,7 +47,7 @@ final class CreateUserRequestValidatorTest extends TestCase {
         self::assertSame('Email is invalid.', $errors['email']);
     }
 
-    public function testMissingFirstName() : void {
+    public function testMissingFirstName(): void {
         $data = [
             'email' => 'test@example.com',
             'lastName' => 'Name',
@@ -59,7 +59,7 @@ final class CreateUserRequestValidatorTest extends TestCase {
         self::assertSame('First name is required.', $errors['firstName']);
     }
 
-    public function testFirstNameTooShort() : void {
+    public function testFirstNameTooShort(): void {
         $data = [
             'email' => 'test@example.com',
             'firstName' => 'A',
@@ -72,7 +72,7 @@ final class CreateUserRequestValidatorTest extends TestCase {
         self::assertSame('First name must be at least 2 characters.', $errors['firstName']);
     }
 
-    public function testMissingLastName() : void {
+    public function testMissingLastName(): void {
         $data = [
             'email' => 'test@example.com',
             'firstName' => 'User',
@@ -84,7 +84,7 @@ final class CreateUserRequestValidatorTest extends TestCase {
         self::assertSame('Last name is required.', $errors['lastName']);
     }
 
-    public function testLastNameTooShort() : void {
+    public function testLastNameTooShort(): void {
         $data = [
             'email' => 'test@example.com',
             'firstName' => 'User',
@@ -97,7 +97,7 @@ final class CreateUserRequestValidatorTest extends TestCase {
         self::assertSame('Last name must be at least 2 characters.', $errors['lastName']);
     }
 
-    public function testTooManyFields() : void {
+    public function testTooManyFields(): void {
         $data = [
             'email' => 'test@example.com',
             'firstName' => 'User',
@@ -111,7 +111,7 @@ final class CreateUserRequestValidatorTest extends TestCase {
         self::assertSame('Too many fields.', $errors['tooManyFields']);
     }
 
-    public function testMultipleErrors() : void {
+    public function testMultipleErrors(): void {
         $data = [
             'email' => 'invalid',
             'firstName' => 'A',

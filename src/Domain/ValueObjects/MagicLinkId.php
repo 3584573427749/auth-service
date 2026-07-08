@@ -4,5 +4,4 @@ declare(strict_types=1);
 
 namespace App\Domain\ValueObjects;
 
-class MagicLinkId extends AbstractId {
-}
+class MagicLinkId extends AbstractId {}

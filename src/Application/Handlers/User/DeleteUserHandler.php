@@ -14,7 +14,7 @@ class DeleteUserHandler extends UserHandler {
      * och tar bort alla poster ur kopplade tabeller.
      * @throws NotFoundException
      */
-    public function softDelete(UserId $id) : void {
+    public function softDelete(UserId $id): void {
         $this->userRepository->softDelete($id);
     }
 
@@ -23,7 +23,7 @@ class DeleteUserHandler extends UserHandler {
      * @throws UserInUseException
      * @throws NotFoundException
      */
-    public function removeUser(UserId $id) : void {
+    public function removeUser(UserId $id): void {
         $this->userRepository->remove($id);
     }
 }

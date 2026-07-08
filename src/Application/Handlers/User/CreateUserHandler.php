@@ -13,7 +13,7 @@ use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\UserId;
 
 class CreateUserHandler extends UserHandler {
-    public function handle(CreateUserCommand $command) : UserDTO {
+    public function handle(CreateUserCommand $command): UserDTO {
         $this->db->beginTransaction();
         try {
             if ($this->userRepository->existsByEmail($command->email)) {

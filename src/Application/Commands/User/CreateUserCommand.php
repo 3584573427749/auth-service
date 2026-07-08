@@ -12,7 +12,7 @@ class CreateUserCommand {
     /**
      * @param array<string, mixed> $data
      */
-    public static function fromRequest(array $data) : self {
+    public static function fromRequest(array $data): self {
         // Normalisera
         $email = $data['email']
                 |> trim(...)

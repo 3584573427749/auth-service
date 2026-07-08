@@ -8,20 +8,20 @@ use App\Domain\Entities\User;
 use App\Domain\ValueObjects\UserId;
 
 interface UserRepository {
-    public function existsByEmail(string $email) : bool;
+    public function existsByEmail(string $email): bool;
 
-    public function emailExistsWithOtherUser(string $email, UserId $id) : bool;
+    public function emailExistsWithOtherUser(string $email, UserId $id): bool;
 
-    public function save(User $user) : void;
+    public function save(User $user): void;
 
     /**
      * @return User[]
      */
-    public function getAll() : array;
+    public function getAll(): array;
 
-    public function getById(UserId $id) : User;
+    public function getById(UserId $id): User;
 
-    public function softDelete(UserId $id) : void;
+    public function softDelete(UserId $id): void;
 
-    public function remove(UserId $id) : void;
+    public function remove(UserId $id): void;
 }

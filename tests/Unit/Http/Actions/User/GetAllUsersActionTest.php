@@ -17,7 +17,7 @@ use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class GetAllUsersActionTest extends TestCase {
-    public function testReturnsAllUsers() : void {
+    public function testReturnsAllUsers(): void {
         $logger = $this->createMock(LoggerInterface::class);
         $users = [];
         $user = new User(
@@ -76,8 +76,8 @@ final class GetAllUsersActionTest extends TestCase {
      * @param \Psr\Http\Message\ResponseInterface $response
      * @return array<string, mixed>
      */
-    private function decodeJsonResponse($response) : array {
-        $body = (string) $response->getBody();
+    private function decodeJsonResponse($response): array {
+        $body = (string)$response->getBody();
 
         self::assertNotSame('', $body);
 

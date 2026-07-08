@@ -19,7 +19,7 @@ class DbalRoleRepository extends AbstractDbRepository implements RoleRepository 
     /**
      * @throws RoleAlreadyExistsException
      */
-    public function save(Role $role) : void {
+    public function save(Role $role): void {
         try {
             if ($role->getUpdatedAt() !== null) {
                 $this->connection->update(self::TABLE, $role->asDBRow(), ['id' => $role->getId()->toString()]);
@@ -37,18 +37,18 @@ class DbalRoleRepository extends AbstractDbRepository implements RoleRepository 
      * @return list<Role>
      * @throws Exception
      */
-    public function getAll() : array {
+    public function getAll(): array {
         $rows = $this->connection->executeQuery('SELECT * FROM ' . self::TABLE)
             ->fetchAllAssociative();
 
-        return array_map(fn ($row) => Role::fromDBRow($row), $rows);
+        return array_map(fn($row) => Role::fromDBRow($row), $rows);
 
     }
 
     /**
      * @throws Exception
      */
-    public function getById(RoleId $id) : Role {
+    public function getById(RoleId $id): Role {
         $row = $this->connection->executeQuery('SELECT * FROM ' . self::TABLE . ' WHERE id=:id', ['id' => $id->toString()])
             ->fetchAssociative();
 
@@ -62,7 +62,7 @@ class DbalRoleRepository extends AbstractDbRepository implements RoleRepository 
     /**
      * @throws RoleInUseException
      */
-    public function delete(RoleId $id) : void {
+    public function delete(RoleId $id): void {
         try {
             $rows = $this->connection
                 ->executeQuery('DELETE FROM ' . self::TABLE . ' WHERE id=:id', ['id' => $id->toString()])

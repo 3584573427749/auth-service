@@ -9,7 +9,7 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 use Tests\Integration\BaseApiTestCases;
 use Tests\Integration\OpenApi\OpenApiValidator;
 
-final class DeleteUserEndpointTest extends BaseApiTestCases {
+final class PermanentlyDeleteUserEndpointTest extends BaseApiTestCases {
     /**
      * @throws Exception
      */
@@ -28,11 +28,8 @@ final class DeleteUserEndpointTest extends BaseApiTestCases {
             ],
         ]);
 
-        $request = (new ServerRequestFactory())
-            ->createServerRequest(
-                'DELETE',
-                '/users/550e8400-e29b-41d4-a716-446655440000',
-            );
+        $request = new ServerRequestFactory()
+            ->createServerRequest('DELETE', '/users/550e8400-e29b-41d4-a716-446655440000/permanent');
 
         $response = $this->app->handle($request);
 
@@ -48,7 +45,7 @@ final class DeleteUserEndpointTest extends BaseApiTestCases {
 
         $count = $this->connection
             ->executeQuery(
-                'SELECT COUNT(*) FROM users WHERE id = ? and deleted_at IS NULL',
+                'SELECT COUNT(*) FROM users WHERE id = ?',
                 ['550e8400-e29b-41d4-a716-446655440000'],
             )
             ->fetchOne();
@@ -58,7 +55,7 @@ final class DeleteUserEndpointTest extends BaseApiTestCases {
         $validator = new OpenApiValidator();
 
         $validator->validateResponse(
-            '/users/{id}',
+            '/users/{id}/permanent',
             'delete',
             $response,
         );
@@ -67,11 +64,8 @@ final class DeleteUserEndpointTest extends BaseApiTestCases {
     public function testReturns404WhenUserDoesNotExist(): void {
         $this->loadSchema('users');
 
-        $request = (new ServerRequestFactory())
-            ->createServerRequest(
-                'DELETE',
-                '/users/550e8400-e29b-41d4-a716-446655440000',
-            );
+        $request = new ServerRequestFactory()
+            ->createServerRequest('DELETE', '/users/550e8400-e29b-41d4-a716-446655440000/permanent');
 
         $response = $this->app->handle($request);
 
@@ -83,7 +77,7 @@ final class DeleteUserEndpointTest extends BaseApiTestCases {
         $validator = new OpenApiValidator();
 
         $validator->validateResponse(
-            '/users/{id}',
+            '/users/{id}/permanent',
             'delete',
             $response,
         );

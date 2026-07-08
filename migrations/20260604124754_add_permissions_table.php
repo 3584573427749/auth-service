@@ -16,7 +16,7 @@ final class AddPermissionsTable extends AbstractMigration {
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change() : void {
+    public function change(): void {
         $table = $this->table('permissions', [
             'id' => false,
             'primary_key' => ['id'],
@@ -27,14 +27,14 @@ final class AddPermissionsTable extends AbstractMigration {
             'limit' => 36,
             'null' => false,
         ])
-              ->addColumn('name', 'string', [
-                  'limit' => 150,
-                  'null' => false,
-              ])
-              ->addColumn('description', 'string', [
-                  'limit' => 255,
-                  'null' => false,
-              ])
-              ->create();
+            ->addColumn('name', 'string', [
+                'limit' => 150,
+                'null' => false,
+            ])
+            ->addColumn('description', 'string', [
+                'limit' => 255,
+                'null' => false,
+            ])
+            ->create();
     }
 }

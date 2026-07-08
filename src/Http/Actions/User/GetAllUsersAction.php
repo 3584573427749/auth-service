@@ -16,7 +16,7 @@ class GetAllUsersAction extends UserAction {
     /**
      * @inheritDoc
      */
-    protected function action() : Response {
+    protected function action(): Response {
         $userDTOs = $this->handler->getAll();
 
         return $this->respondWithData($userDTOs);
