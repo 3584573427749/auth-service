@@ -9,7 +9,7 @@ use Tests\Integration\BaseApiTestCases;
 use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class GetUserEndpointTest extends BaseApiTestCases {
-    public function testGetUserReturns200(): void {
+    public function testGetUserReturns200() : void {
         $this->loadSchema('users');
 
         $this->seed('users', [
@@ -53,7 +53,7 @@ final class GetUserEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testGetUserReturns400WhenIdIsNotAUuid(): void {
+    public function testGetUserReturns400WhenIdIsNotAUuid() : void {
         $this->loadSchema('users');
 
         $request = (new ServerRequestFactory())
@@ -82,7 +82,7 @@ final class GetUserEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testGetUserReturns404WhenUserDoesNotExist(): void {
+    public function testGetUserReturns404WhenUserDoesNotExist() : void {
         $this->loadSchema('users');
 
         $request = (new ServerRequestFactory())

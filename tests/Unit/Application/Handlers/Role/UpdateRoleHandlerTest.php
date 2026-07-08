@@ -14,7 +14,7 @@ use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateRoleHandlerTest extends TestCase {
-    public function testHandleUpdateRoleSuccessfully(): void {
+    public function testHandleUpdateRoleSuccessfully() : void {
         $db = $this->createMock(Connection::class);
         $repository = $this->createMock(RoleRepository::class);
 
@@ -70,7 +70,7 @@ final class UpdateRoleHandlerTest extends TestCase {
         self::assertSame('Test Role', $json['description']);
     }
 
-    public function testHandleThrowsExceptionIfRoleNameExists(): void {
+    public function testHandleThrowsExceptionIfRoleNameExists() : void {
         $db = $this->createMock(Connection::class);
         $repository = $this->createMock(RoleRepository::class);
 
@@ -105,7 +105,7 @@ final class UpdateRoleHandlerTest extends TestCase {
         $handler->handle($command);
     }
 
-    public function testHandleRollsBackOnSaveError(): void {
+    public function testHandleRollsBackOnSaveError() : void {
         $db = $this->createMock(Connection::class);
         $repository = $this->createMock(RoleRepository::class);
 

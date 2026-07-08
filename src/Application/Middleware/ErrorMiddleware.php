@@ -15,7 +15,7 @@ class ErrorMiddleware implements MiddlewareInterface {
     public function __construct(private ErrorHandler $handler) {
     }
 
-    public function process(Request $request, Handler $handler): Response {
+    public function process(Request $request, Handler $handler) : Response {
         try {
             return $handler->handle($request);
         } catch (Throwable $e) {

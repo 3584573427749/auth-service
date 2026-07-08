@@ -11,7 +11,7 @@ use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
 
 class UpdateUserHandler extends UserHandler {
-    public function handle(UpdateUserCommand $command): UserDTO {
+    public function handle(UpdateUserCommand $command) : UserDTO {
         $this->db->beginTransaction();
         try {
             if ($this->userRepository->emailExistsWithOtherUser($command->email, $command->id)) {

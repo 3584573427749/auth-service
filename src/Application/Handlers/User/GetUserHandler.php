@@ -11,7 +11,7 @@ class GetUserHandler extends UserHandler {
     /**
      * @return UserDTO[]
      */
-    public function getAll(): array {
+    public function getAll() : array {
         $users = $this->userRepository->getAll();
 
         // Lägg till läsning av roller
@@ -24,7 +24,7 @@ class GetUserHandler extends UserHandler {
         return $userDTOs;
     }
 
-    public function getById(UserId $id): UserDTO {
+    public function getById(UserId $id) : UserDTO {
         $user = $this->userRepository->getById($id);
 
         return UserDTO::fromUser($user);

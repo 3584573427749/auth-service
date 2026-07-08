@@ -8,7 +8,7 @@ use App\Application\Commands\User\CreateUserCommand;
 use PHPUnit\Framework\TestCase;
 
 final class CreateUserCommandTest extends TestCase {
-    public function testFromRequestMapsValuesCorrectly(): void {
+    public function testFromRequestMapsValuesCorrectly() : void {
         $data = [
             'email' => 'test@example.com',
             'firstName' => 'User',
@@ -22,7 +22,7 @@ final class CreateUserCommandTest extends TestCase {
         self::assertSame('Name', $command->lastName);
     }
 
-    public function testEmailIsTrimmedAndLowercased(): void {
+    public function testEmailIsTrimmedAndLowercased() : void {
         $data = [
             'email' => '  TEST@EXAMPLE.COM  ',
             'firstName' => 'User',
@@ -34,7 +34,7 @@ final class CreateUserCommandTest extends TestCase {
         self::assertSame('test@example.com', $command->email);
     }
 
-    public function testNamesAreTrimmed(): void {
+    public function testNamesAreTrimmed() : void {
         $data = [
             'email' => 'test@example.com',
             'firstName' => '  User  ',
@@ -47,7 +47,7 @@ final class CreateUserCommandTest extends TestCase {
         self::assertSame('Name', $command->lastName);
     }
 
-    public function testHandlesMinimalValidInput(): void {
+    public function testHandlesMinimalValidInput() : void {
         $data = [
             'email' => 'a@b.c',
             'firstName' => 'A',

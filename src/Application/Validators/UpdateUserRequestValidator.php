@@ -11,7 +11,7 @@ class UpdateUserRequestValidator {
      * @param array<string, mixed> $data
      * @return string[]
      */
-    public static function validate(array $data): array {
+    public static function validate(array $data) : array {
         $errors = [];
 
         if (!isset($data['id'])) {

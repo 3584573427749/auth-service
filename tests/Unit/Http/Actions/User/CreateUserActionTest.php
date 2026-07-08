@@ -20,7 +20,7 @@ use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class CreateUserActionTest extends TestCase {
-    public function testCreatesUserAndReturns201WhenRequestBodyIsValid(): void {
+    public function testCreatesUserAndReturns201WhenRequestBodyIsValid() : void {
         $logger = $this->createMock(LoggerInterface::class);
 
         $user = new User(
@@ -94,7 +94,7 @@ final class CreateUserActionTest extends TestCase {
     /**
      * @return array<string, mixed>
      */
-    private function decodeJsonResponse(ResponseInterface $response): array {
+    private function decodeJsonResponse(ResponseInterface $response) : array {
         $body = (string)$response->getBody();
 
         self::assertNotSame('', $body);
@@ -106,7 +106,7 @@ final class CreateUserActionTest extends TestCase {
         return $decoded;
     }
 
-    public function testCreatesUserAndThrowsExceptionWhenRequestBodyIsInvalid(): void {
+    public function testCreatesUserAndThrowsExceptionWhenRequestBodyIsInvalid() : void {
         $logger = $this->createMock(LoggerInterface::class);
 
         $handler = $this->createMock(CreateUserHandler::class);

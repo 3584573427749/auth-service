@@ -23,7 +23,7 @@ class MagicLinks implements \JsonSerializable {
     /**
      * @param array<string, mixed> $row DB row with keys matching the database columns
      */
-    public static function fromDBRow(array $row): self {
+    public static function fromDBRow(array $row) : self {
         return new self(
             new MagicLinkId($row['id']),
             new UserId($row['user_id']),
@@ -38,7 +38,7 @@ class MagicLinks implements \JsonSerializable {
     /**
      * @return array <string, string>
      */
-    public function asDBRow(): array {
+    public function asDBRow() : array {
         return [
             'id' => $this->id->toString(),
             'user_id' => $this->userId->toString(),
@@ -53,7 +53,7 @@ class MagicLinks implements \JsonSerializable {
     /**
      * @return array<string, string>
      */
-    public function jsonSerialize(): array {
+    public function jsonSerialize() : array {
         return [
             'id' => $this->id->toString(),
             'userId' => $this->userId->toString(),

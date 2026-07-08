@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 abstract class DatabaseBaseTestCase extends TestCase {
     protected Connection $connection;
 
-    protected function setUp(): void {
+    protected function setUp() : void {
         $this->connection = DriverManager::getConnection([
             'driver' => 'pdo_mysql',
             'host' => 'localhost',
@@ -27,11 +27,11 @@ abstract class DatabaseBaseTestCase extends TestCase {
 
     }
 
-    protected function tearDown(): void {
+    protected function tearDown() : void {
         $this->connection->executeStatement('DROP DATABASE test_db');
     }
 
-    protected function loadSchema(string $table): void {
+    protected function loadSchema(string $table) : void {
         $schema = file_get_contents(__DIR__ . "/../../../../var/schema/{$table}.sql");
         if ($schema === false) {
             return;
@@ -44,7 +44,7 @@ abstract class DatabaseBaseTestCase extends TestCase {
      * @param array<int, array<string, mixed>> $rows
      * @throws Exception
      */
-    protected function seed(string $table, array $rows): void {
+    protected function seed(string $table, array $rows) : void {
         foreach ($rows as $row) {
             $this->connection->insert($table, $row);
         }

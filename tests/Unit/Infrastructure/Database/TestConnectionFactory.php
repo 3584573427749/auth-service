@@ -8,7 +8,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 
 final class TestConnectionFactory {
-    public static function create(): Connection {
+    public static function create() : Connection {
         return DriverManager::getConnection([
             'driver' => 'pdo_mysql',
             'host' => '127.0.0.1:3307',

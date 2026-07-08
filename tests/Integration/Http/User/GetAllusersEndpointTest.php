@@ -9,7 +9,7 @@ use Tests\Integration\BaseApiTestCases;
 use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class GetAllUsersEndpointTest extends BaseApiTestCases {
-    public function testReturnsAllUsers(): void {
+    public function testReturnsAllUsers() : void {
         $this->loadSchema('users');
 
         $this->seed('users', [
@@ -59,7 +59,7 @@ final class GetAllUsersEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturnsEmptyArrayWhenNoUsersExist(): void {
+    public function testReturnsEmptyArrayWhenNoUsersExist() : void {
         $this->loadSchema('users');
 
         $request = (new ServerRequestFactory())

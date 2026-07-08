@@ -9,7 +9,7 @@ use Tests\Integration\BaseApiTestCases;
 use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class GetRoleEndpointTest extends BaseApiTestCases {
-    public function testGetRoleReturns200(): void {
+    public function testGetRoleReturns200() : void {
         $this->loadSchema('roles');
 
         $this->seed('roles', [
@@ -52,7 +52,7 @@ final class GetRoleEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testGetRoleReturns400WhenIdIsNotAUuid(): void {
+    public function testGetRoleReturns400WhenIdIsNotAUuid() : void {
         $this->loadSchema('roles');
 
         $request = (new ServerRequestFactory())
@@ -81,7 +81,7 @@ final class GetRoleEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testGetRoleReturns404WhenRoleDoesNotExist(): void {
+    public function testGetRoleReturns404WhenRoleDoesNotExist() : void {
         $this->loadSchema('roles');
 
         $request = (new ServerRequestFactory())

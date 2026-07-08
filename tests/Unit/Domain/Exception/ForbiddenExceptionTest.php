@@ -8,25 +8,25 @@ use App\Domain\Exception\ForbiddenException;
 use PHPUnit\Framework\TestCase;
 
 class ForbiddenExceptionTest extends TestCase {
-    public function testCanBeInstantiated(): void {
+    public function testCanBeInstantiated() : void {
         $exception = new ForbiddenException('Forbidden');
 
         $this->assertInstanceOf(ForbiddenException::class, $exception);
     }
 
-    public function testMessageIsStored(): void {
+    public function testMessageIsStored() : void {
         $exception = new ForbiddenException('Access denied');
 
         $this->assertSame('Access denied', $exception->getMessage());
     }
 
-    public function testExtendsRuntimeException(): void {
+    public function testExtendsRuntimeException() : void {
         $exception = new ForbiddenException('Test');
 
         $this->assertInstanceOf(\RuntimeException::class, $exception);
     }
 
-    public function testDetailsAreStored(): void {
+    public function testDetailsAreStored() : void {
         $details = [
             'role' => 'user',
             'action' => 'delete',
@@ -37,13 +37,13 @@ class ForbiddenExceptionTest extends TestCase {
         $this->assertSame($details, $exception->getDetails());
     }
 
-    public function testDetailsDefaultToEmptyArray(): void {
+    public function testDetailsDefaultToEmptyArray() : void {
         $exception = new ForbiddenException('Forbidden');
 
         $this->assertSame([], $exception->getDetails());
     }
 
-    public function testCanBeThrownAndCaught(): void {
+    public function testCanBeThrownAndCaught() : void {
         $this->expectException(ForbiddenException::class);
         $this->expectExceptionMessage('Forbidden');
 

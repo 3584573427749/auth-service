@@ -14,7 +14,7 @@ use App\Domain\ValueObjects\RoleId;
 use PHPUnit\Framework\TestCase;
 
 final class GetRoleHandlerTest extends TestCase {
-    public function testGetAllReturnsRoleDTOs(): void {
+    public function testGetAllReturnsRoleDTOs() : void {
         $role1 = new Role(
             new RoleId('550e8400-e29b-41d4-a716-446655440000'),
             'A',
@@ -54,7 +54,7 @@ final class GetRoleHandlerTest extends TestCase {
         self::assertInstanceOf(RoleDTO::class, $result[1]);
     }
 
-    public function testGetAllReturnsEmptyArrayWhenNoRoles(): void {
+    public function testGetAllReturnsEmptyArrayWhenNoRoles() : void {
         $repository = $this->createMock(RoleRepository::class);
 
         $repository
@@ -73,7 +73,7 @@ final class GetRoleHandlerTest extends TestCase {
         self::assertSame([], $result);
     }
 
-    public function testGetByIdReturnsRoleDTO(): void {
+    public function testGetByIdReturnsRoleDTO() : void {
         $role = new Role(
             new RoleId('550e8400-e29b-41d4-a716-446655440000'),
             'A',
@@ -103,7 +103,7 @@ final class GetRoleHandlerTest extends TestCase {
         self::assertInstanceOf(RoleDTO::class, $result);
     }
 
-    public function testGetByIdThrowsRoleNotFoundException(): void {
+    public function testGetByIdThrowsRoleNotFoundException() : void {
         $repository = $this->createMock(RoleRepository::class);
 
         $repository

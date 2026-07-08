@@ -15,13 +15,13 @@ use Tests\Unit\Infrastructure\Database\DatabaseBaseTestCase;
 final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
     private DbalUserRepository $repository;
 
-    public function testExistsByEmailReturnsFalseWhenUserDoesNotExist(): void {
+    public function testExistsByEmailReturnsFalseWhenUserDoesNotExist() : void {
         $exists = $this->repository->existsByEmail('test@example.com');
 
         self::assertFalse($exists);
     }
 
-    public function testExistsByEmailReturnsTrueWhenUserExists(): void {
+    public function testExistsByEmailReturnsTrueWhenUserExists() : void {
         $user = $this->createUser();
 
         // Insert manually
@@ -32,7 +32,7 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
         self::assertTrue($exists);
     }
 
-    private function createUser(?DateTimeValue $updatedAt = null): User {
+    private function createUser(?DateTimeValue $updatedAt = null) : User {
         return new User(
             new UserId('550e8400-e29b-41d4-a716-446655440000'),
             new Email('test@example.com'),
@@ -44,7 +44,7 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
         );
     }
 
-    public function testSaveInsertsNewUser(): void {
+    public function testSaveInsertsNewUser() : void {
         $user = $this->createUser();
 
         $this->repository->save($user);
@@ -58,7 +58,7 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
         self::assertSame('test@example.com', $row['email']);
     }
 
-    public function testSaveUpdatesExistingUser(): void {
+    public function testSaveUpdatesExistingUser() : void {
         $user = $this->createUser();
 
         // First insert
@@ -79,7 +79,7 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
         self::assertSame('Updated', $row['first_name']);
     }
 
-    public function testGetAllReturnsEmptyArrayWhenNoUsers(): void {
+    public function testGetAllReturnsEmptyArrayWhenNoUsers() : void {
         $this->loadSchema('users');
 
         $repository = new DbalUserRepository($this->connection);
@@ -89,7 +89,7 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
         self::assertSame([], $result);
     }
 
-    public function testGetAllReturnsUsers(): void {
+    public function testGetAllReturnsUsers() : void {
         $this->seed('users', [
             [
                 'id' => '660e8400-e29b-41d4-a716-446655440001',
@@ -121,7 +121,7 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
         self::assertSame('b@test.com', $result[1]->getEmail()->toString());
     }
 
-    public function testGetByIdReturnsUser(): void {
+    public function testGetByIdReturnsUser() : void {
         $this->loadSchema('users');
 
         $this->seed('users', [
@@ -153,7 +153,7 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
         self::assertSame('Name', $result->getLastName());
     }
 
-    public function testGetByIdThrowsNotFoundException(): void {
+    public function testGetByIdThrowsNotFoundException() : void {
         $this->loadSchema('users');
 
         $repository = new DbalUserRepository($this->connection);
@@ -165,7 +165,7 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
         );
     }
 
-    public function testDelete(): void {
+    public function testDelete() : void {
         $this->loadSchema('users');
 
         $this->seed('users', [
@@ -191,7 +191,7 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
         self::assertNotNull($row['deleted_at']);
     }
 
-    public function testRemove(): void {
+    public function testRemove() : void {
         $this->loadSchema('users');
 
         $this->seed('users', [
@@ -216,7 +216,7 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
         self::assertFalse($row);
     }
 
-    protected function setUp(): void {
+    protected function setUp() : void {
         parent::setUp();
 
         $this->loadSchema('users');

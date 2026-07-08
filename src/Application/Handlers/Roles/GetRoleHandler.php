@@ -11,7 +11,7 @@ class GetRoleHandler extends RoleHandler {
     /**
      * @return RoleDTO[]
      */
-    public function getAll(): array {
+    public function getAll() : array {
         $roles = $this->repository->getAll();
 
         // Lägg till läsning av roller
@@ -24,7 +24,7 @@ class GetRoleHandler extends RoleHandler {
         return $roleDTOs;
     }
 
-    public function getById(RoleId $id): RoleDTO {
+    public function getById(RoleId $id) : RoleDTO {
         $role = $this->repository->getById($id);
 
         return RoleDTO::fromRole($role);

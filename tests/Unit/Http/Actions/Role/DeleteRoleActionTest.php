@@ -12,7 +12,7 @@ use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class DeleteRoleActionTest extends TestCase {
-    public function testReturnsVoid(): void {
+    public function testReturnsVoid() : void {
         $logger = $this->createMock(LoggerInterface::class);
 
         $handler = $this->createMock(DeleteRoleHandler::class);

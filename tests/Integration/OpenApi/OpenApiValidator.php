@@ -28,14 +28,14 @@ final class OpenApiValidator {
         string $path,
         string $method,
         ResponseInterface $response,
-    ): void {
+    ) : void {
         $this->responseValidator->validate(
             new OperationAddress($path, strtolower($method)),
             $response,
         );
     }
 
-    public function validateRequest(ServerRequestInterface $request): void {
+    public function validateRequest(ServerRequestInterface $request) : void {
         $this->requestValidator->validate($request);
     }
 }

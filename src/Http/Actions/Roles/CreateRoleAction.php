@@ -21,7 +21,7 @@ class CreateRoleAction extends RoleAction {
      * @throws RoleAlreadyExistsException
      * @throws \Throwable
      */
-    protected function action(): Response {
+    protected function action() : Response {
         $data = (array)$this->request->getParsedBody();
 
         //Validera API-data

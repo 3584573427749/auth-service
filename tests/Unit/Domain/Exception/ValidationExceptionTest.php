@@ -8,25 +8,25 @@ use App\Domain\Exception\ValidationException;
 use PHPUnit\Framework\TestCase;
 
 class ValidationExceptionTest extends TestCase {
-    public function testCanBeInstantiated(): void {
+    public function testCanBeInstantiated() : void {
         $exception = new ValidationException('Validation failed');
 
         $this->assertInstanceOf(ValidationException::class, $exception);
     }
 
-    public function testMessageIsStored(): void {
+    public function testMessageIsStored() : void {
         $exception = new ValidationException('Invalid input');
 
         $this->assertSame('Invalid input', $exception->getMessage());
     }
 
-    public function testExtendsRuntimeException(): void {
+    public function testExtendsRuntimeException() : void {
         $exception = new ValidationException('Test');
 
         $this->assertInstanceOf(\RuntimeException::class, $exception);
     }
 
-    public function testDetailsAreStored(): void {
+    public function testDetailsAreStored() : void {
         $details = [
             'field' => 'email',
             'error' => 'invalid format',
@@ -37,13 +37,13 @@ class ValidationExceptionTest extends TestCase {
         $this->assertSame($details, $exception->getDetails());
     }
 
-    public function testDetailsDefaultToEmptyArray(): void {
+    public function testDetailsDefaultToEmptyArray() : void {
         $exception = new ValidationException('Validation error');
 
         $this->assertSame([], $exception->getDetails());
     }
 
-    public function testCanBeThrownAndCaught(): void {
+    public function testCanBeThrownAndCaught() : void {
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage('Validation error');
 

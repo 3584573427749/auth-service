@@ -27,27 +27,27 @@ final class DateValue implements JsonSerializable {
         $this->value = DateTimeImmutable::createFromFormat('Y-m-d', $clean);
     }
 
-    public static function fromString(string $value): self {
+    public static function fromString(string $value) : self {
         return new self($value);
     }
 
-    public function __toString(): string {
+    public function __toString() : string {
         return $this->toString();
     }
 
-    public function toString(): string {
+    public function toString() : string {
         return $this->value->format('Y-m-d');
     }
 
-    public function getValue(): DateTimeImmutable {
+    public function getValue() : DateTimeImmutable {
         return $this->value;
     }
 
-    public function jsonSerialize(): string {
+    public function jsonSerialize() : string {
         return $this->toString();
     }
 
-    public function equals(self $other): bool {
+    public function equals(self $other) : bool {
         return $this->value === $other->value;
     }
 }

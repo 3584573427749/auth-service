@@ -13,7 +13,7 @@ final class DeleteUserEndpointTest extends BaseApiTestCases {
     /**
      * @throws Exception
      */
-    public function testReturns204WhenUserExists(): void {
+    public function testReturns204WhenUserExists() : void {
         $this->loadSchema('users');
 
         $this->seed('users', [
@@ -64,7 +64,7 @@ final class DeleteUserEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns404WhenUserDoesNotExist(): void {
+    public function testReturns404WhenUserDoesNotExist() : void {
         $this->loadSchema('users');
 
         $request = (new ServerRequestFactory())

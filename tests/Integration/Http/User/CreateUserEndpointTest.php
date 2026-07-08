@@ -9,7 +9,7 @@ use Tests\Integration\BaseApiTestCases;
 use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class CreateUserEndpointTest extends BaseApiTestCases {
-    public function testReturns201WhenRequestIsValid(): void {
+    public function testReturns201WhenRequestIsValid() : void {
         $this->loadSchema('users');
 
         $requestBody = [
@@ -40,7 +40,7 @@ final class CreateUserEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns409WhenUserAlreadyExists(): void {
+    public function testReturns409WhenUserAlreadyExists() : void {
         $this->loadSchema('users');
 
         $this->seed('users', [
@@ -76,7 +76,7 @@ final class CreateUserEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns422WhenValidationFails(): void {
+    public function testReturns422WhenValidationFails() : void {
         $this->loadSchema('users');
 
         $request = (new ServerRequestFactory())

@@ -8,14 +8,14 @@ use App\Domain\Entities\Role;
 use App\Domain\ValueObjects\RoleId;
 
 interface RoleRepository {
-    public function save(Role $role): void;
+    public function save(Role $role) : void;
 
     /**
      * @return Role[]
      */
-    public function getAll(): array;
+    public function getAll() : array;
 
-    public function getById(RoleId $id): Role;
+    public function getById(RoleId $id) : Role;
 
-    public function delete(RoleId $id): void;
+    public function delete(RoleId $id) : void;
 }

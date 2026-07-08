@@ -16,7 +16,7 @@ final class AddPermissionsTable extends AbstractMigration {
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void {
+    public function change() : void {
         $table = $this->table('permissions', [
             'id' => false,
             'primary_key' => ['id'],

@@ -10,7 +10,7 @@ use App\Application\Validators\CreateRoleRequestValidator;
 use PHPUnit\Framework\TestCase;
 
 final class CreateRoleRequestValidatorTest extends TestCase {
-    public function testValidDataReturnsNoErrors(): void {
+    public function testValidDataReturnsNoErrors() : void {
         $data = [
             'name' => 'Test',
             'description' => 'Test role',
@@ -22,7 +22,7 @@ final class CreateRoleRequestValidatorTest extends TestCase {
         self::assertSame([], $errors);
     }
 
-    public function testMissingName(): void {
+    public function testMissingName() : void {
         $data = [
             'description' => 'Test role',
             'adminLevel' => 1,
@@ -34,7 +34,7 @@ final class CreateRoleRequestValidatorTest extends TestCase {
         self::assertSame('Name is required.', $errors['name']);
     }
 
-    public function testMissingDescription(): void {
+    public function testMissingDescription() : void {
         $data = [
             'name' => 'Test',
             'adminLevel' => 1,
@@ -46,7 +46,7 @@ final class CreateRoleRequestValidatorTest extends TestCase {
         self::assertSame('Description is required.', $errors['description']);
     }
 
-    public function testMissingAdminLevel(): void {
+    public function testMissingAdminLevel() : void {
         $data = [
             'name' => 'Test',
             'description' => 'Test role',
@@ -58,7 +58,7 @@ final class CreateRoleRequestValidatorTest extends TestCase {
         self::assertSame('AdminLevel is required.', $errors['adminLevel']);
     }
 
-    public function testNameTooLong(): void {
+    public function testNameTooLong() : void {
         $data = [
             'name' => str_repeat('A', 101),
             'description' => 'Test role',
@@ -71,7 +71,7 @@ final class CreateRoleRequestValidatorTest extends TestCase {
         self::assertSame('Name is too long (max 100 characters).', $errors['name']);
     }
 
-    public function testAdminLevelIsOutOfRange(): void {
+    public function testAdminLevelIsOutOfRange() : void {
         $data = [
             'name' => 'Test',
             'description' => 'Test role',
@@ -95,7 +95,7 @@ final class CreateRoleRequestValidatorTest extends TestCase {
         self::assertSame('AdminLevel must be between 0 and 100.', $errors['adminLevel']);
     }
 
-    public function testTooManyFields(): void {
+    public function testTooManyFields() : void {
         $data = [
             'name' => 'Test',
             'description' => 'Test role',
@@ -109,7 +109,7 @@ final class CreateRoleRequestValidatorTest extends TestCase {
         self::assertSame('Too many fields.', $errors['tooManyFields']);
     }
 
-    public function testMultipleErrors(): void {
+    public function testMultipleErrors() : void {
         $data = [
             'name' => 'Test',
             'description' => 'Test role',

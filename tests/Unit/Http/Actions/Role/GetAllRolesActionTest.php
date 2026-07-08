@@ -16,7 +16,7 @@ use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class GetAllRolesActionTest extends TestCase {
-    public function testReturnsAllRoles(): void {
+    public function testReturnsAllRoles() : void {
         $logger = $this->createMock(LoggerInterface::class);
         $roles = [];
         $role = new Role(
@@ -73,7 +73,7 @@ final class GetAllRolesActionTest extends TestCase {
      * @param \Psr\Http\Message\ResponseInterface $response
      * @return array<string, mixed>
      */
-    private function decodeJsonResponse($response): array {
+    private function decodeJsonResponse($response) : array {
         $body = (string)$response->getBody();
 
         self::assertNotSame('', $body);

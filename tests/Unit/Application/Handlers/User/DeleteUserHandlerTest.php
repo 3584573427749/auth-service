@@ -11,7 +11,7 @@ use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 
 final class DeleteUserHandlerTest extends TestCase {
-    public function testHandleCallsSoftDelete(): void {
+    public function testHandleCallsSoftDelete() : void {
         $userId = new UserId(
             '550e8400-e29b-41d4-a716-446655440000',
         );
@@ -34,7 +34,7 @@ final class DeleteUserHandlerTest extends TestCase {
         $handler->softDelete($userId);
     }
 
-    public function testHandleCallsRemove(): void {
+    public function testHandleCallsRemove() : void {
         $userId = new UserId(
             '550e8400-e29b-41d4-a716-446655440000',
         );

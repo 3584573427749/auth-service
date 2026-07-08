@@ -15,7 +15,7 @@ class ValidationException extends \RuntimeException {
     /**
      * @return string[]
      */
-    public function getDetails(): array {
+    public function getDetails() : array {
         return $this->details;
     }
 }

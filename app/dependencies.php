@@ -13,11 +13,11 @@ use Psr\Log\LoggerInterface;
 return function (ContainerBuilder $builder) {
 
     $builder->addDefinitions([
-        'logger' => fn() => (require __DIR__ . '/logger.php')(),
-        LoggerInterface::class => fn($c) => $c->get('logger'),
+        'logger' => fn () => (require __DIR__ . '/logger.php')(),
+        LoggerInterface::class => fn ($c) => $c->get('logger'),
 
-        ErrorHandler::class => fn($c) => new ErrorHandler($c->get('logger')),
-        ErrorMiddleware::class => fn($c) => new ErrorMiddleware($c->get(ErrorHandler::class)),
+        ErrorHandler::class => fn ($c) => new ErrorHandler($c->get('logger')),
+        ErrorMiddleware::class => fn ($c) => new ErrorMiddleware($c->get(ErrorHandler::class)),
 
         // Database Connection (singleton)
         Connection::class => function (ContainerInterface $c) {

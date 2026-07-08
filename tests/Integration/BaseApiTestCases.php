@@ -17,7 +17,7 @@ abstract class BaseApiTestCases extends DatabaseBaseTestCase {
      */
     protected App $app;
 
-    protected function setUp(): void {
+    protected function setUp() : void {
         parent::setUp();
 
         $dotenv = Dotenv::createImmutable(
@@ -34,7 +34,7 @@ abstract class BaseApiTestCases extends DatabaseBaseTestCase {
         string $path,
         string $method,
         ResponseInterface $response,
-    ): void {
+    ) : void {
         $validator = new OpenApiValidator();
 
         $validator->validateResponse(

@@ -20,7 +20,7 @@ final class RoleTest extends TestCase {
 
     private DateTimeValue $createdAt;
 
-    public function testConstructorAndGetters(): void {
+    public function testConstructorAndGetters() : void {
         $role = new Role(
             $this->id,
             $this->name,
@@ -36,7 +36,7 @@ final class RoleTest extends TestCase {
         self::assertSame($this->adminLevel, $role->getAdminLevel());
     }
 
-    public function testSetters(): void {
+    public function testSetters() : void {
         $role = new Role(
             $this->id,
             $this->name,
@@ -60,7 +60,7 @@ final class RoleTest extends TestCase {
         self::assertSame($newAdminLevel, $role->getAdminLevel());
     }
 
-    public function testSetUpdatedAt(): void {
+    public function testSetUpdatedAt() : void {
         $role = new Role(
             $this->id,
             $this->name,
@@ -76,7 +76,7 @@ final class RoleTest extends TestCase {
         self::assertSame($updatedAt, $role->getUpdatedAt());
     }
 
-    public function testFromDBRow(): void {
+    public function testFromDBRow() : void {
         $row = [
             'id' => '550e8400-e29b-41d4-a716-446655440000',
             'name' => 'User',
@@ -95,7 +95,7 @@ final class RoleTest extends TestCase {
         self::assertNull($role->getUpdatedAt());
     }
 
-    public function testAsDBRow(): void {
+    public function testAsDBRow() : void {
         $role = new Role(
             $this->id,
             $this->name,
@@ -115,7 +115,7 @@ final class RoleTest extends TestCase {
         self::assertNull($row['updated_at']);
     }
 
-    public function testJsonSerialize(): void {
+    public function testJsonSerialize() : void {
         $role = new Role(
             $this->id,
             $this->name,
@@ -135,7 +135,7 @@ final class RoleTest extends TestCase {
         self::assertNull($data['updatedAt']);
     }
 
-    protected function setUp(): void {
+    protected function setUp() : void {
         $this->id = new RoleId('550e8400-e29b-41d4-a716-446655440000');
         $this->name = 'User';
         $this->description = 'Regular user';

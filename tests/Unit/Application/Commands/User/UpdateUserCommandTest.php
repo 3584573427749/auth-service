@@ -9,14 +9,15 @@ use App\Application\Commands\User\UpdateUserCommand;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateUserCommandTest extends TestCase {
-    public function testFromRequestMapsValuesCorrectly(): void {
+    public function testFromRequestMapsValuesCorrectly() : void {
         $data = [
             'id' => '550e8400-e29b-41d4-a716-446655440000',
             'email' => 'test@example.com',
             'firstName' => 'User',
             'lastName' => 'Name',
             'createdAt' => '2026-01-01 10:00:00',
-        ];;
+        ];
+        ;
         $command = UpdateUserCommand::fromRequest($data);
 
         self::assertSame('test@example.com', $command->email);
@@ -24,7 +25,7 @@ final class UpdateUserCommandTest extends TestCase {
         self::assertSame('Name', $command->lastName);
     }
 
-    public function testEmailIsTrimmedAndLowercased(): void {
+    public function testEmailIsTrimmedAndLowercased() : void {
         $data = [
             'id' => '550e8400-e29b-41d4-a716-446655440000',
             'email' => '        TEST@EXAMPLE.COM',
@@ -38,7 +39,7 @@ final class UpdateUserCommandTest extends TestCase {
         self::assertSame('test@example.com', $command->email);
     }
 
-    public function testNamesAreTrimmed(): void {
+    public function testNamesAreTrimmed() : void {
         $data = [
             'id' => '550e8400-e29b-41d4-a716-446655440000',
             'email' => 'test@example.com',
@@ -53,7 +54,7 @@ final class UpdateUserCommandTest extends TestCase {
         self::assertSame('Name', $command->lastName);
     }
 
-    public function testHandlesMinimalValidInput(): void {
+    public function testHandlesMinimalValidInput() : void {
         $data = [
             'id' => '550e8400-e29b-41d4-a716-446655440000',
             'email' => 'a@b.c',

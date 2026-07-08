@@ -38,21 +38,21 @@ abstract class AbstractId implements JsonSerializable {
     /**
      * Returns the raw UUID string.
      */
-    public function toString(): string {
+    public function toString() : string {
         return $this->value;
     }
 
     /**
      * Construct an ID from existing string (e.g. from database).
      */
-    public static function fromString(string $value): static {
+    public static function fromString(string $value) : static {
         return new static($value);
     }
 
     /**
      * Generates a new ID using UUID v7.
      */
-    public static function random(): static {
+    public static function random() : static {
         return new static(null);
     }
 
@@ -61,7 +61,7 @@ abstract class AbstractId implements JsonSerializable {
      * - IDs must be the same concrete class
      * - and have identical UUID values
      */
-    public function equals(self $other): bool {
+    public function equals(self $other) : bool {
         if (get_class($this) !== get_class($other)) {
             throw new InvalidArgumentException(sprintf(
                 'Cannot compare %s with %s',
@@ -76,14 +76,14 @@ abstract class AbstractId implements JsonSerializable {
     /**
      * Magic cast to string.
      */
-    public function __toString(): string {
+    public function __toString() : string {
         return $this->value;
     }
 
     /**
      * JSON serialization returns the raw string.
      */
-    public function jsonSerialize(): string {
+    public function jsonSerialize() : string {
         return $this->value;
     }
 }

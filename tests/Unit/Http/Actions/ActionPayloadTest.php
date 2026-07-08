@@ -9,7 +9,7 @@ use App\Http\Actions\ActionPayload;
 use PHPUnit\Framework\TestCase;
 
 class ActionPayloadTest extends TestCase {
-    public function testConstructorAndGetters(): void {
+    public function testConstructorAndGetters() : void {
         $error = new ActionError(ActionError::SERVER_ERROR, 'Failure');
 
         $payload = new ActionPayload(500, ['foo' => 'bar'], $error);
@@ -19,7 +19,7 @@ class ActionPayloadTest extends TestCase {
         $this->assertSame($error, $payload->getError());
     }
 
-    public function testJsonSerializeWithData(): void {
+    public function testJsonSerializeWithData() : void {
         $payload = new ActionPayload(200, ['key' => 'value']);
 
         $data = $payload->jsonSerialize();
@@ -30,7 +30,7 @@ class ActionPayloadTest extends TestCase {
         ], $data);
     }
 
-    public function testJsonSerializeWithError(): void {
+    public function testJsonSerializeWithError() : void {
         $error = new ActionError(ActionError::NOT_FOUND, 'Not found');
 
         $payload = new ActionPayload(404, null, $error);
@@ -43,7 +43,7 @@ class ActionPayloadTest extends TestCase {
         ], $data);
     }
 
-    public function testJsonSerializePrefersDataOverError(): void {
+    public function testJsonSerializePrefersDataOverError() : void {
         $error = new ActionError(ActionError::SERVER_ERROR, 'Failure');
 
         $payload = new ActionPayload(200, ['ok' => true], $error);
@@ -55,7 +55,7 @@ class ActionPayloadTest extends TestCase {
         $this->assertArrayNotHasKey('error', $data);
     }
 
-    public function testJsonSerializeWithNeitherDataNorError(): void {
+    public function testJsonSerializeWithNeitherDataNorError() : void {
         $payload = new ActionPayload(204);
 
         $data = $payload->jsonSerialize();
@@ -65,7 +65,7 @@ class ActionPayloadTest extends TestCase {
         ], $data);
     }
 
-    public function testJsonEncodeWithData(): void {
+    public function testJsonEncodeWithData() : void {
         $payload = new ActionPayload(200, ['test' => 123]);
 
         $json = json_encode($payload, JSON_THROW_ON_ERROR);
@@ -74,7 +74,7 @@ class ActionPayloadTest extends TestCase {
         $this->assertStringContainsString('test', $json);
     }
 
-    public function testJsonEncodeWithError(): void {
+    public function testJsonEncodeWithError() : void {
         $error = new ActionError(ActionError::VALIDATION_ERROR, 'Invalid');
 
         $payload = new ActionPayload(400, null, $error);

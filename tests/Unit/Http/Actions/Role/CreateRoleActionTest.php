@@ -19,7 +19,7 @@ use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class CreateRoleActionTest extends TestCase {
-    public function testCreatesRoleAndReturns201WhenRequestBodyIsValid(): void {
+    public function testCreatesRoleAndReturns201WhenRequestBodyIsValid() : void {
         $logger = $this->createMock(LoggerInterface::class);
 
         $role = new Role(
@@ -87,7 +87,7 @@ final class CreateRoleActionTest extends TestCase {
     /**
      * @return array<string, mixed>
      */
-    private function decodeJsonResponse(ResponseInterface $response): array {
+    private function decodeJsonResponse(ResponseInterface $response) : array {
         $body = (string)$response->getBody();
 
         self::assertNotSame('', $body);
@@ -99,7 +99,7 @@ final class CreateRoleActionTest extends TestCase {
         return $decoded;
     }
 
-    public function testCreateRoleAndThrowsExceptionWhenRequestBodyIsInvalid(): void {
+    public function testCreateRoleAndThrowsExceptionWhenRequestBodyIsInvalid() : void {
         $logger = $this->createMock(LoggerInterface::class);
 
         $handler = $this->createMock(CreateRoleHandler::class);

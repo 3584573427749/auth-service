@@ -11,7 +11,7 @@ use App\Domain\ValueObjects\RoleId;
 use PHPUnit\Framework\TestCase;
 
 final class RoleDTOTest extends TestCase {
-    public function testFromRoleCreatesDto(): void {
+    public function testFromRoleCreatesDto() : void {
         $role = new Role(
             new RoleId('550e8400-e29b-41d4-a716-446655440000'),
             'User',
@@ -31,7 +31,7 @@ final class RoleDTOTest extends TestCase {
         self::assertSame(1, $data['adminLevel']);
     }
 
-    public function testJsonSerializeReturnsCorrectStructure(): void {
+    public function testJsonSerializeReturnsCorrectStructure() : void {
         $role = new Role(
             new RoleId('660e8400-e29b-41d4-a716-446655440000'),
             'Another',

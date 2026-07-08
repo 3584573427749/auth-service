@@ -15,7 +15,7 @@ use App\Domain\ValueObjects\UserId;
 use PHPUnit\Framework\TestCase;
 
 final class GetUserHandlerTest extends TestCase {
-    public function testGetAllReturnsUserDTOs(): void {
+    public function testGetAllReturnsUserDTOs() : void {
         $user1 = new User(
             new UserId('550e8400-e29b-41d4-a716-446655440000'),
             new Email('a@test.com'),
@@ -58,7 +58,7 @@ final class GetUserHandlerTest extends TestCase {
 
     }
 
-    public function testGetAllReturnsEmptyArrayWhenNoUsers(): void {
+    public function testGetAllReturnsEmptyArrayWhenNoUsers() : void {
         $repository = $this->createMock(UserRepository::class);
 
         $repository
@@ -77,7 +77,7 @@ final class GetUserHandlerTest extends TestCase {
         self::assertSame([], $result);
     }
 
-    public function testGetByIdReturnsUserDTO(): void {
+    public function testGetByIdReturnsUserDTO() : void {
         $user = new User(
             new UserId('550e8400-e29b-41d4-a716-446655440000'),
             new Email('test@example.com'),
@@ -114,7 +114,7 @@ final class GetUserHandlerTest extends TestCase {
         self::assertSame('Name', $data['lastName']);
     }
 
-    public function testGetByIdThrowsUserNotFoundException(): void {
+    public function testGetByIdThrowsUserNotFoundException() : void {
         $repository = $this->createMock(UserRepository::class);
 
         $repository

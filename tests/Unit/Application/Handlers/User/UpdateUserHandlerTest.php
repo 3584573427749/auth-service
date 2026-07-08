@@ -14,7 +14,7 @@ use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateUserHandlerTest extends TestCase {
-    public function testHandleUpdateUserSuccessfully(): void {
+    public function testHandleUpdateUserSuccessfully() : void {
         $db = $this->createMock(Connection::class);
         $repository = $this->createMock(UserRepository::class);
 
@@ -77,7 +77,7 @@ final class UpdateUserHandlerTest extends TestCase {
         self::assertSame('Name', $json['lastName']);
     }
 
-    public function testHandleThrowsExceptionIfUserExists(): void {
+    public function testHandleThrowsExceptionIfUserExists() : void {
         $db = $this->createMock(Connection::class);
         $repository = $this->createMock(UserRepository::class);
 
@@ -113,7 +113,7 @@ final class UpdateUserHandlerTest extends TestCase {
         $handler->handle($command);
     }
 
-    public function testHandleRollsBackOnSaveError(): void {
+    public function testHandleRollsBackOnSaveError() : void {
         $db = $this->createMock(Connection::class);
         $repository = $this->createMock(UserRepository::class);
 
