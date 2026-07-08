@@ -16,7 +16,7 @@ final class AddTableUserRoles extends AbstractMigration {
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void {
+    public function change() : void {
         $this->table('user_roles')
             ->addColumn('user_id', 'string', ['limit' => 36, 'null' => false])
             ->addColumn('role_id', 'string', ['limit' => 36, 'null' => false])

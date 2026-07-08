@@ -15,6 +15,7 @@ interface UserRoleRepository {
      * @return User[]
      */
     public function getUsers(RoleId $id) : array;
+
     /**
      * @return Role[]
      */

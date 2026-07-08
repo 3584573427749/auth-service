@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Actions\UserRole;
 
-use App\Application\Handlers\User\GetUserHandler;
 use App\Application\Handlers\UserRole\GetUserRolesHandler;
 use App\Domain\ValueObjects\UserId;
-use App\Http\Actions\User\UserAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 

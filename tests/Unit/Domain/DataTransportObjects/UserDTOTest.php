@@ -54,5 +54,4 @@ final class UserDTOTest extends TestCase {
         self::assertArrayHasKey('lastName', $data);
         self::assertArrayHasKey('roles', $data);
     }
-
 }

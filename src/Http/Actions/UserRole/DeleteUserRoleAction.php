@@ -17,7 +17,7 @@ class DeleteUserRoleAction extends UserRoleAction {
     /**
      * @inheritDoc
      */
-    protected function action(): Response {
+    protected function action() : Response {
         $id = $this->request->getAttribute('id');
         $roleId = $this->request->getAttribute('roleId');
         $command = UserRoleCommand::fromRequest(['userId' => $id, 'roleId' => $roleId]);

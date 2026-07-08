@@ -6,7 +6,6 @@ namespace App\Http\Actions\UserRole;
 
 use App\Application\Handlers\UserRole\GetUserRolesHandler;
 use App\Domain\ValueObjects\RoleId;
-use App\Domain\ValueObjects\UserId;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
 

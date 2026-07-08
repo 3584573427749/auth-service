@@ -24,14 +24,16 @@ class DbalUserRoleRepository extends AbstractDbRepository implements UserRoleRep
      * @return list<Role>
      * @throws Exception
      */
-    public function getRoles(UserId $id): array {
-        $rows = $this->connection->executeQuery('SELECT * FROM roles 
+    public function getRoles(UserId $id) : array {
+        $rows = $this->connection->executeQuery(
+            'SELECT * FROM roles 
     INNER JOIN ' . self::TABLE . ' ON roles.id = ' . self::TABLE . '.role_id 
     WHERE ' . self::TABLE . '.user_id=:user_id',
-            ['user_id' => $id->toString()])
+            ['user_id' => $id->toString()],
+        )
             ->fetchAllAssociative();
 
-        return array_map(fn($row) => Role::fromDBRow($row), $rows);
+        return array_map(fn ($row) => Role::fromDBRow($row), $rows);
 
     }
 
@@ -39,21 +41,23 @@ class DbalUserRoleRepository extends AbstractDbRepository implements UserRoleRep
      * @return list<User>
      * @throws Exception
      */
-    public function getUsers(RoleId $id): array {
-        $rows = $this->connection->executeQuery('SELECT * FROM roles 
+    public function getUsers(RoleId $id) : array {
+        $rows = $this->connection->executeQuery(
+            'SELECT * FROM roles 
     INNER JOIN ' . self::TABLE . ' ON roles.id = ' . self::TABLE . '.role_id 
     WHERE ' . self::TABLE . '.role_id=:role_id',
-            ['role_id' => $id->toString()])
+            ['role_id' => $id->toString()],
+        )
             ->fetchAllAssociative();
 
-        return array_map(fn($row) => User::fromDBRow($row), $rows);
+        return array_map(fn ($row) => User::fromDBRow($row), $rows);
 
     }
 
     /**
      * @throws Exception
      */
-    public function getById(UserId $id): User {
+    public function getById(UserId $id) : User {
         $row = $this->connection->executeQuery('SELECT * FROM ' . self::TABLE . ' WHERE id=:id AND deleted_at IS NULL', ['id' => $id->toString()])
             ->fetchAssociative();
 
@@ -67,7 +71,7 @@ class DbalUserRoleRepository extends AbstractDbRepository implements UserRoleRep
     /**
      * @throws Exception
      */
-    public function softDelete(UserId $id): void {
+    public function softDelete(UserId $id) : void {
         $rows = $this->connection
             ->executeQuery('UPDATE ' . self::TABLE . ' SET deleted_at=:now WHERE id=:id', ['id' => $id->toString(), 'now' => date('Y-m-d H:i:s')])
             ->rowCount();
@@ -77,7 +81,7 @@ class DbalUserRoleRepository extends AbstractDbRepository implements UserRoleRep
         }
     }
 
-    public function emailExistsWithOtherUser(string $email, UserId $id): bool {
+    public function emailExistsWithOtherUser(string $email, UserId $id) : bool {
         $db = $this->connection->createQueryBuilder();
         $row = $db->select('*')
             ->from(self::TABLE)
@@ -91,7 +95,7 @@ class DbalUserRoleRepository extends AbstractDbRepository implements UserRoleRep
         return ($row !== 0);
     }
 
-    public function remove(UserId $id): void {
+    public function remove(UserId $id) : void {
         try {
             $rows = $this->connection->delete(self::TABLE, ['id' => $id->toString()]);
 
@@ -107,7 +111,7 @@ class DbalUserRoleRepository extends AbstractDbRepository implements UserRoleRep
      * @throws Exception
      * @throws NotFoundException
      */
-    public function delete(UserRole $userRole): void {
+    public function delete(UserRole $userRole) : void {
         $rows = $this->connection->delete(self::TABLE, $userRole->asDBRow());
 
         if ($rows === 0) {
@@ -115,7 +119,7 @@ class DbalUserRoleRepository extends AbstractDbRepository implements UserRoleRep
         }
     }
 
-    public function save(UserRole $userRole): void {
+    public function save(UserRole $userRole) : void {
         try {
             $this->connection->insert(self::TABLE, $userRole->asDBRow());
         } catch (UniqueConstraintViolationException $e) {

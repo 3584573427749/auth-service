@@ -11,11 +11,11 @@ use App\Domain\ValueObjects\UserId;
 
 class DeleteUserRoleHandler extends UserRoleHandler {
     public function handle(UserRoleCommand $command) : void {
-            $userRole = new UserRole(
-               new UserId($command->userId),
-                new RoleId($command->roleId),
-            );
+        $userRole = new UserRole(
+            new UserId($command->userId),
+            new RoleId($command->roleId),
+        );
 
-            $this->repository->delete($userRole);
+        $this->repository->delete($userRole);
     }
 }
