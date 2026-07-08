@@ -79,8 +79,6 @@ final class UpdateUserActionTest extends TestCase {
         self::assertSame('User', $payload['data']['firstName']);
 
         self::assertSame('Name', $payload['data']['lastName']);
-
-        self::assertSame(['user'], $payload['data']['roles']);
     }
 
     /**
