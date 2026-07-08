@@ -8,6 +8,7 @@ use App\Application\Commands\Role\CreateRoleCommand;
 use App\Application\Handlers\Role\CreateRoleHandler;
 use App\Domain\DataTransportObjects\Role\RoleDTO;
 use App\Domain\Entities\Role;
+use App\Domain\Exception\RoleAlreadyExistsException;
 use App\Domain\Exception\ValidationException;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\RoleId;
@@ -110,7 +111,7 @@ final class CreateRoleActionTest extends TestCase {
 
         $action = new CreateRoleAction($logger, $handler);
 
-        $request = (new ServerRequestFactory())
+        $request = new ServerRequestFactory()
             ->createServerRequest('POST', '/roles')
             ->withParsedBody([
                 'name' => 'User',
@@ -125,5 +126,34 @@ final class CreateRoleActionTest extends TestCase {
         self::expectExceptionMessage('Felaktig indata');
 
         $result = $action($request, $response, []);
+    }
+
+    public function testThrowsRoleAlreadyExistsException() : void {
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $handler = $this->createMock(CreateRoleHandler::class);
+
+        $handler
+            ->expects($this->once())
+            ->method('handle')
+            ->willThrowException(
+                new RoleAlreadyExistsException('Role already exists'),
+            );
+
+        $action = new CreateRoleAction($logger, $handler);
+
+        $request = new ServerRequestFactory()
+            ->createServerRequest('POST', '/roles')
+            ->withParsedBody([
+                'name' => 'User',
+                'description' => 'Name',
+                'adminLevel' => 1,
+            ]);
+
+        $response = (new ResponseFactory())->createResponse();
+
+        self::expectException(RoleAlreadyExistsException::class);
+
+        $action($request, $response, []);
     }
 }

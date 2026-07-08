@@ -8,6 +8,7 @@ use App\Application\Commands\Role\UpdateRoleCommand;
 use App\Application\Handlers\Role\UpdateRoleHandler;
 use App\Domain\DataTransportObjects\Role\RoleDTO;
 use App\Domain\Entities\Role;
+use App\Domain\Exception\ValidationException;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\RoleId;
 use App\Http\Actions\Role\UpdateRoleAction;
@@ -76,6 +77,53 @@ final class UpdateRoleActionTest extends TestCase {
         self::assertSame('Name', $payload['data']['description']);
 
         self::assertSame(1, $payload['data']['adminLevel']);
+    }
+
+    public function testUpdatesRoleAndThrowsExceptionWhenRequestBodyIsInvalid() : void {
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $role = new Role(
+            new RoleId('550e8400-e29b-41d4-a716-446655440000'),
+            'User',
+            'Name',
+            -1,
+            new DateTimeValue('2026-06-10T10:00:00+00:00'),
+            new DateTimeValue('2026-06-11T10:00:00+00:00'),
+        );
+
+        $dto = RoleDTO::fromRole($role);
+
+        $handler = $this->createMock(UpdateRoleHandler::class);
+
+        $handler
+            ->expects($this->never())
+            ->method('handle');
+
+        $action = new UpdateRoleAction($logger, $handler);
+
+        $request = new ServerRequestFactory()
+            ->createServerRequest('PUT', '/roles/550e8400-e29b-41d4-a716-446655440000')
+            ->withAttribute(
+                'id',
+                '550e8400-e29b-41d4-a716-446655440000',
+            )
+            ->withParsedBody([
+                'id' => '550e8400-e29b-41d4-a716-446655440000',
+                'name' => 'User',
+                'description' => 'Name',
+                'adminLevel' => -1,
+                'createdAt' => '2026-01-01T10:00:00+00:00',
+                'updatedAt' => null,
+            ]);
+
+        $response = (new ResponseFactory())->createResponse();
+
+
+        self::expectException(ValidationException::class);
+        self::expectExceptionMessage('Felaktig indata');
+
+        $result = $action($request, $response, []);
+
     }
 
     /**

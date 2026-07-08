@@ -35,7 +35,7 @@ return function (App $app) : void {
 
     $app->get('/users/{id}/roles', GetUserRolesAction::class);
     $app->post('/users/{id}/roles', CreateUserRoleAction::class);
-    $app->post('/users/{id}/roles/{roleId}', DeleteUserRoleAction::class);
+    $app->delete('/users/{id}/roles/{roleId}', DeleteUserRoleAction::class);
     $app->get('/roles/{id}/users', GetRoleUsersAction::class);
 
 };

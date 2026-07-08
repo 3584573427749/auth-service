@@ -1,4 +1,4 @@
-CREATE TABLE `user_roles`
+CREATE TABLE `userroles`
 (
     `user_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
     `role_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,

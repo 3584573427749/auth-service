@@ -11,7 +11,6 @@ use App\Domain\ValueObjects\UserId;
 
 class GetUserRolesHandler extends UserRoleHandler {
     /**
-     * @param UserId $id
      * @return list<RoleDTO>
      */
     public function getRoles(UserId $id) : array {
@@ -26,7 +25,6 @@ class GetUserRolesHandler extends UserRoleHandler {
     }
 
     /**
-     * @param RoleId $id
      * @return list<UserDTO>
      */
     public function getUsers(RoleId $id) : array {

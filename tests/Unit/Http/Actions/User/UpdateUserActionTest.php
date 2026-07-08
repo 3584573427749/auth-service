@@ -8,6 +8,7 @@ use App\Application\Commands\User\UpdateUserCommand;
 use App\Application\Handlers\User\UpdateUserHandler;
 use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\User;
+use App\Domain\Exception\ValidationException;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\UserId;
@@ -79,6 +80,52 @@ final class UpdateUserActionTest extends TestCase {
         self::assertSame('User', $payload['data']['firstName']);
 
         self::assertSame('Name', $payload['data']['lastName']);
+    }
+
+    public function testUpdatesUserAndThrowsExceptionWhenRequestBodyIsInvalid() : void {
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $user = new User(
+            new UserId('550e8400-e29b-41d4-a716-446655440000'),
+            new Email('test@example.com'),
+            'User',
+            'Name',
+            new DateTimeValue('2026-06-10T10:00:00+00:00'),
+            new DateTimeValue('2026-06-10T10:00:00+00:00'),
+            null,
+        );
+
+        $dto = UserDTO::fromUser($user);
+
+        $handler = $this->createMock(UpdateUserHandler::class);
+
+        $handler
+            ->expects($this->never())
+            ->method('handle');
+
+        $action = new UpdateUserAction($logger, $handler);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('PUT', '/users/550e8400-e29b-41d4-a716-446655440000')
+            ->withAttribute(
+                'id',
+                '550e8400-e29b-41d4-a716-446655440000',
+            )
+            ->withParsedBody([
+                'id' => '550e8400-e29b-41d4-a716-446655440000',
+                'firstName' => 'User',
+                'lastName' => 'Name',
+                'createdAt' => '2026-01-01T10:00:00+00:00',
+                'updatedAt' => null,
+                'deletedAt' => null,
+            ]);
+
+        $response = new ResponseFactory()->createResponse();
+
+        self::expectException(ValidationException::class);
+        self::expectExceptionMessage('Felaktig indata');
+
+        $action($request, $response, []);
     }
 
     /**

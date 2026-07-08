@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Database\Role;
+namespace Infrastructure\Database;
 
 use App\Domain\Entities\Role;
 use App\Domain\Exception\NotFoundException;
+use App\Domain\Exception\RoleAlreadyExistsException;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\RoleId;
 use App\Infrastructure\Database\DbalRoleRepository;
@@ -159,5 +160,29 @@ final class DbalRoleRepositoryTest extends DatabaseBaseTestCase {
         $this->loadSchema('roles');
 
         $this->repository = new DbalRoleRepository($this->connection);
+    }
+
+    public function testSaveThrowsRoleAlreadyExistsException() : void {
+        $this->seed('roles', [
+            [
+                'id' => '550e8400-e29b-41d4-a716-446655440000',
+                'name' => 'User',
+                'description' => 'Regular user',
+                'admin_level' => 0,
+            ],
+        ]);
+
+        $role = new Role(
+            new RoleId('660e8400-e29b-41d4-a716-446655440000'),
+            'User',
+            'Another user role',
+            1,
+            new DateTimeValue('2026-01-01 10:00:00'),
+            null,
+        );
+
+        $this->expectException(RoleAlreadyExistsException::class);
+
+        $this->repository->save($role);
     }
 }

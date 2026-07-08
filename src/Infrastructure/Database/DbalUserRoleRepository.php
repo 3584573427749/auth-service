@@ -8,13 +8,11 @@ use App\Domain\Entities\Role;
 use App\Domain\Entities\User;
 use App\Domain\Entities\UserRole;
 use App\Domain\Exception\NotFoundException;
-use App\Domain\Exception\UserInUseException;
 use App\Domain\Exception\UserRoleAlreadyExistsException;
 use App\Domain\Repositories\UserRoleRepository;
 use App\Domain\ValueObjects\RoleId;
 use App\Domain\ValueObjects\UserId;
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class DbalUserRoleRepository extends AbstractDbRepository implements UserRoleRepository {
@@ -43,8 +41,8 @@ class DbalUserRoleRepository extends AbstractDbRepository implements UserRoleRep
      */
     public function getUsers(RoleId $id) : array {
         $rows = $this->connection->executeQuery(
-            'SELECT * FROM roles 
-    INNER JOIN ' . self::TABLE . ' ON roles.id = ' . self::TABLE . '.role_id 
+            'SELECT * FROM users 
+    INNER JOIN ' . self::TABLE . ' ON users.id = ' . self::TABLE . '.user_id 
     WHERE ' . self::TABLE . '.role_id=:role_id',
             ['role_id' => $id->toString()],
         )
@@ -52,59 +50,6 @@ class DbalUserRoleRepository extends AbstractDbRepository implements UserRoleRep
 
         return array_map(fn ($row) => User::fromDBRow($row), $rows);
 
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function getById(UserId $id) : User {
-        $row = $this->connection->executeQuery('SELECT * FROM ' . self::TABLE . ' WHERE id=:id AND deleted_at IS NULL', ['id' => $id->toString()])
-            ->fetchAssociative();
-
-        if ($row === false) {
-            throw new NotFoundException('Användare med id ' . $id->toString() . ' hittades inte');
-        }
-
-        return User::fromDBRow($row);
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function softDelete(UserId $id) : void {
-        $rows = $this->connection
-            ->executeQuery('UPDATE ' . self::TABLE . ' SET deleted_at=:now WHERE id=:id', ['id' => $id->toString(), 'now' => date('Y-m-d H:i:s')])
-            ->rowCount();
-
-        if ($rows === 0) {
-            throw new NotFoundException('Användare med id ' . $id->toString() . ' hittades inte');
-        }
-    }
-
-    public function emailExistsWithOtherUser(string $email, UserId $id) : bool {
-        $db = $this->connection->createQueryBuilder();
-        $row = $db->select('*')
-            ->from(self::TABLE)
-            ->where('email=:email')
-            ->andWhere('id != :id')
-            ->setParameter('email', $email)
-            ->setParameter('id', $id->toString())
-            ->executeQuery()
-            ->rowCount();
-
-        return ($row !== 0);
-    }
-
-    public function remove(UserId $id) : void {
-        try {
-            $rows = $this->connection->delete(self::TABLE, ['id' => $id->toString()]);
-
-            if ($rows === 0) {
-                throw new NotFoundException('Användare med id ' . $id->toString() . ' hittades inte');
-            }
-        } catch (ForeignKeyConstraintViolationException $e) {
-            throw new UserInUseException('Användaren används i en eller flera andra tabeller');
-        }
     }
 
     /**

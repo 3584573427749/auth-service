@@ -40,6 +40,21 @@ final class UpdateRoleRequestValidatorTest extends TestCase {
         self::assertSame('Name is required.', $errors['name']);
     }
 
+    public function testMissingId() : void {
+        $data = [
+            'roleId' => '550e8400-e29b-41d4-a716-446655440000',
+            'name' => 'User',
+            'description' => 'Test Role',
+            'adminLevel' => '1',
+            'createdAt' => '2026-01-01 10:00:00',
+        ];
+
+        $errors = UpdateRoleRequestValidator::validate($data);
+
+        self::assertArrayHasKey('id', $errors);
+        self::assertSame('Id is required.', $errors['id']);
+    }
+
     public function testInvalidName() : void {
         $data = [
             'roleId' => '550e8400-e29b-41d4-a716-446655440000',
@@ -69,6 +84,22 @@ final class UpdateRoleRequestValidatorTest extends TestCase {
 
         self::assertArrayHasKey('description', $errors);
         self::assertSame('Description is required.', $errors['description']);
+    }
+
+    public function testDescriptionTooLong() : void {
+        $data = [
+            'roleId' => '550e8400-e29b-41d4-a716-446655440000',
+            'id' => '550e8400-e29b-41d4-a716-446655440000',
+            'description' => str_repeat('A', 256),
+            'name' => 'User',
+            'adminLevel' => '1',
+            'createdAt' => '2026-01-01 10:00:00',
+        ];
+
+        $errors = UpdateRoleRequestValidator::validate($data);
+
+        self::assertArrayHasKey('description', $errors);
+        self::assertSame('Description is too long.', $errors['description']);
     }
 
     public function testAdminLevelInvalid() : void {
@@ -101,6 +132,36 @@ final class UpdateRoleRequestValidatorTest extends TestCase {
         self::assertSame('AdminLevel must be between 0 and 100.', $errors['adminLevel']);
     }
 
+    public function testAdminLevelIsInvalid() : void {
+        $data = [
+            'roleId' => '550e8400-e29b-41d4-a716-446655440000',
+            'id' => '550e8400-e29b-41d4-a716-446655440000',
+            'name' => 'User',
+            'description' => 'Test Role',
+            'adminLevel' => 'invalid',
+            'createdAt' => '2026-01-01 10:00:00',
+        ];
+
+        $errors = UpdateRoleRequestValidator::validate($data);
+
+        self::assertArrayHasKey('adminLevel', $errors);
+        self::assertSame('Admin level must be an integer.', $errors['adminLevel']);
+
+        $data = [
+            'roleId' => '550e8400-e29b-41d4-a716-446655440000',
+            'id' => '550e8400-e29b-41d4-a716-446655440000',
+            'name' => 'User',
+            'description' => 'Test Role',
+            'adminLevel' => -1,
+            'createdAt' => '2026-01-01 10:00:00',
+        ];
+
+        $errors = UpdateRoleRequestValidator::validate($data);
+
+        self::assertArrayHasKey('adminLevel', $errors);
+        self::assertSame('AdminLevel must be between 0 and 100.', $errors['adminLevel']);
+    }
+
     public function testCreatedAtInvalid() : void {
         $data = [
             'roleId' => '550e8400-e29b-41d4-a716-446655440000',
@@ -115,6 +176,21 @@ final class UpdateRoleRequestValidatorTest extends TestCase {
 
         self::assertArrayHasKey('createdAt', $errors);
         self::assertSame('Invalid created date.', $errors['createdAt']);
+    }
+
+    public function testMissingCreatedAt() : void {
+        $data = [
+            'roleId' => '550e8400-e29b-41d4-a716-446655440000',
+            'id' => '550e8400-e29b-41d4-a716-446655440000',
+            'name' => 'User',
+            'description' => 'Test Role',
+            'adminLevel' => '1',
+        ];
+
+        $errors = UpdateRoleRequestValidator::validate($data);
+
+        self::assertArrayHasKey('createdAt', $errors);
+        self::assertSame('Created at is required.', $errors['createdAt']);
     }
 
     public function testUpdatedAtInvalid() : void {

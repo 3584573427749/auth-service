@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Infrastructure\Database\User;
+namespace Infrastructure\Database;
 
 use App\Domain\Entities\User;
 use App\Domain\Exception\NotFoundException;
@@ -165,7 +165,7 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
         );
     }
 
-    public function testDelete() : void {
+    public function testSoftDelete() : void {
         $this->loadSchema('users');
 
         $this->seed('users', [
@@ -191,6 +191,18 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
         self::assertNotNull($row['deleted_at']);
     }
 
+    public function testSoftDeleteThrowsNotFoundException() : void {
+        $this->loadSchema('users');
+
+        $repository = new DbalUserRepository($this->connection);
+
+        $this->expectException(NotFoundException::class);
+
+        $repository->softDelete(
+            new UserId('550e8400-e29b-41d4-a716-446655440000'),
+        );
+    }
+
     public function testRemove() : void {
         $this->loadSchema('users');
 
@@ -214,6 +226,70 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
             ['id' => '550e8400-e29b-41d4-a716-446655440000'],
         );
         self::assertFalse($row);
+    }
+
+    public function testEmailExistsWithOtherUserReturnsTrue() : void {
+        $this->seed('users', [
+            [
+                'id' => '550e8400-e29b-41d4-a716-446655440000',
+                'email' => 'test@example.com',
+                'first_name' => 'Test',
+                'last_name' => 'User',
+                'created_at' => '2026-01-01 10:00:00',
+            ],
+            [
+                'id' => '660e8400-e29b-41d4-a716-446655440000',
+                'email' => 'other@example.com',
+                'first_name' => 'Other',
+                'last_name' => 'User',
+                'created_at' => '2026-01-01 10:00:00',
+            ],
+        ]);
+
+        $result = $this->repository->emailExistsWithOtherUser(
+            'test@example.com',
+            new UserId('660e8400-e29b-41d4-a716-446655440000'),
+        );
+
+        self::assertTrue($result);
+    }
+
+    public function testEmailExistsWithOtherUserReturnsFalseWhenOnlySameUserExists() : void {
+        $this->seed('users', [
+            [
+                'id' => '550e8400-e29b-41d4-a716-446655440000',
+                'email' => 'test@example.com',
+                'first_name' => 'Test',
+                'last_name' => 'User',
+                'created_at' => '2026-01-01 10:00:00',
+            ],
+        ]);
+
+        $result = $this->repository->emailExistsWithOtherUser(
+            'test@example.com',
+            new UserId('550e8400-e29b-41d4-a716-446655440000'),
+        );
+
+        self::assertFalse($result);
+    }
+
+    public function testEmailExistsWithOtherUserReturnsFalseWhenEmailDoesNotExist() : void {
+        $this->seed('users', [
+            [
+                'id' => '550e8400-e29b-41d4-a716-446655440000',
+                'email' => 'test@example.com',
+                'first_name' => 'Test',
+                'last_name' => 'User',
+                'created_at' => '2026-01-01 10:00:00',
+            ],
+        ]);
+
+        $result = $this->repository->emailExistsWithOtherUser(
+            'missing@example.com',
+            new UserId('660e8400-e29b-41d4-a716-446655440000'),
+        );
+
+        self::assertFalse($result);
     }
 
     protected function setUp() : void {
