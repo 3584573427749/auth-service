@@ -45,16 +45,16 @@ final class DateTimeValue implements JsonSerializable {
         return $this->value;
     }
 
-    public function toString() : string {
-        return $this->value->format('Y-m-d H:i:s');
-    }
-
     public function toISOString() : string {
         return $this->value->format(DATE_ATOM);
     }
 
     public function __toString() : string {
         return $this->toString();
+    }
+
+    public function toString() : string {
+        return $this->value->format('Y-m-d H:i:s');
     }
 
     public function jsonSerialize() : string {

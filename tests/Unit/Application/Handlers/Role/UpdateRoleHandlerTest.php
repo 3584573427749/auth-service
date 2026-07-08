@@ -79,7 +79,6 @@ final class UpdateRoleHandlerTest extends TestCase {
                 'id' => '550e8400-e29b-41d4-a716-446655440000',
                 'name' => 'Test role',
                 'description' => 'Test Role',
-                'isActive' => true,
                 'createdAt' => '2026-01-01 10:00:00',
             ],
         );

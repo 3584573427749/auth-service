@@ -2,7 +2,8 @@
 
 Auth Service ansvarar för autentisering, sessionshantering och användarhantering i plattformen.
 
-Tjänsten är en central del av mikrotjänstarkitekturen och används av klienter som Admin UI, Web UI och PWA:er samt av övriga backend‑tjänster via Gateway Service.
+Tjänsten är en central del av mikrotjänstarkitekturen och används av klienter som Admin UI, Web UI och PWA:er samt av
+övriga backend‑tjänster via Gateway Service.
 
 ## 📌 Översikt
 
@@ -18,8 +19,8 @@ Tjänsten fungerar som plattformens källa för identitet, inloggning och behör
 Auth Service hanterar:
 
 - Passwordless login
-  - Magic link
-  - One-time password / engångskod
+    - Magic link
+    - One-time password / engångskod
 - Utfärdande av JWT access tokens
 - Hantering av refresh tokens via httpOnly cookies
 - Token rotation
@@ -32,8 +33,8 @@ Auth Service hanterar:
 2. Auth Service skapar en engångskod eller magic link.
 3. Användaren verifierar inloggningen.
 4. Auth Service utfärdar:
-   - JWT access token
-   - Refresh token som httpOnly cookie
+    - JWT access token
+    - Refresh token som httpOnly cookie
 5. Klienten skickar access token vid skyddade anrop.
 6. Access token kan roteras automatiskt vid svar från API:et.
 
@@ -52,7 +53,8 @@ Det omfattar bland annat:
 - Koppla användare till roller
 - Hantera användarens behörigheter via roller och rättigheter
 
-Användarhanteringen används framför allt av administrativa gränssnitt, men informationen kan även användas av andra tjänster för behörighetskontroll.
+Användarhanteringen används framför allt av administrativa gränssnitt, men informationen kan även användas av andra
+tjänster för behörighetskontroll.
 
 ## 🛡️ Roller och rättigheter
 
@@ -96,7 +98,8 @@ Auth Service kan användas för att:
 - Tillhandahålla claims i JWT
 - Ge andra tjänster underlag för åtkomstkontroll
 
-Övriga mikrotjänster ansvarar för sin egen domänlogik, men kan basera sina behörighetsbeslut på information från Auth Service.
+Övriga mikrotjänster ansvarar för sin egen domänlogik, men kan basera sina behörighetsbeslut på information från Auth
+Service.
 
 ## 🧩 Teknisk kontext
 
@@ -346,5 +349,6 @@ Tjänsten hanterar:
 * Roller och rättigheter
 * Underlag för behörighetskontroll i övriga tjänster
 
-Målet är att samla autentisering och behörighetsinformation på ett ställe, samtidigt som övriga mikrotjänster förblir ansvariga för sin egen domänlogik.
+Målet är att samla autentisering och behörighetsinformation på ett ställe, samtidigt som övriga mikrotjänster förblir
+ansvariga för sin egen domänlogik.
 

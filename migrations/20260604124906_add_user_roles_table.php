@@ -27,10 +27,10 @@ final class AddUserRolesTable extends AbstractMigration {
             'limit' => 36,
             'null' => false,
         ])
-              ->addColumn('role_id', 'string', [
-                  'limit' => 36,
-                  'null' => false,
-              ])
-              ->create();
+            ->addColumn('role_id', 'string', [
+                'limit' => 36,
+                'null' => false,
+            ])
+            ->create();
     }
 }

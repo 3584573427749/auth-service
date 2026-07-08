@@ -15,7 +15,6 @@ final class UpdateUserCommandTest extends TestCase {
             'email' => 'test@example.com',
             'firstName' => 'User',
             'lastName' => 'Name',
-            'isActive' => true,
             'createdAt' => '2026-01-01 10:00:00',
         ];
         ;
@@ -32,7 +31,6 @@ final class UpdateUserCommandTest extends TestCase {
             'email' => '        TEST@EXAMPLE.COM',
             'firstName' => 'User',
             'lastName' => 'Name',
-            'isActive' => true,
             'createdAt' => '2026-01-01 10:00:00',
         ];
 
@@ -47,7 +45,6 @@ final class UpdateUserCommandTest extends TestCase {
             'email' => 'test@example.com',
             'firstName' => '       User         ',
             'lastName' => '       Name         ',
-            'isActive' => true,
             'createdAt' => '2026-01-01 10:00:00',
         ];
 
@@ -63,7 +60,6 @@ final class UpdateUserCommandTest extends TestCase {
             'email' => 'a@b.c',
             'firstName' => 'A',
             'lastName' => 'B',
-            'isActive' => true,
             'createdAt' => '2026-01-01 10:00:00',
         ];
 

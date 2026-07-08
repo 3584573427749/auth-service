@@ -28,8 +28,8 @@ final class CreateUserActionTest extends TestCase {
             new Email('test@example.com'),
             'User',
             'Name',
-            true,
             new DateTimeValue('2026-06-10T10:00:00+00:00'),
+            null,
             null,
         );
 
@@ -91,6 +91,21 @@ final class CreateUserActionTest extends TestCase {
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
+    private function decodeJsonResponse(ResponseInterface $response) : array {
+        $body = (string)$response->getBody();
+
+        self::assertNotSame('', $body);
+
+        $decoded = json_decode($body, true);
+
+        self::assertIsArray($decoded);
+
+        return $decoded;
+    }
+
     public function testCreatesUserAndThrowsExceptionWhenRequestBodyIsInvalid() : void {
         $logger = $this->createMock(LoggerInterface::class);
 
@@ -117,20 +132,5 @@ final class CreateUserActionTest extends TestCase {
         self::expectExceptionMessage('Felaktig indata');
 
         $result = $action($request, $response, []);
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function decodeJsonResponse(ResponseInterface $response) : array {
-        $body = (string)$response->getBody();
-
-        self::assertNotSame('', $body);
-
-        $decoded = json_decode($body, true);
-
-        self::assertIsArray($decoded);
-
-        return $decoded;
     }
 }

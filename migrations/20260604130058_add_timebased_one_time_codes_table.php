@@ -26,19 +26,19 @@ final class AddTimebasedOneTimeCodesTable extends AbstractMigration {
             'limit' => 36,
             'null' => false,
         ])
-              ->addColumn('secret', 'string', [
-                  'limit' => 255,
-                  'null' => false,
-              ])
-              ->addColumn('created_at', 'datetime', [
-                  'null' => false,
-              ])
-              ->addColumn('last_used_at', 'datetime', [
-                  'null' => true,
-              ])
-              ->addForeignKey('user_id', 'users', 'id', [
-                  'constraint' => 'fk_totp_user_id',
-              ])
-              ->create();
+            ->addColumn('secret', 'string', [
+                'limit' => 255,
+                'null' => false,
+            ])
+            ->addColumn('created_at', 'datetime', [
+                'null' => false,
+            ])
+            ->addColumn('last_used_at', 'datetime', [
+                'null' => true,
+            ])
+            ->addForeignKey('user_id', 'users', 'id', [
+                'constraint' => 'fk_totp_user_id',
+            ])
+            ->create();
     }
 }

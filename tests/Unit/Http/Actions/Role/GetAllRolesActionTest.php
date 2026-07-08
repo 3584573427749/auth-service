@@ -74,7 +74,7 @@ final class GetAllRolesActionTest extends TestCase {
      * @return array<string, mixed>
      */
     private function decodeJsonResponse($response) : array {
-        $body = (string) $response->getBody();
+        $body = (string)$response->getBody();
 
         self::assertNotSame('', $body);
 

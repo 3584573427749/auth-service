@@ -13,11 +13,6 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 use Slim\Psr7\Response;
 
 class ErrorMiddlewareTest extends TestCase {
-    private function createRequest() : ServerRequestInterface {
-        return (new ServerRequestFactory())
-            ->createServerRequest('GET', '/test');
-    }
-
     public function testPassesThroughWhenNoException() : void {
         $request = $this->createRequest();
         $response = new Response();
@@ -35,6 +30,11 @@ class ErrorMiddlewareTest extends TestCase {
         $result = $middleware->process($request, $handler);
 
         $this->assertSame($response, $result);
+    }
+
+    private function createRequest() : ServerRequestInterface {
+        return (new ServerRequestFactory())
+            ->createServerRequest('GET', '/test');
     }
 
     public function testCallsErrorHandlerOnException() : void {

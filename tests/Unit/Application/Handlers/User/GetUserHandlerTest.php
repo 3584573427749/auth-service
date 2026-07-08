@@ -21,8 +21,8 @@ final class GetUserHandlerTest extends TestCase {
             new Email('a@test.com'),
             'A',
             'User',
-            true,
             new DateTimeValue('2026-01-01 10:00:00'),
+            null,
             null,
         );
 
@@ -31,8 +31,8 @@ final class GetUserHandlerTest extends TestCase {
             new Email('b@test.com'),
             'B',
             'User',
-            true,
             new DateTimeValue('2026-01-01 10:00:00'),
+            null,
             null,
         );
 
@@ -83,8 +83,8 @@ final class GetUserHandlerTest extends TestCase {
             new Email('test@example.com'),
             'User',
             'Name',
-            true,
             new DateTimeValue('2026-01-01 10:00:00'),
+            null,
             null,
         );
 

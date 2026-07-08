@@ -19,9 +19,9 @@ final class CreateUserHandlerTest extends TestCase {
 
         $command = CreateUserCommand::fromRequest(
             [
-            'email' => 'test@example.com',
-            'firstName' => 'User',
-            'lastName' => 'Name'],
+                'email' => 'test@example.com',
+                'firstName' => 'User',
+                'lastName' => 'Name'],
         );
 
         $db->expects(self::once())->method('beginTransaction');

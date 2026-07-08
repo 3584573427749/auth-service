@@ -13,13 +13,13 @@ final class CreateUserEndpointTest extends BaseApiTestCases {
         $this->loadSchema('users');
 
         $requestBody = [
-                'email' => 'test@example.com',
-                'firstName' => 'User',
-                'lastName' => 'Name',
-            ];
+            'email' => 'test@example.com',
+            'firstName' => 'User',
+            'lastName' => 'Name',
+        ];
         $validator = new OpenApiValidator();
 
-        $request = (new ServerRequestFactory())
+        $request = new ServerRequestFactory()
             ->createServerRequest('POST', '/users')
             ->withHeader('Content-Type', 'application/json');
 
@@ -49,13 +49,13 @@ final class CreateUserEndpointTest extends BaseApiTestCases {
                 'email' => 'test@example.com',
                 'first_name' => 'User',
                 'last_name' => 'Name',
-                'is_active' => 1,
                 'created_at' => '2026-06-10 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
         ]);
 
-        $request = (new ServerRequestFactory())
+        $request = new ServerRequestFactory()
             ->createServerRequest('POST', '/users')
             ->withParsedBody([
                 'email' => 'test@example.com',

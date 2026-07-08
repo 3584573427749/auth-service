@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
 return function (ContainerBuilder $builder) {
 
     $builder->addDefinitions([
-         'logger' => fn () => (require __DIR__ . '/logger.php')(),
+        'logger' => fn () => (require __DIR__ . '/logger.php')(),
         LoggerInterface::class => fn ($c) => $c->get('logger'),
 
         ErrorHandler::class => fn ($c) => new ErrorHandler($c->get('logger')),

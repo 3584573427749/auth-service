@@ -13,7 +13,6 @@ class UpdateUserCommand {
         public string $email,
         public string $firstName,
         public string $lastName,
-        public int $isActive,
         public DateTimeValue $createdAt,
     ) {
 
@@ -30,9 +29,8 @@ class UpdateUserCommand {
                 |> strtolower(...);
         $firstName = trim($data['firstName']);
         $lastName = trim($data['lastName']);
-        $isActive = $data['isActive'] ? 1 : 0;
         $createdAt = new DateTimeValue($data['createdAt']);
 
-        return new self($id, $email, $firstName, $lastName, $isActive, $createdAt);
+        return new self($id, $email, $firstName, $lastName, $createdAt);
     }
 }

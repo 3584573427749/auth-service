@@ -8,9 +8,10 @@ use App\Http\Actions\Roles\GetAllRolesAction;
 use App\Http\Actions\Roles\GetRoleAction;
 use App\Http\Actions\Roles\UpdateRoleAction;
 use App\Http\Actions\User\CreateUserAction;
-use App\Http\Actions\User\DeleteUserAction;
 use App\Http\Actions\User\GetAllUsersAction;
 use App\Http\Actions\User\GetUserAction;
+use App\Http\Actions\User\RemoveUserAction;
+use App\Http\Actions\User\SoftDeleteUserAction;
 use App\Http\Actions\User\UpdateUserAction;
 use Slim\App;
 
@@ -20,7 +21,8 @@ return function (App $app) : void {
     $app->get('/users', GetAllUsersAction::class);
     $app->get('/users/{id}', GetUserAction::class);
     $app->put('/users/{id}', UpdateUserAction::class);
-    $app->delete('/users/{id}', DeleteUserAction::class);
+    $app->delete('/users/{id}', SoftDeleteUserAction::class);
+    $app->delete('/users/{id}/permanent', RemoveUserAction::class);
     $app->post('/roles', CreateRoleAction::class);
     $app->get('/roles', GetAllRolesAction::class);
     $app->get('/roles/{id}', GetRoleAction::class);

@@ -28,7 +28,7 @@ class CreateRoleRequestValidator {
             $errors['adminLevel'] = 'AdminLevel is required.';
         } elseif (filter_var($data['adminLevel'], FILTER_VALIDATE_INT) === false) {
             $errors['adminLevel'] = 'AdminLevel must be a valid integer.';
-        } elseif ((int) $data['adminLevel'] < 0 || (int) $data['adminLevel'] > 100) {
+        } elseif ((int)$data['adminLevel'] < 0 || (int)$data['adminLevel'] > 100) {
             $errors['adminLevel'] = 'AdminLevel must be between 0 and 100.';
         }
 

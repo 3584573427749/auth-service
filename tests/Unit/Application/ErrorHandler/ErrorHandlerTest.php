@@ -17,13 +17,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
 class ErrorHandlerTest extends TestCase {
-    private function createRequest() : ServerRequestInterface {
-        return (new ServerRequestFactory())
-            ->createServerRequest('GET', '/test');
-    }
+    public function testValidationException() : void {
+        $result = $this->handle(new ValidationException('Invalid'));
 
-    private function createLogger() : Logger {
-        return $this->createMock(Logger::class);
+        $this->assertSame(422, $result['status']);
+        $this->assertSame('ValidationException', $result['json']['error']['type']);
     }
 
     /**
@@ -41,7 +39,7 @@ class ErrorHandlerTest extends TestCase {
             false,
         );
 
-        $body = (string) $response->getBody();
+        $body = (string)$response->getBody();
 
         return [
             'status' => $response->getStatusCode(),
@@ -49,11 +47,13 @@ class ErrorHandlerTest extends TestCase {
         ];
     }
 
-    public function testValidationException() : void {
-        $result = $this->handle(new ValidationException('Invalid'));
+    private function createLogger() : Logger {
+        return $this->createMock(Logger::class);
+    }
 
-        $this->assertSame(422, $result['status']);
-        $this->assertSame('ValidationException', $result['json']['error']['type']);
+    private function createRequest() : ServerRequestInterface {
+        return (new ServerRequestFactory())
+            ->createServerRequest('GET', '/test');
     }
 
     public function testUnauthorizedException() : void {

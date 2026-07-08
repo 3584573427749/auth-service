@@ -27,10 +27,10 @@ final class AddRolePermissionsTable extends AbstractMigration {
             'limit' => 36,
             'null' => false,
         ])
-              ->addColumn('permission_id', 'string', [
-                  'limit' => 36,
-                  'null' => false,
-              ])
-              ->create();
+            ->addColumn('permission_id', 'string', [
+                'limit' => 36,
+                'null' => false,
+            ])
+            ->create();
     }
 }

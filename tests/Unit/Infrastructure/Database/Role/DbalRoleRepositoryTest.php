@@ -14,25 +14,6 @@ use Tests\Unit\Infrastructure\Database\DatabaseBaseTestCase;
 final class DbalRoleRepositoryTest extends DatabaseBaseTestCase {
     private DbalRoleRepository $repository;
 
-    protected function setUp() : void {
-        parent::setUp();
-
-        $this->loadSchema('roles');
-
-        $this->repository = new DbalRoleRepository($this->connection);
-    }
-
-    private function createRole(?DateTimeValue $updatedAt = null) : Role {
-        return new Role(
-            new RoleId('550e8400-e29b-41d4-a716-446655440000'),
-            'User',
-            'Name',
-            1,
-            new DateTimeValue('2026-01-01 10:00:00'),
-            $updatedAt,
-        );
-    }
-
     public function testSaveInsertsNewUser() : void {
         $role = $this->createRole();
 
@@ -45,6 +26,17 @@ final class DbalRoleRepositoryTest extends DatabaseBaseTestCase {
 
         self::assertNotFalse($row);
         self::assertSame('User', $row['name']);
+    }
+
+    private function createRole(?DateTimeValue $updatedAt = null) : Role {
+        return new Role(
+            new RoleId('550e8400-e29b-41d4-a716-446655440000'),
+            'User',
+            'Name',
+            1,
+            new DateTimeValue('2026-01-01 10:00:00'),
+            $updatedAt,
+        );
     }
 
     public function testSaveUpdatesExistingRole() : void {
@@ -159,5 +151,13 @@ final class DbalRoleRepositoryTest extends DatabaseBaseTestCase {
             ['id' => '550e8400-e29b-41d4-a716-446655440000'],
         );
         self::assertFalse($row);
+    }
+
+    protected function setUp() : void {
+        parent::setUp();
+
+        $this->loadSchema('roles');
+
+        $this->repository = new DbalRoleRepository($this->connection);
     }
 }

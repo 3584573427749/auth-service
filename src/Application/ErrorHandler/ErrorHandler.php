@@ -32,19 +32,6 @@ class ErrorHandler {
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    private function buildPayload(Throwable $exception, int $status) : array {
-        return ['statusCode' => $status,
-            'error' => [
-                'type' => (new \ReflectionClass($exception))->getShortName(),
-                'message' => $exception->getMessage(),
-                'details' => method_exists($exception, 'getDetails') ? $exception->getDetails() : null,
-            ],
-        ];
-    }
-
     private function mapStatus(Throwable $exception) : int {
         return match (true) {
             $exception instanceof \InvalidArgumentException => 400,
@@ -56,5 +43,18 @@ class ErrorHandler {
             $exception instanceof InternalException => 500,
             default => 500,
         };
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function buildPayload(Throwable $exception, int $status) : array {
+        return ['statusCode' => $status,
+            'error' => [
+                'type' => (new \ReflectionClass($exception))->getShortName(),
+                'message' => $exception->getMessage(),
+                'details' => method_exists($exception, 'getDetails') ? $exception->getDetails() : null,
+            ],
+        ];
     }
 }

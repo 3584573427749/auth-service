@@ -47,20 +47,6 @@ class Role implements \JsonSerializable {
 
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function jsonSerialize() : mixed {
-        return [
-            'id' => $this->getId()->toString(),
-            'name' => $this->getName(),
-            'description' => $this->getDescription(),
-            'adminLevel' => $this->getAdminLevel(),
-            'createdAt' => $this->getCreatedAt()->toString(),
-            'updatedAt' => $this->getUpdatedAt()?->toString(),
-        ];
-    }
-
     public function getId() : RoleId {
         return $this->id;
     }
@@ -81,6 +67,24 @@ class Role implements \JsonSerializable {
         return $this->createdAt;
     }
 
+    public function getUpdatedAt() : ?DateTimeValue {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize() : mixed {
+        return [
+            'id' => $this->getId()->toString(),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'adminLevel' => $this->getAdminLevel(),
+            'createdAt' => $this->getCreatedAt()->toString(),
+            'updatedAt' => $this->getUpdatedAt()?->toString(),
+        ];
+    }
+
     public function setCreatedAt(DateTimeValue $createdAt) : void {
         $this->createdAt = $createdAt;
     }
@@ -95,10 +99,6 @@ class Role implements \JsonSerializable {
 
     public function setAdminLevel(int $adminLevel) : void {
         $this->adminLevel = $adminLevel;
-    }
-
-    public function getUpdatedAt() : ?DateTimeValue {
-        return $this->updatedAt;
     }
 
     public function setUpdatedAt(DateTimeValue $updatedAt) : void {

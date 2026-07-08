@@ -258,6 +258,42 @@ paths:
                     example: 404
                   error:
                     $ref: '#/components/schemas/ErrorResponse'
+
+  /users/{id}/permanent:
+    delete:
+      summary: Permanently delete user
+      operationId: permanentlyDeleteUser
+      tags:
+        - Users
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+
+      responses:
+        '204':
+          description: User permanently deleted
+
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - error
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  error:
+                    $ref: '#/components/schemas/ErrorResponse'
+
   /roles:
     post:
       summary: Create role
@@ -523,6 +559,7 @@ components:
 
     CreateUserRequest:
       type: object
+      additionalProperties: false
       required:
         - email
         - firstName
@@ -543,6 +580,7 @@ components:
 
     UpdateUserRequest:
       type: object
+      additionalProperties: false
       required:
         - id
         - email
@@ -550,6 +588,7 @@ components:
         - lastName
         - createdAt
         - updatedAt
+        - deletedAt
       properties:
         id:
           type: string
@@ -573,9 +612,14 @@ components:
           type: string
           format: date-time
           nullable: true
+        deletedAt:
+          type: string
+          format: date-time
+          nullable: true
 
     CreateRoleRequest:
       type: object
+      additionalProperties: false
       required:
         - name
         - description
@@ -593,6 +637,7 @@ components:
 
     UpdateRoleRequest:
       type: object
+      additionalProperties: false
       required:
         - id
         - name
@@ -623,6 +668,7 @@ components:
 
     User:
       type: object
+      additionalProperties: false
       required:
         - id
         - email
@@ -631,38 +677,39 @@ components:
         - roles
         - updatedAt
         - createdAt
+        - deletedAt
       properties:
         id:
           type: string
           format: uuid
-
         email:
           type: string
           format: email
-
         firstName:
           type: string
-
         lastName:
           type: string
-
         roles:
           type: array
           items:
             type: string
           example:
             - user
-
         createdAt:
           type: string
           format: date-time
-
         updatedAt:
           type: string
           format: date-time
           nullable: true
+        deletedAt:
+          type: string
+          format: date-time
+          nullable: true
+
     Role:
       type: object
+      additionalProperties: false
       required:
         - id
         - name
@@ -674,23 +721,18 @@ components:
         id:
           type: string
           format: uuid
-
         name:
           type: string
           example: Test
-
         description:
           type: string
           example: Test
-
         adminLevel:
           type: integer
           example: 100
-
         createdAt:
           type: string
           format: date-time
-
         updatedAt:
           type: string
           format: date-time

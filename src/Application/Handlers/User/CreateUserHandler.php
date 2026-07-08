@@ -25,8 +25,8 @@ class CreateUserHandler extends UserHandler {
                 Email::fromString($command->email),
                 $command->firstName,
                 $command->lastName,
-                true,
                 new DateTimeValue('now'),
+                null,
                 null,
             );
 

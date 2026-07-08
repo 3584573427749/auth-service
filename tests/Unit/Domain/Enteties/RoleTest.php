@@ -20,14 +20,6 @@ final class RoleTest extends TestCase {
 
     private DateTimeValue $createdAt;
 
-    protected function setUp() : void {
-        $this->id = new RoleId('550e8400-e29b-41d4-a716-446655440000');
-        $this->name = 'User';
-        $this->description = 'Regular user';
-        $this->adminLevel = 1;
-        $this->createdAt = new DateTimeValue('2026-06-10 10:00:00');
-    }
-
     public function testConstructorAndGetters() : void {
         $role = new Role(
             $this->id,
@@ -141,5 +133,13 @@ final class RoleTest extends TestCase {
         self::assertSame(1, $data['adminLevel']);
         self::assertSame('2026-06-10 10:00:00', $data['createdAt']);
         self::assertNull($data['updatedAt']);
+    }
+
+    protected function setUp() : void {
+        $this->id = new RoleId('550e8400-e29b-41d4-a716-446655440000');
+        $this->name = 'User';
+        $this->description = 'Regular user';
+        $this->adminLevel = 1;
+        $this->createdAt = new DateTimeValue('2026-06-10 10:00:00');
     }
 }

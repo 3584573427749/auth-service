@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-final class AddFieldsToRolesTable extends AbstractMigration {
+final class DropFieldIsActiveInUserTable extends AbstractMigration {
     /**
      * Change Method.
      *
@@ -17,11 +17,6 @@ final class AddFieldsToRolesTable extends AbstractMigration {
      * with the Table class.
      */
     public function change() : void {
-        $table = $this->table('roles');
-        $table->addColumn('admin_level', 'integer', ['default' => 0])
-            ->addColumn('created_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'datetime', ['null' => true, 'update' => 'CURRENT_TIMESTAMP'])
-            ->addIndex(['name'], ['unique' => true]);
-        $table->update();
+        $this->table('users')->removeColumn('is_active')->update();
     }
 }

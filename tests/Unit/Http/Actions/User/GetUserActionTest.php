@@ -25,8 +25,8 @@ final class GetUserActionTest extends TestCase {
             new Email('a@test.com'),
             'User',
             'Name',
-            true,
             new DateTimeValue('2026-06-10 10:00:00'),
+            null,
             null,
         );
         $dto = UserDTO::fromUser($user);
@@ -63,7 +63,7 @@ final class GetUserActionTest extends TestCase {
      * @return array<string, mixed>
      */
     private function decodeJsonResponse($response) : array {
-        $body = (string) $response->getBody();
+        $body = (string)$response->getBody();
 
         self::assertNotSame('', $body);
 

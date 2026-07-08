@@ -18,18 +18,18 @@ final class GetAllUsersEndpointTest extends BaseApiTestCases {
                 'email' => 'user1@example.com',
                 'first_name' => 'User',
                 'last_name' => 'One',
-                'is_active' => 1,
                 'created_at' => '2026-06-10 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
             [
                 'id' => '660e8400-e29b-41d4-a716-446655440001',
                 'email' => 'user2@example.com',
                 'first_name' => 'User',
                 'last_name' => 'Two',
-                'is_active' => 1,
                 'created_at' => '2026-06-10 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
         ]);
 

@@ -9,5 +9,6 @@ use Monolog\Logger;
 return function () {
     $logger = new Logger('slim');
     $logger->pushHandler(new StreamHandler(__DIR__ . '/../logs/app.log'));
+
     return $logger;
 };

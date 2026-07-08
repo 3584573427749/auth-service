@@ -36,6 +36,13 @@ abstract class AbstractId implements JsonSerializable {
     }
 
     /**
+     * Returns the raw UUID string.
+     */
+    public function toString() : string {
+        return $this->value;
+    }
+
+    /**
      * Construct an ID from existing string (e.g. from database).
      */
     public static function fromString(string $value) : static {
@@ -64,13 +71,6 @@ abstract class AbstractId implements JsonSerializable {
         }
 
         return $this->value === $other->value;
-    }
-
-    /**
-     * Returns the raw UUID string.
-     */
-    public function toString() : string {
-        return $this->value;
     }
 
     /**

@@ -6,10 +6,12 @@ namespace App\Infrastructure\Database\User;
 
 use App\Domain\Entities\User;
 use App\Domain\Exception\NotFoundException;
+use App\Domain\Exception\UserInUseException;
 use App\Domain\Repositories\UserRepository;
 use App\Domain\ValueObjects\UserId;
 use App\Infrastructure\Database\AbstractDbRepository;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 class DbalUserRepository extends AbstractDbRepository implements UserRepository {
     private const TABLE = 'users';
@@ -39,7 +41,7 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
      * @throws Exception
      */
     public function getAll() : array {
-        $rows = $this->connection->executeQuery('SELECT * FROM ' . self::TABLE)
+        $rows = $this->connection->executeQuery('SELECT * FROM ' . self::TABLE . ' WHERE deleted_at IS NULL')
             ->fetchAllAssociative();
 
         return array_map(fn ($row) => User::fromDBRow($row), $rows);
@@ -50,7 +52,7 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
      * @throws Exception
      */
     public function getById(UserId $id) : User {
-        $row = $this->connection->executeQuery('SELECT * FROM ' . self::TABLE . ' WHERE id=:id', ['id' => $id->toString()])
+        $row = $this->connection->executeQuery('SELECT * FROM ' . self::TABLE . ' WHERE id=:id AND deleted_at IS NULL', ['id' => $id->toString()])
             ->fetchAssociative();
 
         if ($row === false) {
@@ -65,7 +67,7 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
      */
     public function softDelete(UserId $id) : void {
         $rows = $this->connection
-            ->executeQuery('UPDATE ' . self::TABLE . ' SET is_active=0 WHERE id=:id', ['id' => $id->toString()])
+            ->executeQuery('UPDATE ' . self::TABLE . ' SET deleted_at=:now WHERE id=:id', ['id' => $id->toString(), 'now' => date('Y-m-d H:i:s')])
             ->rowCount();
 
         if ($rows === 0) {
@@ -85,5 +87,17 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
             ->rowCount();
 
         return ($row !== 0);
+    }
+
+    public function remove(UserId $id) : void {
+        try {
+            $rows = $this->connection->delete(self::TABLE, ['id' => $id->toString()]);
+
+            if ($rows === 0) {
+                throw new NotFoundException('Användare med id ' . $id->toString() . ' hittades inte');
+            }
+        } catch (ForeignKeyConstraintViolationException $e) {
+            throw new UserInUseException('Användaren används i en eller flera andra tabeller');
+        }
     }
 }

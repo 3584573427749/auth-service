@@ -15,26 +15,6 @@ use Tests\Unit\Infrastructure\Database\DatabaseBaseTestCase;
 final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
     private DbalUserRepository $repository;
 
-    protected function setUp() : void {
-        parent::setUp();
-
-        $this->loadSchema('users');
-
-        $this->repository = new DbalUserRepository($this->connection);
-    }
-
-    private function createUser(?DateTimeValue $updatedAt = null) : User {
-        return new User(
-            new UserId('550e8400-e29b-41d4-a716-446655440000'),
-            new Email('test@example.com'),
-            'User',
-            'Name',
-            true,
-            new DateTimeValue('2026-01-01 10:00:00'),
-            $updatedAt,
-        );
-    }
-
     public function testExistsByEmailReturnsFalseWhenUserDoesNotExist() : void {
         $exists = $this->repository->existsByEmail('test@example.com');
 
@@ -50,6 +30,18 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
         $exists = $this->repository->existsByEmail('test@example.com');
 
         self::assertTrue($exists);
+    }
+
+    private function createUser(?DateTimeValue $updatedAt = null) : User {
+        return new User(
+            new UserId('550e8400-e29b-41d4-a716-446655440000'),
+            new Email('test@example.com'),
+            'User',
+            'Name',
+            new DateTimeValue('2026-01-01 10:00:00'),
+            $updatedAt,
+            null,
+        );
     }
 
     public function testSaveInsertsNewUser() : void {
@@ -104,18 +96,18 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
                 'email' => 'a@test.com',
                 'first_name' => 'A',
                 'last_name' => 'User',
-                'is_active' => 1,
                 'created_at' => '2026-01-01 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
             [
                 'id' => '660e8400-e29b-41d4-a716-446655440000',
                 'email' => 'b@test.com',
                 'first_name' => 'B',
                 'last_name' => 'User',
-                'is_active' => 1,
                 'created_at' => '2026-01-01 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
         ]);
 
@@ -138,9 +130,9 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
                 'email' => 'test@example.com',
                 'first_name' => 'User',
                 'last_name' => 'Name',
-                'is_active' => 1,
                 'created_at' => '2026-01-01 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
         ]);
 
@@ -173,7 +165,7 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
         );
     }
 
-    public function testDeleteById() : void {
+    public function testDelete() : void {
         $this->loadSchema('users');
 
         $this->seed('users', [
@@ -182,9 +174,9 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
                 'email' => 'test@example.com',
                 'first_name' => 'User',
                 'last_name' => 'Name',
-                'is_active' => 1,
                 'created_at' => '2026-01-01 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
         ]);
 
@@ -196,6 +188,39 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
             ['id' => '550e8400-e29b-41d4-a716-446655440000'],
         );
         self::assertNotFalse($row);
-        self::assertFalse((bool)$row['is_active']);
+        self::assertNotNull($row['deleted_at']);
+    }
+
+    public function testRemove() : void {
+        $this->loadSchema('users');
+
+        $this->seed('users', [
+            [
+                'id' => '550e8400-e29b-41d4-a716-446655440000',
+                'email' => 'test@example.com',
+                'first_name' => 'User',
+                'last_name' => 'Name',
+                'created_at' => '2026-01-01 10:00:00',
+                'updated_at' => null,
+                'deleted_at' => null,
+            ],
+        ]);
+
+        $repository = new DbalUserRepository($this->connection);
+
+        $repository->remove(new UserId('550e8400-e29b-41d4-a716-446655440000'));
+        $row = $this->connection->fetchAssociative(
+            'SELECT * FROM users WHERE id = :id',
+            ['id' => '550e8400-e29b-41d4-a716-446655440000'],
+        );
+        self::assertFalse($row);
+    }
+
+    protected function setUp() : void {
+        parent::setUp();
+
+        $this->loadSchema('users');
+
+        $this->repository = new DbalUserRepository($this->connection);
     }
 }

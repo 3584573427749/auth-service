@@ -14,6 +14,21 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 use Slim\Psr7\Response;
 
 class ActionTest extends TestCase {
+    public function testInvokeReturnsResponse() : void {
+        $action = new ActionDummy($this->createLogger());
+
+        $request = $this->createRequest();
+        $response = $this->createResponse();
+
+        $result = $action($request, $response, []);
+
+        $this->assertSame($response, $result);
+    }
+
+    private function createLogger() : LoggerInterface {
+        return $this->createMock(LoggerInterface::class);
+    }
+
     /**
      * @param array<string, mixed> $body
      */
@@ -26,21 +41,6 @@ class ActionTest extends TestCase {
 
     private function createResponse() : Response {
         return new Response();
-    }
-
-    private function createLogger() : LoggerInterface {
-        return $this->createMock(LoggerInterface::class);
-    }
-
-    public function testInvokeReturnsResponse() : void {
-        $action = new ActionDummy($this->createLogger());
-
-        $request = $this->createRequest();
-        $response = $this->createResponse();
-
-        $result = $action($request, $response, []);
-
-        $this->assertSame($response, $result);
     }
 
     public function testDomainExceptionIsConverted() : void {

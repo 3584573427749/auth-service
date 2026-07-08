@@ -20,6 +20,7 @@ readonly class UserDTO implements \JsonSerializable {
         private array $roles,
         private ?DateTimeValue $updatedAt,
         private DateTimeValue $createdAt,
+        private ?DateTimeValue $deletedAt,
     ) {
     }
 
@@ -32,6 +33,7 @@ readonly class UserDTO implements \JsonSerializable {
             ['user'],
             $user->getUpdatedAt() ?? null,
             $user->getCreatedAt(),
+            $user->getDeletedAt() ?? null,
         );
     }
 
@@ -47,6 +49,7 @@ readonly class UserDTO implements \JsonSerializable {
             'roles' => $this->roles,
             'updatedAt' => $this->updatedAt?->toISOString(),
             'createdAt' => $this->createdAt->toISOString(),
+            'deletedAt' => $this->deletedAt?->toISOString(),
         ];
     }
 }

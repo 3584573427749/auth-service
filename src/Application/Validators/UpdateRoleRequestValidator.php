@@ -35,7 +35,7 @@ class UpdateRoleRequestValidator {
             $errors['adminLevel'] = 'Admin level is required.';
         } elseif (!is_int($data['adminLevel'])) {
             $errors['adminLevel'] = 'Admin level must be an integer.';
-        } elseif ((int) $data['adminLevel'] < 0 || (int) $data['adminLevel'] > 100) {
+        } elseif ((int)$data['adminLevel'] < 0 || (int)$data['adminLevel'] > 100) {
             $errors['adminLevel'] = 'AdminLevel must be between 0 and 100.';
         }
 
@@ -59,6 +59,7 @@ class UpdateRoleRequestValidator {
         if (count($data) > 7) {
             $errors['tooManyFields'] = 'Too many fields.';
         }
+
         return $errors;
     }
 }

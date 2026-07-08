@@ -15,7 +15,6 @@ final class UpdateUserRequestValidatorTest extends TestCase {
             'email' => 'test@example.com',
             'firstName' => 'User',
             'lastName' => 'Name',
-            'isActive' => '1',
             'createdAt' => '2026-01-01 10:00:00',
         ];
 
@@ -30,7 +29,6 @@ final class UpdateUserRequestValidatorTest extends TestCase {
             'id' => '550e8400-e29b-41d4-a716-446655440000',
             'firstName' => 'User',
             'lastName' => 'Name',
-            'isActive' => '1',
             'createdAt' => '2026-01-01 10:00:00',
         ];
 
@@ -47,7 +45,6 @@ final class UpdateUserRequestValidatorTest extends TestCase {
             'email' => 'example.com',
             'firstName' => 'User',
             'lastName' => 'Name',
-            'isActive' => '1',
             'createdAt' => '2026-01-01 10:00:00',
         ];
 
@@ -63,7 +60,6 @@ final class UpdateUserRequestValidatorTest extends TestCase {
             'id' => '550e8400-e29b-41d4-a716-446655440000',
             'email' => 'test@example.com',
             'lastName' => 'Name',
-            'isActive' => '1',
             'createdAt' => '2026-01-01 10:00:00',
         ];
 
@@ -80,7 +76,6 @@ final class UpdateUserRequestValidatorTest extends TestCase {
             'email' => 'test@example.com',
             'firstName' => 'a',
             'lastName' => 'Name',
-            'isActive' => '1',
             'createdAt' => '2026-01-01 10:00:00',
         ];
 
@@ -96,7 +91,6 @@ final class UpdateUserRequestValidatorTest extends TestCase {
             'id' => '550e8400-e29b-41d4-a716-446655440000',
             'email' => 'test@example.com',
             'firstName' => 'User',
-            'isActive' => '1',
             'createdAt' => '2026-01-01 10:00:00',
         ];
 
@@ -113,7 +107,6 @@ final class UpdateUserRequestValidatorTest extends TestCase {
             'email' => 'test@example.com',
             'firstName' => 'User',
             'lastName' => 'b',
-            'isActive' => '1',
             'createdAt' => '2026-01-01 10:00:00',
         ];
 
@@ -123,23 +116,6 @@ final class UpdateUserRequestValidatorTest extends TestCase {
         self::assertSame('Last name must be at least 2 characters.', $errors['lastName']);
     }
 
-    public function testIsActiveInvalid() : void {
-        $data = [
-            'userId' => '550e8400-e29b-41d4-a716-446655440000',
-            'id' => '550e8400-e29b-41d4-a716-446655440000',
-            'email' => 'test@example.com',
-            'firstName' => 'User',
-            'lastName' => 'b',
-            'isActive' => '-1',
-            'createdAt' => '2026-01-01 10:00:00',
-        ];
-
-        $errors = UpdateUserRequestValidator::validate($data);
-
-        self::assertArrayHasKey('isActive', $errors);
-        self::assertSame('Is active must be a boolean.', $errors['isActive']);
-    }
-
     public function testCreatedAtInvalid() : void {
         $data = [
             'userId' => '550e8400-e29b-41d4-a716-446655440000',
@@ -147,7 +123,6 @@ final class UpdateUserRequestValidatorTest extends TestCase {
             'email' => 'test@example.com',
             'firstName' => 'User',
             'lastName' => 'b',
-            'isActive' => '-1',
             'createdAt' => 'Invalid',
         ];
 
@@ -164,9 +139,9 @@ final class UpdateUserRequestValidatorTest extends TestCase {
             'email' => 'test@example.com',
             'firstName' => 'User',
             'lastName' => 'b',
-            'isActive' => '-1',
             'createdAt' => '2026-01-01 10:00:00',
             'updatedAt' => 'Invalid',
+            'deletedAt' => null,
         ];
 
         $errors = UpdateUserRequestValidator::validate($data);
@@ -182,9 +157,9 @@ final class UpdateUserRequestValidatorTest extends TestCase {
             'email' => 'test@example.com',
             'firstName' => 'User',
             'lastName' => 'Name',
-            'isActive' => '1',
             'createdAt' => '2026-01-01 10:00:00',
-            'updateAt' => '2026-01-01 10:00:00',
+            'updatedAt' => '2026-01-01 10:00:00',
+            'deletedAt' => '2026-01-01 10:00:00',
             'extra' => '2026-01-01 10:00:00',
         ];
 
@@ -201,7 +176,6 @@ final class UpdateUserRequestValidatorTest extends TestCase {
             'email' => 'example.com',
             'firstName' => 'a',
             'lastName' => 'b',
-            'isActive' => '1',
             'createdAt' => '2026-01-01 10:00:00',
         ];
 

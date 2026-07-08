@@ -28,33 +28,33 @@ final class AddUserTable extends AbstractMigration {
             'limit' => 36,
             'null' => false,
         ])
-              ->addColumn('email', 'string', [
-                  'limit' => 100,
-                  'null' => false,
-              ])
-              ->addColumn('first_name', 'string', [
-                  'limit' => 100,
-                  'null' => false,
-              ])
-              ->addColumn('last_name', 'string', [
-                  'limit' => 100,
-                  'null' => false,
-              ])
-              ->addColumn('is_active', 'boolean', [
-                  'null' => false,
-                  'default' => true,
-              ])
-              ->addColumn('created_at', 'datetime', [
-                  'null' => false,
-              ])
-              ->addColumn('updated_at', 'datetime', [
-                  'null' => true,
-                  'default' => null,
-              ])
-              ->addIndex(['email'], [
-                  'unique' => true,
-                  'name' => 'idx_users_email_unique',
-              ])
-              ->create();
+            ->addColumn('email', 'string', [
+                'limit' => 100,
+                'null' => false,
+            ])
+            ->addColumn('first_name', 'string', [
+                'limit' => 100,
+                'null' => false,
+            ])
+            ->addColumn('last_name', 'string', [
+                'limit' => 100,
+                'null' => false,
+            ])
+            ->addColumn('is_active', 'boolean', [
+                'null' => false,
+                'default' => true,
+            ])
+            ->addColumn('created_at', 'datetime', [
+                'null' => false,
+            ])
+            ->addColumn('updated_at', 'datetime', [
+                'null' => true,
+                'default' => null,
+            ])
+            ->addIndex(['email'], [
+                'unique' => true,
+                'name' => 'idx_users_email_unique',
+            ])
+            ->create();
     }
 }

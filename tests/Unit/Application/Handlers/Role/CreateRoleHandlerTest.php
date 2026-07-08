@@ -18,9 +18,9 @@ final class CreateRoleHandlerTest extends TestCase {
 
         $command = CreateRoleCommand::fromRequest(
             [
-            'name' => 'Test',
-            'description' => 'Test role',
-            'adminLevel' => 1],
+                'name' => 'Test',
+                'description' => 'Test role',
+                'adminLevel' => 1],
         );
 
         $db->expects(self::once())->method('beginTransaction');

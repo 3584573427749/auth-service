@@ -14,9 +14,9 @@ class User implements \JsonSerializable {
         private Email $email,
         private string $firstName,
         private string $lastName,
-        private bool $isActive,
         private DateTimeValue $createdAt,
         private ?DateTimeValue $updatedAt,
+        private ?DateTimeValue $deletedAt,
     ) {
     }
 
@@ -29,9 +29,9 @@ class User implements \JsonSerializable {
             new Email($row['email']),
             $row['first_name'],
             $row['last_name'],
-            (bool)$row['is_active'],
             new DateTimeValue($row['created_at']),
             !empty($row['updated_at']) ? new DateTimeValue($row['updated_at']) : null,
+            !empty($row['deleted_at']) ? new DateTimeValue($row['deleted_at']) : null,
         );
     }
 
@@ -44,11 +44,39 @@ class User implements \JsonSerializable {
             'email' => $this->getEmail()->toString(),
             'first_name' => $this->getFirstName(),
             'last_name' => $this->getLastName(),
-            'is_active' => $this->isActive() ? 1 : 0,
             'created_at' => $this->getCreatedAt()->toString(),
             'updated_at' => $this->getUpdatedAt()?->toString(),
+            'deleted_at' => $this->getDeletedAt()?->toString(),
         ];
 
+    }
+
+    public function getId() : UserId {
+        return $this->id;
+    }
+
+    public function getEmail() : Email {
+        return $this->email;
+    }
+
+    public function getFirstName() : string {
+        return $this->firstName;
+    }
+
+    public function getLastName() : string {
+        return $this->lastName;
+    }
+
+    public function getCreatedAt() : DateTimeValue {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt() : ?DateTimeValue {
+        return $this->updatedAt;
+    }
+
+    public function getDeletedAt() : ?DateTimeValue {
+        return $this->deletedAt;
     }
 
     /**
@@ -60,62 +88,22 @@ class User implements \JsonSerializable {
             'email' => $this->getEmail()->toString(),
             'firstName' => $this->getFirstName(),
             'lastName' => $this->getLastName(),
-            'isActive' => $this->isActive(),
             'createdAt' => $this->getCreatedAt()->toString(),
             'updatedAt' => $this->getUpdatedAt()?->toString(),
+            'deletedAt' => $this->getDeletedAt()?->toString(),
         ];
-    }
-
-    public function getId() : UserId {
-        return $this->id;
-    }
-
-    public function getEmail() : Email {
-        return $this->email;
     }
 
     public function setEmail(Email $email) : void {
         $this->email = $email;
     }
 
-    public function getFirstName() : string {
-        return $this->firstName;
-    }
-
     public function setFirstName(string $firstName) : void {
         $this->firstName = $firstName;
     }
 
-    public function getLastName() : string {
-        return $this->lastName;
-    }
-
     public function setLastName(string $lastName) : void {
         $this->lastName = $lastName;
-    }
-
-    public function isActive() : bool {
-        return $this->isActive;
-    }
-
-    public function activate() : void {
-        $this->isActive = true;
-    }
-
-    public function deactivate() : void {
-        $this->isActive = false;
-    }
-
-    public function getCreatedAt() : DateTimeValue {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(DateTimeValue $createdAt) : void {
-        $this->createdAt = $createdAt;
-    }
-
-    public function getUpdatedAt() : ?DateTimeValue {
-        return $this->updatedAt;
     }
 
     public function setUpdatedAt(DateTimeValue $updatedAt) : void {

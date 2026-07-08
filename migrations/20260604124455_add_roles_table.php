@@ -27,14 +27,14 @@ final class AddRolesTable extends AbstractMigration {
             'limit' => 36,
             'null' => false,
         ])
-              ->addColumn('name', 'string', [
-                  'limit' => 100,
-                  'null' => false,
-              ])
-              ->addColumn('description', 'string', [
-                  'limit' => 255,
-                  'null' => false,
-              ])
-              ->create();
+            ->addColumn('name', 'string', [
+                'limit' => 100,
+                'null' => false,
+            ])
+            ->addColumn('description', 'string', [
+                'limit' => 255,
+                'null' => false,
+            ])
+            ->create();
     }
 }

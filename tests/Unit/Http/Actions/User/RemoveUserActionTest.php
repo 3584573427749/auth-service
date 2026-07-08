@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Http\Actions\User;
 
 use App\Application\Handlers\User\DeleteUserHandler;
-use App\Http\Actions\User\SoftDeleteUserAction;
+use App\Http\Actions\User\RemoveUserAction;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
-final class DeleteUserActionTest extends TestCase {
+final class RemoveUserActionTest extends TestCase {
     public function testReturnsVoid() : void {
         $logger = $this->createMock(LoggerInterface::class);
 
@@ -19,12 +19,12 @@ final class DeleteUserActionTest extends TestCase {
 
         $handler
             ->expects($this->once())
-            ->method('softDelete');
+            ->method('removeUser');
 
-        $action = new SoftDeleteUserAction($logger, $handler);
+        $action = new RemoveUserAction($logger, $handler);
 
         $request = new ServerRequestFactory()
-            ->createServerRequest('DELETE', '/users/550e8400-e29b-41d4-a716-446655440000');
+            ->createServerRequest('DELETE', '/users/550e8400-e29b-41d4-a716-446655440000/permanent');
 
         $response = new ResponseFactory()->createResponse();
 

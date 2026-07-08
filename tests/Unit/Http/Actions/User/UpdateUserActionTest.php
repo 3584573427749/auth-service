@@ -27,9 +27,9 @@ final class UpdateUserActionTest extends TestCase {
             new Email('test@example.com'),
             'User',
             'Name',
-            true,
             new DateTimeValue('2026-06-10T10:00:00+00:00'),
-            new DateTimeValue('2026-06-11T10:00:00+00:00'),
+            new DateTimeValue('2026-06-10T10:00:00+00:00'),
+            null,
         );
 
         $dto = UserDTO::fromUser($user);
@@ -55,9 +55,9 @@ final class UpdateUserActionTest extends TestCase {
                 'email' => 'test@example.com',
                 'firstName' => 'User',
                 'lastName' => 'Name',
-                'isActive' => '1',
                 'createdAt' => '2026-01-01T10:00:00+00:00',
                 'updatedAt' => null,
+                'deletedAt' => null,
             ]);
 
         $response = (new ResponseFactory())->createResponse();

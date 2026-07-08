@@ -22,9 +22,9 @@ final class DeleteUserEndpointTest extends BaseApiTestCases {
                 'email' => 'test@example.com',
                 'first_name' => 'User',
                 'last_name' => 'Name',
-                'is_active' => 1,
                 'created_at' => '2026-06-10 10:00:00',
                 'updated_at' => null,
+                'deleted_at' => null,
             ],
         ]);
 
@@ -48,7 +48,7 @@ final class DeleteUserEndpointTest extends BaseApiTestCases {
 
         $count = $this->connection
             ->executeQuery(
-                'SELECT COUNT(*) FROM users WHERE id = ? and is_active = 1',
+                'SELECT COUNT(*) FROM users WHERE id = ? and deleted_at IS NULL',
                 ['550e8400-e29b-41d4-a716-446655440000'],
             )
             ->fetchOne();

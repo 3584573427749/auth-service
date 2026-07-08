@@ -27,11 +27,11 @@ class ActionPayload implements JsonSerializable {
     }
 
     /**
-     *  @return array<string, mixed>
+     * @return array<string, mixed>
      */
     public function jsonSerialize() : array {
         $payload = [
-           'statusCode' => $this->statusCode,
+            'statusCode' => $this->statusCode,
         ];
 
         if ($this->data !== null) {
