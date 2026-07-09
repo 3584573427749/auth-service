@@ -33,8 +33,8 @@ return function (App $app) : void {
     $app->put('/roles/{id}', UpdateRoleAction::class);
     $app->delete('/roles/{id}', DeleteRoleAction::class);
 
-    $app->get('/users/{id}/roles', GetUserRolesAction::class);
     $app->post('/users/{id}/roles', CreateUserRoleAction::class);
+    $app->get('/users/{id}/roles', GetUserRolesAction::class);
     $app->delete('/users/{id}/roles/{roleId}', DeleteUserRoleAction::class);
     $app->get('/roles/{id}/users', GetRoleUsersAction::class);
 

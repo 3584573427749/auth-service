@@ -19,7 +19,7 @@ final class DbalUserRoleRepositoryTest extends DatabaseBaseTestCase {
 
         $this->loadSchema('roles');
         $this->loadSchema('users');
-        $this->loadSchema('userroles');
+        $this->loadSchema('user_roles');
 
         $this->repository = new DbalUserRoleRepository($this->connection);
     }
@@ -53,14 +53,14 @@ final class DbalUserRoleRepositoryTest extends DatabaseBaseTestCase {
         );
 
         $count = $this->connection
-            ->executeQuery('SELECT COUNT(*) FROM userroles')
+            ->executeQuery('SELECT COUNT(*) FROM user_roles')
             ->fetchOne();
 
         self::assertSame(1, (int)$count);
     }
 
     public function testSaveThrowsExceptionWhenUserRoleAlreadyExists() : void {
-        $this->seed('userroles', [
+        $this->seed('user_roles', [
             [
                 'user_id' => '550e8400-e29b-41d4-a716-446655440000',
                 'role_id' => '660e8400-e29b-41d4-a716-446655440000',
@@ -80,7 +80,7 @@ final class DbalUserRoleRepositoryTest extends DatabaseBaseTestCase {
     }
 
     public function testDeleteRemovesUserRole() : void {
-        $this->seed('userroles', [
+        $this->seed('user_roles', [
             [
                 'user_id' => '550e8400-e29b-41d4-a716-446655440000',
                 'role_id' => '660e8400-e29b-41d4-a716-446655440000',
@@ -95,7 +95,7 @@ final class DbalUserRoleRepositoryTest extends DatabaseBaseTestCase {
         );
 
         $count = $this->connection
-            ->executeQuery('SELECT COUNT(*) FROM userroles')
+            ->executeQuery('SELECT COUNT(*) FROM user_roles')
             ->fetchOne();
 
         self::assertSame(0, (int)$count);
@@ -123,7 +123,7 @@ final class DbalUserRoleRepositoryTest extends DatabaseBaseTestCase {
             ],
         ]);
 
-        $this->seed('userroles', [
+        $this->seed('user_roles', [
             [
                 'user_id' => '550e8400-e29b-41d4-a716-446655440001',
                 'role_id' => '660e8400-e29b-41d4-a716-446655440000',
@@ -156,7 +156,7 @@ final class DbalUserRoleRepositoryTest extends DatabaseBaseTestCase {
             ],
         ]);
 
-        $this->seed('userroles', [
+        $this->seed('user_roles', [
             [
                 'user_id' => '550e8400-e29b-41d4-a716-446655440000',
                 'role_id' => '660e8400-e29b-41d4-a716-446655440001',

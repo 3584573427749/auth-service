@@ -16,7 +16,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class DbalUserRoleRepository extends AbstractDbRepository implements UserRoleRepository {
-    private const TABLE = 'userroles';
+    private const TABLE = 'user_roles';
 
     /**
      * @return list<Role>

@@ -18,10 +18,15 @@ class CreateUserRoleAction extends UserRoleAction {
     /**
      * @throws UserRoleAlreadyExistsException
      */
-    protected function action() : Response {
+    protected function action(): Response {
+        //AnvändarId kommer från url
+        $userId = $this->request->getAttribute('id');
+var_dump($this->request->getAttributes());exit;
+        // RollId kommer från body
         $data = (array)$this->request->getParsedBody();
+        $data['userId'] = $userId;
 
-        $userRoleCommand = UserRoleCommand::fromRequest($data);
+       $userRoleCommand = UserRoleCommand::fromRequest($data);
 
         $this->handler->handle($userRoleCommand);
 

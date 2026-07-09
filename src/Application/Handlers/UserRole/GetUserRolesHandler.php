@@ -14,6 +14,10 @@ class GetUserRolesHandler extends UserRoleHandler {
      * @return list<RoleDTO>
      */
     public function getRoles(UserId $id) : array {
+        // Kontrollera att användaren finns
+        $this->userRepository->getById($id);
+
+        // Hämta rollerna
         $roles = $this->repository->getRoles($id);
 
         $roleDTOs = [];
@@ -28,6 +32,9 @@ class GetUserRolesHandler extends UserRoleHandler {
      * @return list<UserDTO>
      */
     public function getUsers(RoleId $id) : array {
+        // Kontrollera att rollen finns
+        $this->roleRepository->getById($id);
+
         $users = $this->repository->getUsers($id);
 
         $userDTOs = [];

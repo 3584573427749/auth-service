@@ -17,7 +17,7 @@ use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class GetUserActionTest extends TestCase {
-    public function testReturnsUserDTO() : void {
+    public function testReturnsUserDTO(): void {
         $logger = $this->createMock(LoggerInterface::class);
         $users = [];
         $user = new User(
@@ -36,17 +36,24 @@ final class GetUserActionTest extends TestCase {
         $handler
             ->expects($this->once())
             ->method('getById')
+            ->with(new UserId('550e8400-e29b-41d4-a716-446655440000'))
             ->willReturn($dto);
 
         $action = new GetUserAction($logger, $handler);
 
         $request = new ServerRequestFactory()
-            ->createServerRequest('GET', '/users/550e8400-e29b-41d4-a716-446655440000');
+            ->createServerRequest('GET', '/users/550e8400-e29b-41d4-a716-446655440000')
+            ->withAttribute('id', '550e8400-e29b-41d4-a716-446655440000');
 
         $response = new ResponseFactory()->createResponse();
 
-        $result = $action($request, $response, []);
-
+        $result = $action(
+            $request,
+            $response,
+            [
+                'id' => '550e8400-e29b-41d4-a716-446655440000',
+            ]
+        );
         self::assertSame(200, $result->getStatusCode());
 
         $payload = $this->decodeJsonResponse($result);
@@ -62,7 +69,7 @@ final class GetUserActionTest extends TestCase {
      * @param \Psr\Http\Message\ResponseInterface $response
      * @return array<string, mixed>
      */
-    private function decodeJsonResponse($response) : array {
+    private function decodeJsonResponse($response): array {
         $body = (string)$response->getBody();
 
         self::assertNotSame('', $body);

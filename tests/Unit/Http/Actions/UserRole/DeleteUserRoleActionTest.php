@@ -8,7 +8,6 @@ use App\Application\Commands\UserRole\UserRoleCommand;
 use App\Application\Handlers\UserRole\DeleteUserRoleHandler;
 use App\Http\Actions\UserRole\DeleteUserRoleAction;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
@@ -58,5 +57,4 @@ final class DeleteUserRoleActionTest extends TestCase {
 
         self::assertSame(204, $result->getStatusCode());
     }
-
 }

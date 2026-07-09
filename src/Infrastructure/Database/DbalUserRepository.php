@@ -48,6 +48,7 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
     }
 
     /**
+     * @throws NotFoundException
      * @throws Exception
      */
     public function getById(UserId $id) : User {

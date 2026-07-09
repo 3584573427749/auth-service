@@ -9,6 +9,8 @@ use App\Domain\DataTransportObjects\Role\RoleDTO;
 use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\Role;
 use App\Domain\Entities\User;
+use App\Domain\Repositories\RoleRepository;
+use App\Domain\Repositories\UserRepository;
 use App\Domain\Repositories\UserRoleRepository;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
@@ -29,7 +31,6 @@ final class GetUserRoleHandlerTest extends TestCase {
         );
 
         $repository = $this->createMock(UserRoleRepository::class);
-
         $repository
             ->expects($this->once())
             ->method('getRoles')
@@ -40,9 +41,14 @@ final class GetUserRoleHandlerTest extends TestCase {
             )
             ->willReturn([$role]);
 
+        $userRepository = $this->createMock(UserRepository::class);
+        $roleRepository = $this->createMock(RoleRepository::class);
+
         $handler = new GetUserRolesHandler(
             $this->createMock(Connection::class),
             $repository,
+            $userRepository,
+            $roleRepository
         );
 
         $result = $handler->getRoles(
@@ -61,9 +67,14 @@ final class GetUserRoleHandlerTest extends TestCase {
             ->method('getRoles')
             ->willReturn([]);
 
+        $userRepository = $this->createMock(UserRepository::class);
+        $roleRepository = $this->createMock(RoleRepository::class);
+
         $handler = new GetUserRolesHandler(
             $this->createMock(Connection::class),
             $repository,
+            $userRepository,
+            $roleRepository
         );
 
         $result = $handler->getRoles(
@@ -96,9 +107,14 @@ final class GetUserRoleHandlerTest extends TestCase {
             )
             ->willReturn([$user]);
 
+        $userRepository = $this->createMock(UserRepository::class);
+        $roleRepository = $this->createMock(RoleRepository::class);
+
         $handler = new GetUserRolesHandler(
             $this->createMock(Connection::class),
             $repository,
+            $userRepository,
+            $roleRepository
         );
 
         $result = $handler->getUsers(
@@ -117,9 +133,14 @@ final class GetUserRoleHandlerTest extends TestCase {
             ->method('getUsers')
             ->willReturn([]);
 
+        $userRepository = $this->createMock(UserRepository::class);
+        $roleRepository = $this->createMock(RoleRepository::class);
+
         $handler = new GetUserRolesHandler(
             $this->createMock(Connection::class),
             $repository,
+            $userRepository,
+            $roleRepository
         );
 
         $result = $handler->getUsers(

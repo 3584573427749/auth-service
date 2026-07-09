@@ -45,6 +45,7 @@ class DbalRoleRepository extends AbstractDbRepository implements RoleRepository 
     }
 
     /**
+     * @throws NotFoundException
      * @throws Exception
      */
     public function getById(RoleId $id) : Role {

@@ -7,6 +7,8 @@ namespace Tests\Unit\Application\Handlers\UserRole;
 use App\Application\Commands\UserRole\UserRoleCommand;
 use App\Application\Handlers\UserRole\SaveUserRoleHandler;
 use App\Domain\Entities\UserRole;
+use App\Domain\Repositories\RoleRepository;
+use App\Domain\Repositories\UserRepository;
 use App\Domain\Repositories\UserRoleRepository;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
@@ -37,9 +39,14 @@ final class SaveUserRoleHandlerTest extends TestCase {
                 ),
             );
 
+        $userRepository = $this->createMock(UserRepository::class);
+        $roleRepository = $this->createMock(RoleRepository::class);
+
         $handler = new SaveUserRoleHandler(
             $this->createMock(Connection::class),
             $repository,
+            $userRepository,
+            $roleRepository
         );
 
         $handler->handle($command);
