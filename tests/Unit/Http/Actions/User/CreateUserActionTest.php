@@ -84,11 +84,6 @@ final class CreateUserActionTest extends TestCase {
             'Name',
             $payload['data']['lastName'],
         );
-
-        self::assertSame(
-            ['user'],
-            $payload['data']['roles'],
-        );
     }
 
     /**

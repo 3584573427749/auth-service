@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Http\Actions\User;
 
 use App\Application\Handlers\User\DeleteUserHandler;
+use App\Domain\ValueObjects\UserId;
 use App\Http\Actions\User\RemoveUserAction;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -19,12 +20,14 @@ final class RemoveUserActionTest extends TestCase {
 
         $handler
             ->expects($this->once())
-            ->method('removeUser');
+            ->method('removeUser')
+            ->with(new UserId('550e8400-e29b-41d4-a716-446655440000'));
 
         $action = new RemoveUserAction($logger, $handler);
 
         $request = new ServerRequestFactory()
-            ->createServerRequest('DELETE', '/users/550e8400-e29b-41d4-a716-446655440000/permanent');
+            ->createServerRequest('DELETE', '/users/550e8400-e29b-41d4-a716-446655440000/permanent')
+            ->withAttribute('id', '550e8400-e29b-41d4-a716-446655440000');
 
         $response = new ResponseFactory()->createResponse();
 

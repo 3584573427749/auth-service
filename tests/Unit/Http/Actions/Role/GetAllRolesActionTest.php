@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Http\Actions\Role;
 
-use App\Application\Handlers\Roles\GetRoleHandler;
+use App\Application\Handlers\Role\GetRoleHandler;
 use App\Domain\DataTransportObjects\Role\RoleDTO;
 use App\Domain\Entities\Role;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\RoleId;
-use App\Http\Actions\Roles\GetAllRolesAction;
+use App\Http\Actions\Role\GetAllRolesAction;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Slim\Psr7\Factory\ResponseFactory;

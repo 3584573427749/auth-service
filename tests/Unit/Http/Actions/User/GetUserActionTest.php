@@ -36,17 +36,18 @@ final class GetUserActionTest extends TestCase {
         $handler
             ->expects($this->once())
             ->method('getById')
+            ->with(new UserId('550e8400-e29b-41d4-a716-446655440000'))
             ->willReturn($dto);
 
         $action = new GetUserAction($logger, $handler);
 
         $request = new ServerRequestFactory()
-            ->createServerRequest('GET', '/users/550e8400-e29b-41d4-a716-446655440000');
+            ->createServerRequest('GET', '/users/550e8400-e29b-41d4-a716-446655440000')
+            ->withAttribute('id', '550e8400-e29b-41d4-a716-446655440000');
 
         $response = new ResponseFactory()->createResponse();
 
         $result = $action($request, $response, []);
-
         self::assertSame(200, $result->getStatusCode());
 
         $payload = $this->decodeJsonResponse($result);

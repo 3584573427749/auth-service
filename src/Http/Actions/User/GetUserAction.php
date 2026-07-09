@@ -19,6 +19,7 @@ class GetUserAction extends UserAction {
      */
     protected function action() : Response {
         $id = $this->request->getAttribute('id');
+
         $userId = new UserId($id);
         $userDTO = $this->handler->getById($userId);
 

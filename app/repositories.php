@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 use App\Domain\Repositories\RoleRepository;
 use App\Domain\Repositories\UserRepository;
-use App\Infrastructure\Database\Role\DbalRoleRepository;
-use App\Infrastructure\Database\User\DbalUserRepository;
+use App\Domain\Repositories\UserRoleRepository;
+use App\Infrastructure\Database\DbalRoleRepository;
+use App\Infrastructure\Database\DbalUserRepository;
+use App\Infrastructure\Database\DbalUserRoleRepository;
 
 use function DI\autowire;
 
@@ -16,5 +18,6 @@ return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
         UserRepository::class => autowire(DbalUserRepository::class),
         RoleRepository::class => autowire(DbalRoleRepository::class),
+        UserRoleRepository::class => autowire(DbalUserRoleRepository::class),
     ]);
 };

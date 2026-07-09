@@ -71,6 +71,43 @@ final class CreateRoleRequestValidatorTest extends TestCase {
         self::assertSame('Name is too long (max 100 characters).', $errors['name']);
     }
 
+    public function testDescriptionTooLong() : void {
+        $data = [
+            'name' => str_repeat('A', 100),
+            'description' => str_repeat('A', 256),
+            'adminLevel' => 1,
+        ];
+
+        $errors = CreateRoleRequestValidator::validate($data);
+
+        self::assertArrayHasKey('description', $errors);
+        self::assertSame('Description is too long (max 255 characters).', $errors['description']);
+    }
+
+    public function testAdminLevelIsInvalid() : void {
+        $data = [
+            'name' => 'Test',
+            'description' => 'Test role',
+            'adminLevel' => 'High',
+        ];
+
+        $errors = CreateRoleRequestValidator::validate($data);
+
+        self::assertArrayHasKey('adminLevel', $errors);
+        self::assertSame('AdminLevel must be a valid integer.', $errors['adminLevel']);
+
+        $data = [
+            'name' => 'Test',
+            'description' => 'Test role',
+            'adminLevel' => -1,
+        ];
+
+        $errors = CreateRoleRequestValidator::validate($data);
+
+        self::assertArrayHasKey('adminLevel', $errors);
+        self::assertSame('AdminLevel must be between 0 and 100.', $errors['adminLevel']);
+    }
+
     public function testAdminLevelIsOutOfRange() : void {
         $data = [
             'name' => 'Test',

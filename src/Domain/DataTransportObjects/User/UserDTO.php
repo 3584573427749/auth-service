@@ -17,10 +17,10 @@ readonly class UserDTO implements \JsonSerializable {
         private string $email,
         private string $firstName,
         private string $lastName,
-        private array $roles,
         private ?DateTimeValue $updatedAt,
         private DateTimeValue $createdAt,
         private ?DateTimeValue $deletedAt,
+        private array $roles,
     ) {
     }
 
@@ -30,10 +30,26 @@ readonly class UserDTO implements \JsonSerializable {
             $user->getEmail()->toString(),
             $user->getFirstName(),
             $user->getLastName(),
-            ['user'],
             $user->getUpdatedAt() ?? null,
             $user->getCreatedAt(),
             $user->getDeletedAt() ?? null,
+            [],
+        );
+    }
+
+    /**
+     * @param string[] $roles
+     */
+    public function withRoles(array $roles) : self {
+        return new self(
+            $this->id,
+            $this->email,
+            $this->firstName,
+            $this->lastName,
+            $this->updatedAt,
+            $this->createdAt,
+            $this->deletedAt,
+            $roles,
         );
     }
 

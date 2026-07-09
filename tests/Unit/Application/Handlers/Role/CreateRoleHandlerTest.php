@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\Application\Handlers\Role;
 
 use App\Application\Commands\Role\CreateRoleCommand;
-use App\Application\Handlers\Roles\CreateRoleHandler;
+use App\Application\Handlers\Role\CreateRoleHandler;
 use App\Domain\DataTransportObjects\Role\RoleDTO;
+use App\Domain\Exception\RoleAlreadyExistsException;
 use App\Domain\Repositories\RoleRepository;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
@@ -80,6 +81,46 @@ final class CreateRoleHandlerTest extends TestCase {
         };
 
         self::expectException(\RuntimeException::class);
+
+        $handler->handle($command);
+    }
+
+    public function testHandleRollsBackWhenRoleAlreadyExists() : void {
+        $db = $this->createMock(Connection::class);
+        $repository = $this->createMock(RoleRepository::class);
+
+        $command = CreateRoleCommand::fromRequest([
+            'name' => 'Test',
+            'description' => 'Test role',
+            'adminLevel' => 1,
+        ]);
+
+        $db->expects(self::once())->method('beginTransaction');
+        $db->expects(self::never())->method('commit');
+        $db->expects(self::once())->method('rollBack');
+
+        $repository
+            ->expects(self::once())
+            ->method('save')
+            ->willThrowException(
+                new RoleAlreadyExistsException(
+                    'Rollen finns redan',
+                ),
+            );
+
+        $handler = new class($db, $repository) extends CreateRoleHandler {
+            public function __construct(
+                Connection $db,
+                RoleRepository $roleRepository,
+            ) {
+                $this->db = $db;
+                $this->repository = $roleRepository;
+            }
+        };
+
+        self::expectException(
+            RoleAlreadyExistsException::class,
+        );
 
         $handler->handle($command);
     }

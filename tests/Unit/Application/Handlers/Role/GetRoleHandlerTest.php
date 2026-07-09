@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Application\Handlers\Role;
 
-use App\Application\Handlers\Roles\GetRoleHandler;
+use App\Application\Handlers\Role\GetRoleHandler;
 use App\Domain\DataTransportObjects\Role\RoleDTO;
 use App\Domain\Entities\Role;
 use App\Domain\Exception\NotFoundException;

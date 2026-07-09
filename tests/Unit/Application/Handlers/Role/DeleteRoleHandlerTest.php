@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Application\Handlers\Role;
 
-use App\Application\Handlers\Roles\DeleteRoleHandler;
+use App\Application\Handlers\Role\DeleteRoleHandler;
 use App\Domain\Repositories\RoleRepository;
 use App\Domain\ValueObjects\RoleId;
 use Doctrine\DBAL\Connection;

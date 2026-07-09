@@ -523,9 +523,244 @@ paths:
             format: uuid
       responses:
         '204':
-          description: User deleted
+          description: Role deleted
+        '404':
+          description: Role not found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - error
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  error:
+                    $ref: '#/components/schemas/ErrorResponse'
+
+  /users/{id}/roles:
+    post:
+      summary: Add role to user
+      operationId: addRoleToUser
+      tags:
+        - UserRoles
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - roleId
+              properties:
+                roleId:
+                  type: string
+                  format: uuid
+      responses:
+          '204':
+            description: Role added to user
+          '400':
+            description: Bad request
+            content:
+              application/json:
+                schema:
+                  type: object
+                  required:
+                    - statusCode
+                    - error
+                  properties:
+                    statusCode:
+                      type: integer
+                      example: 400
+                    error:
+                      $ref: '#/components/schemas/ErrorResponse'
+          '404':
+            description: User or role not found
+            content:
+              application/json:
+                schema:
+                  type: object
+                  required:
+                    - statusCode
+                    - error
+                  properties:
+                    statusCode:
+                      type: integer
+                      example: 404
+                    error:
+                      $ref: '#/components/schemas/ErrorResponse'
+          '409':
+            description: User already has role
+            content:
+              application/json:
+                schema:
+                  type: object
+                  required:
+                    - statusCode
+                    - error
+                  properties:
+                    statusCode:
+                      type: integer
+                      example: 409
+                    error:
+                      $ref: '#/components/schemas/ErrorResponse'
+
+    get:
+      summary: Get roles for user
+      operationId: getUserRoles
+      tags:
+        - UserRoles
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - data
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Role'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - error
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 400
+                  error:
+                    $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - error
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  error:
+                    $ref: '#/components/schemas/ErrorResponse'
+
+  /users/{id}/roles/{roleId}:
+    delete:
+      summary: Remove role from user
+      operationId: removeRoleFromUser
+      tags:
+        - UserRoles
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: roleId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Role removed from user
+        '404':
+          description: User or role not found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - error
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  error:
+                    $ref: '#/components/schemas/ErrorResponse'
+
+  /roles/{id}/users:
+    get:
+      summary: Get users with role
+      operationId: getUsersWithRole
+      tags:
+        - UserRoles
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - data
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        '400':
+          description: Role not found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - error
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 404
+                  error:
+                    $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Role not found
           content:
             application/json:
               schema:

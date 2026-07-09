@@ -31,7 +31,6 @@ final class UserDTOTest extends TestCase {
         self::assertSame('test@example.com', $data['email']);
         self::assertSame('User', $data['firstName']);
         self::assertSame('Name', $data['lastName']);
-        self::assertSame(['user'], $data['roles']);
     }
 
     public function testJsonSerializeReturnsCorrectStructure() : void {
@@ -54,23 +53,5 @@ final class UserDTOTest extends TestCase {
         self::assertArrayHasKey('firstName', $data);
         self::assertArrayHasKey('lastName', $data);
         self::assertArrayHasKey('roles', $data);
-    }
-
-    public function testRolesAlwaysContainsDefaultUserRole() : void {
-        $user = new User(
-            new UserId(),
-            new Email('role@test.com'),
-            'Role',
-            'User',
-            new DateTimeValue('2026-01-01T10:00:00+00:00'),
-            null,
-            null,
-        );
-
-        $dto = UserDTO::fromUser($user);
-
-        $data = $dto->jsonSerialize();
-
-        self::assertSame(['user'], $data['roles']);
     }
 }

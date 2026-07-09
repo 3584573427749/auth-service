@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Http\Actions\Role;
 
-use App\Application\Handlers\Roles\DeleteRoleHandler;
-use App\Http\Actions\Roles\DeleteRoleAction;
+use App\Application\Handlers\Role\DeleteRoleHandler;
+use App\Domain\ValueObjects\RoleId;
+use App\Http\Actions\Role\DeleteRoleAction;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
@@ -19,12 +20,14 @@ final class DeleteRoleActionTest extends TestCase {
 
         $handler
             ->expects($this->once())
-            ->method('handle');
+            ->method('handle')
+            ->with(new RoleId('550e8400-e29b-41d4-a716-446655440000'));
 
         $action = new DeleteRoleAction($logger, $handler);
 
         $request = new ServerRequestFactory()
-            ->createServerRequest('DELETE', '/roles/550e8400-e29b-41d4-a716-446655440000');
+            ->createServerRequest('DELETE', '/roles/550e8400-e29b-41d4-a716-446655440000')
+            ->withAttribute('id', '550e8400-e29b-41d4-a716-446655440000');
 
         $response = new ResponseFactory()->createResponse();
 

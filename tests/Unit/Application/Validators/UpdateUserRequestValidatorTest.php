@@ -38,6 +38,21 @@ final class UpdateUserRequestValidatorTest extends TestCase {
         self::assertSame('Email is required.', $errors['email']);
     }
 
+    public function testMissingId() : void {
+        $data = [
+            'userId' => '550e8400-e29b-41d4-a716-446655440000',
+            'email' => 'test@example.com',
+            'firstName' => 'User',
+            'lastName' => 'Name',
+            'createdAt' => '2026-01-01 10:00:00',
+        ];
+
+        $errors = UpdateUserRequestValidator::validate($data);
+
+        self::assertArrayHasKey('id', $errors);
+        self::assertSame('Id is required.', $errors['id']);
+    }
+
     public function testInvalidEmail() : void {
         $data = [
             'userId' => '550e8400-e29b-41d4-a716-446655440000',
@@ -116,6 +131,21 @@ final class UpdateUserRequestValidatorTest extends TestCase {
         self::assertSame('Last name must be at least 2 characters.', $errors['lastName']);
     }
 
+    public function testMissingCreatedAt() : void {
+        $data = [
+            'userId' => '550e8400-e29b-41d4-a716-446655440000',
+            'id' => '550e8400-e29b-41d4-a716-446655440000',
+            'email' => 'test@example.com',
+            'firstName' => 'User',
+            'lastName' => 'b',
+        ];
+
+        $errors = UpdateUserRequestValidator::validate($data);
+
+        self::assertArrayHasKey('createdAt', $errors);
+        self::assertSame('Created at is required.', $errors['createdAt']);
+    }
+
     public function testCreatedAtInvalid() : void {
         $data = [
             'userId' => '550e8400-e29b-41d4-a716-446655440000',
@@ -130,6 +160,23 @@ final class UpdateUserRequestValidatorTest extends TestCase {
 
         self::assertArrayHasKey('createdAt', $errors);
         self::assertSame('Invalid created date.', $errors['createdAt']);
+    }
+
+    public function testDeletedAtInvalid() : void {
+        $data = [
+            'userId' => '550e8400-e29b-41d4-a716-446655440000',
+            'id' => '550e8400-e29b-41d4-a716-446655440000',
+            'email' => 'test@example.com',
+            'firstName' => 'User',
+            'lastName' => 'b',
+            'createdAt' => '2026-01-01 10:00:00',
+            'deletedAt' => 'Invalid',
+        ];
+
+        $errors = UpdateUserRequestValidator::validate($data);
+
+        self::assertArrayHasKey('deletedAt', $errors);
+        self::assertSame('Invalid deleted date.', $errors['deletedAt']);
     }
 
     public function testUpdatedAtInvalid() : void {
