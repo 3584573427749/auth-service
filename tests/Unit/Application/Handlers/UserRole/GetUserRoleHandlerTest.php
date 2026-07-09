@@ -48,7 +48,7 @@ final class GetUserRoleHandlerTest extends TestCase {
             $this->createMock(Connection::class),
             $repository,
             $userRepository,
-            $roleRepository
+            $roleRepository,
         );
 
         $result = $handler->getRoles(
@@ -74,7 +74,7 @@ final class GetUserRoleHandlerTest extends TestCase {
             $this->createMock(Connection::class),
             $repository,
             $userRepository,
-            $roleRepository
+            $roleRepository,
         );
 
         $result = $handler->getRoles(
@@ -114,7 +114,7 @@ final class GetUserRoleHandlerTest extends TestCase {
             $this->createMock(Connection::class),
             $repository,
             $userRepository,
-            $roleRepository
+            $roleRepository,
         );
 
         $result = $handler->getUsers(
@@ -140,7 +140,7 @@ final class GetUserRoleHandlerTest extends TestCase {
             $this->createMock(Connection::class),
             $repository,
             $userRepository,
-            $roleRepository
+            $roleRepository,
         );
 
         $result = $handler->getUsers(

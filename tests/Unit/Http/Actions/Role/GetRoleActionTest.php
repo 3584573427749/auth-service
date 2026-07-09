@@ -2,52 +2,50 @@
 
 declare(strict_types=1);
 
-namespace Http\Actions\User;
+namespace Http\Actions\Role;
 
-use App\Application\Handlers\User\GetUserHandler;
-use App\Domain\DataTransportObjects\User\UserDTO;
-use App\Domain\Entities\User;
+use App\Application\Handlers\Role\GetRoleHandler;
+use App\Domain\DataTransportObjects\Role\RoleDTO;
+use App\Domain\Entities\Role;
 use App\Domain\ValueObjects\DateTimeValue;
-use App\Domain\ValueObjects\Email;
-use App\Domain\ValueObjects\UserId;
-use App\Http\Actions\User\GetUserAction;
+use App\Domain\ValueObjects\RoleId;
+use App\Http\Actions\Role\GetRoleAction;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
-final class GetUserActionTest extends TestCase {
-    public function testReturnsUserDTO() : void {
+final class GetRoleActionTest extends TestCase {
+    public function testReturnsRoleDTO() : void {
         $logger = $this->createMock(LoggerInterface::class);
-        $users = [];
-        $user = new User(
-            new UserId('550e8400-e29b-41d4-a716-446655440000'),
-            new Email('a@test.com'),
+        $role = new Role(
+            new RoleId('550e8400-e29b-41d4-a716-446655440000'),
+            'A',
             'User',
-            'Name',
+            1,
             new DateTimeValue('2026-06-10 10:00:00'),
             null,
-            null,
         );
-        $dto = UserDTO::fromUser($user);
+        $roleDTO = RoleDTO::fromRole($role);
 
-        $handler = $this->createMock(GetUserHandler::class);
+        $handler = $this->createMock(GetRoleHandler::class);
 
         $handler
             ->expects($this->once())
             ->method('getById')
-            ->with(new UserId('550e8400-e29b-41d4-a716-446655440000'))
-            ->willReturn($dto);
+            ->with(new RoleId('550e8400-e29b-41d4-a716-446655440000'))
+            ->willReturn($roleDTO);
 
-        $action = new GetUserAction($logger, $handler);
+        $action = new GetRoleAction($logger, $handler);
 
         $request = new ServerRequestFactory()
-            ->createServerRequest('GET', '/users/550e8400-e29b-41d4-a716-446655440000')
+            ->createServerRequest('GET', '/roles/550e8400-e29b-41d4-a716-446655440000')
             ->withAttribute('id', '550e8400-e29b-41d4-a716-446655440000');
 
         $response = new ResponseFactory()->createResponse();
 
         $result = $action($request, $response, []);
+
         self::assertSame(200, $result->getStatusCode());
 
         $payload = $this->decodeJsonResponse($result);
@@ -55,8 +53,7 @@ final class GetUserActionTest extends TestCase {
         self::assertArrayHasKey('data', $payload);
 
         self::assertIsArray($payload['data']);
-
-        self::assertSame('a@test.com', $payload['data']['email']);
+        self::assertSame('A', $payload['data']['name']);
     }
 
     /**

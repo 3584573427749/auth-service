@@ -9,19 +9,17 @@ use Tests\Integration\BaseApiTestCases;
 use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class GetRoleUsersEndpointTest extends BaseApiTestCases {
-    public function testReturns200WhenRequestIsValid(): void {
+    public function testReturns200WhenRequestIsValid() : void {
         $validator = new OpenApiValidator();
 
         $request = new ServerRequestFactory()
             ->createServerRequest('GET', '/roles/22222222-2222-2222-2222-222222222222/users');
 
-        $request = $request->withParsedBody($requestBody);
-
         $validator->validateRequest($request);
 
         $response = $this->app->handle($request);
 
-        $content=(json_decode((string)$response->getBody(), true));
+        $content = (json_decode((string)$response->getBody(), true));
         self::assertSame(200, $response->getStatusCode());
         self::assertCount(1, $content['data']);
 
@@ -32,7 +30,7 @@ final class GetRoleUsersEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns404WhenRoleDoesNotExist(): void {
+    public function testReturns404WhenRoleDoesNotExist() : void {
         $request = new ServerRequestFactory()
             ->createServerRequest('GET', '/roles/33333333-3333-3333-3333-333333333333/users');
 
@@ -50,7 +48,7 @@ final class GetRoleUsersEndpointTest extends BaseApiTestCases {
 
     }
 
-    public function testReturns400WithInvalidId(): void {
+    public function testReturns400WithInvalidId() : void {
         $request = new ServerRequestFactory()
             ->createServerRequest('GET', '/roles/11111111/users');
 
@@ -67,7 +65,7 @@ final class GetRoleUsersEndpointTest extends BaseApiTestCases {
         );
     }
 
-    protected function setUp(): void {
+    protected function setUp() : void {
         parent::setUp();
 
         $this->loadSchema('users');

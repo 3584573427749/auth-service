@@ -103,10 +103,7 @@ final class UpdateRoleActionTest extends TestCase {
 
         $request = new ServerRequestFactory()
             ->createServerRequest('PUT', '/roles/550e8400-e29b-41d4-a716-446655440000')
-            ->withAttribute(
-                'id',
-                '550e8400-e29b-41d4-a716-446655440000',
-            )
+            ->withAttribute('id', '550e8400-e29b-41d4-a716-446655440000')
             ->withParsedBody([
                 'id' => '550e8400-e29b-41d4-a716-446655440000',
                 'name' => 'User',

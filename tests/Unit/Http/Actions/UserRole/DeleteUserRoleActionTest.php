@@ -38,18 +38,9 @@ final class DeleteUserRoleActionTest extends TestCase {
         );
 
         $request = (new ServerRequestFactory())
-            ->createServerRequest(
-                'DELETE',
-                '/users/550e8400-e29b-41d4-a716-446655440000/roles/660e8400-e29b-41d4-a716-446655440001',
-            )
-            ->withAttribute(
-                'id',
-                '550e8400-e29b-41d4-a716-446655440000',
-            )
-            ->withAttribute(
-                'roleId',
-                '660e8400-e29b-41d4-a716-446655440001',
-            );
+            ->createServerRequest('DELETE', '/users/550e8400-e29b-41d4-a716-446655440000/roles/660e8400-e29b-41d4-a716-446655440001')
+            ->withAttribute('id', '550e8400-e29b-41d4-a716-446655440000')
+            ->withAttribute('roleId', '660e8400-e29b-41d4-a716-446655440001');
 
         $response = (new ResponseFactory())->createResponse();
 

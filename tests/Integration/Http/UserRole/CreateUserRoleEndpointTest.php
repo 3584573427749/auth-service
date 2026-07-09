@@ -9,7 +9,7 @@ use Tests\Integration\BaseApiTestCases;
 use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class CreateUserRoleEndpointTest extends BaseApiTestCases {
-    public function testReturns204WhenRequestIsValid(): void {
+    public function testReturns204WhenRequestIsValid() : void {
         $requestBody = [
             'roleId' => '22222222-2222-2222-2222-222222222222',
         ];
@@ -39,7 +39,7 @@ final class CreateUserRoleEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns404WhenUserDoesNotExist(): void {
+    public function testReturns404WhenUserDoesNotExist() : void {
         $requestBody = [
             'roleId' => '22222222-2222-2222-2222-222222222222',
         ];
@@ -62,7 +62,7 @@ final class CreateUserRoleEndpointTest extends BaseApiTestCases {
 
     }
 
-    public function testReturns400WithInvalidId(): void {
+    public function testReturns400WithInvalidId() : void {
         $requestBody = [
             'roleId' => '22222222-2222-2222-2222-222222222222',
         ];
@@ -84,7 +84,7 @@ final class CreateUserRoleEndpointTest extends BaseApiTestCases {
         );
     }
 
-    protected function setUp(): void {
+    protected function setUp() : void {
         parent::setUp();
 
         $this->loadSchema('users');

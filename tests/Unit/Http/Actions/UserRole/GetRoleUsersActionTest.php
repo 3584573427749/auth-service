@@ -41,14 +41,8 @@ final class GetRoleUsersActionTest extends TestCase {
         );
 
         $request = (new ServerRequestFactory())
-            ->createServerRequest(
-                'GET',
-                '/roles/550e8400-e29b-41d4-a716-446655440000/users',
-            )
-            ->withAttribute(
-                'id',
-                '550e8400-e29b-41d4-a716-446655440000',
-            );
+            ->createServerRequest('GET', '/roles/550e8400-e29b-41d4-a716-446655440000/users')
+            ->withAttribute('id', '550e8400-e29b-41d4-a716-446655440000');
 
         $response = (new ResponseFactory())->createResponse();
 
@@ -81,16 +75,10 @@ final class GetRoleUsersActionTest extends TestCase {
         );
 
         $request = (new ServerRequestFactory())
-            ->createServerRequest(
-                'GET',
-                '/roles/550e8400-e29b-41d4-a716-446655440000/users',
-            )
-            ->withAttribute(
-                'id',
-                '550e8400-e29b-41d4-a716-446655440000',
-            );
+            ->createServerRequest('GET', '/roles/550e8400-e29b-41d4-a716-446655440000/users')
+            ->withAttribute('id', '550e8400-e29b-41d4-a716-446655440000');
 
-        $response = (new ResponseFactory())->createResponse();
+        $response = new ResponseFactory()->createResponse();
 
         $result = $action($request, $response, []);
 

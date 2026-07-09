@@ -42,6 +42,7 @@ final class CreateUserRoleActionTest extends TestCase {
 
         $request = new ServerRequestFactory()
             ->createServerRequest('POST', '/users/550e8400-e29b-41d4-a716-446655440000/roles')
+            ->withAttribute('id', '550e8400-e29b-41d4-a716-446655440000')
             ->withParsedBody($requestBody);
 
         $response = new ResponseFactory()->createResponse();

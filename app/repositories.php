@@ -7,8 +7,8 @@ use App\Domain\Repositories\UserRepository;
 use App\Domain\Repositories\UserRoleRepository;
 use App\Infrastructure\Database\DbalRoleRepository;
 use App\Infrastructure\Database\DbalUserRepository;
-
 use App\Infrastructure\Database\DbalUserRoleRepository;
+
 use function DI\autowire;
 
 use DI\ContainerBuilder;

@@ -46,7 +46,7 @@ final class SaveUserRoleHandlerTest extends TestCase {
             $this->createMock(Connection::class),
             $repository,
             $userRepository,
-            $roleRepository
+            $roleRepository,
         );
 
         $handler->handle($command);

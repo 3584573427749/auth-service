@@ -9,7 +9,7 @@ use Tests\Integration\BaseApiTestCases;
 use Tests\Integration\OpenApi\OpenApiValidator;
 
 final class DeleteUserRolesEndpointTest extends BaseApiTestCases {
-    public function testReturns204WhenRequestIsValid(): void {
+    public function testReturns204WhenRequestIsValid() : void {
         $validator = new OpenApiValidator();
 
         $request = new ServerRequestFactory()
@@ -29,7 +29,7 @@ final class DeleteUserRolesEndpointTest extends BaseApiTestCases {
         );
     }
 
-    public function testReturns404WhenUserDoesNotExist(): void {
+    public function testReturns404WhenUserDoesNotExist() : void {
         $request = new ServerRequestFactory()
             ->createServerRequest('DELETE', '/users/11111111-1111-1111-1111-111111111113/roles/22222222-2222-2222-2222-222222222222');
 
@@ -47,7 +47,7 @@ final class DeleteUserRolesEndpointTest extends BaseApiTestCases {
 
     }
 
-    public function testReturns404WhenRoleDoesNotExist(): void {
+    public function testReturns404WhenRoleDoesNotExist() : void {
         $request = new ServerRequestFactory()
             ->createServerRequest('DELETE', '/users/11111111-1111-1111-1111-111111111111/roles/33333333-3333-3333-3333-333333333333');
 
@@ -65,7 +65,7 @@ final class DeleteUserRolesEndpointTest extends BaseApiTestCases {
 
     }
 
-    public function testReturns404WhenRecordDoesNotExist(): void {
+    public function testReturns404WhenRecordDoesNotExist() : void {
         $request = new ServerRequestFactory()
             ->createServerRequest('DELETE', '/users/11111111-1111-1111-1111-111111111114/roles/44444444-4444-4444-4444-444444444444');
 
@@ -83,7 +83,7 @@ final class DeleteUserRolesEndpointTest extends BaseApiTestCases {
 
     }
 
-    public function testReturns400WithInvalidId(): void {
+    public function testReturns400WithInvalidId() : void {
         $request = new ServerRequestFactory()
             ->createServerRequest('DELETE', '/users/11111111/roles');
 
@@ -100,7 +100,7 @@ final class DeleteUserRolesEndpointTest extends BaseApiTestCases {
         );
     }
 
-    protected function setUp(): void {
+    protected function setUp() : void {
         parent::setUp();
 
         $this->loadSchema('users');

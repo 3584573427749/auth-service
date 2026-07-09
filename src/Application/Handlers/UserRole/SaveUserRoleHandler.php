@@ -19,7 +19,7 @@ class SaveUserRoleHandler extends UserRoleHandler {
         $this->roleRepository->getById($roleId);
         $userRole = new UserRole(
             $userId,
-            $roleId
+            $roleId,
         );
 
         $this->repository->save($userRole);
