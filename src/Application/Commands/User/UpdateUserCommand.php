@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 namespace App\Application\Commands\User;
 
-use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\UserId;
 
 class UpdateUserCommand {
+    /**
+     * @param UserId $id
+     * @param string $email
+     * @param string $firstName
+     * @param string $lastName
+     * @param string[] $roles
+     */
     private function __construct(
         public UserId $id,
         public string $email,
         public string $firstName,
         public string $lastName,
-        public DateTimeValue $createdAt,
+        public array $roles,
     ) {
 
     }
@@ -29,8 +35,8 @@ class UpdateUserCommand {
                 |> strtolower(...);
         $firstName = trim($data['firstName']);
         $lastName = trim($data['lastName']);
-        $createdAt = new DateTimeValue($data['createdAt']);
+        $roles = $data['roles'] ?? [];
 
-        return new self($id, $email, $firstName, $lastName, $createdAt);
+        return new self($id, $email, $firstName, $lastName, $roles);
     }
 }

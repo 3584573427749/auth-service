@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Application\Validators;
 
-use DateMalformedStringException;
-
 class UpdateUserRequestValidator {
     /**
      * @param array<string, mixed> $data
@@ -27,42 +25,29 @@ class UpdateUserRequestValidator {
 
         if (!isset($data['firstName'])) {
             $errors['firstName'] = 'First name is required.';
-        } elseif (mb_strlen($data['firstName']) < 2) {
-            $errors['firstName'] = 'First name must be at least 2 characters.';
+        } elseif (mb_strlen($data['firstName']) < 2 || mb_strlen($data['firstName']) > 100) {
+            $errors['firstName'] = 'First name must be between 2 and 100 characters.';
         }
 
         if (!isset($data['lastName'])) {
             $errors['lastName'] = 'Last name is required.';
-        } elseif (mb_strlen($data['lastName']) < 2) {
-            $errors['lastName'] = 'Last name must be at least 2 characters.';
+        } elseif (mb_strlen($data['lastName']) < 2 || mb_strlen($data['lastName']) > 100) {
+            $errors['lastName'] = 'Last name must be between 2 and 100 characters.';
         }
 
-        try {
-            if (!isset($data['createdAt'])) {
-                $errors['createdAt'] = 'Created at is required.';
-            } else {
-                $createdAt = new \DateTimeImmutable($data['createdAt']);
+        if (!isset($data['roles']) || !is_array($data['roles'])) {
+            $errors['roles'] = 'Roles must be an array.';
+        } else {
+            foreach ($data['roles']  as $roleId) {
+                if (!is_string($roleId)) {
+                    $errors['roles'] = 'Roles must be an array of strings.';
+                    break;
+                }
             }
-        } catch (DateMalformedStringException $e) {
-            $errors['createdAt'] = 'Invalid created date.';
-        }
-        try {
-            if (isset($data['updatedAt'])) {
-                $updatedAt = new \DateTimeImmutable($data['updatedAt']);
-            }
-        } catch (DateMalformedStringException $e) {
-            $errors['updatedAt'] = 'Invalid updated date.';
         }
 
-        try {
-            if (isset($data['deletedAt'])) {
-                $deletedAt = new \DateTimeImmutable($data['deletedAt']);
-            }
-        } catch (DateMalformedStringException $e) {
-            $errors['deletedAt'] = 'Invalid deleted date.';
-        }
 
-        if (count($data) > 8) {
+        if (count($data) > 9) {
             $errors['tooManyFields'] = 'Too many fields.';
         }
 

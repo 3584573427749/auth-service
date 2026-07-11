@@ -9,6 +9,7 @@ use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\User;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\Repositories\UserRepository;
+use App\Domain\Repositories\UserRoleRepository;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\UserId;
@@ -43,9 +44,15 @@ final class GetUserHandlerTest extends TestCase {
             ->method('getAll')
             ->willReturn([$user1, $user2]);
 
-        $handler = new class($repository) extends GetUserHandler {
-            public function __construct(UserRepository $userRepository) {
-                $this->userRepository = $userRepository;
+        $userRoleRepository = $this->createMock(UserRoleRepository::class);
+        $userRoleRepository
+            ->method('getRoles')
+            ->willReturn([]);
+
+        $handler = new class($repository, $userRoleRepository) extends GetUserHandler {
+            public function __construct(UserRepository $userRepository, UserRoleRepository $userRoleRepository) {
+                $this->repository = $userRepository;
+                $this->userRoleRepository = $userRoleRepository;
             }
         };
 
@@ -68,7 +75,7 @@ final class GetUserHandlerTest extends TestCase {
 
         $handler = new class($repository) extends GetUserHandler {
             public function __construct(UserRepository $userRepository) {
-                $this->userRepository = $userRepository;
+                $this->repository = $userRepository;
             }
         };
 
@@ -95,9 +102,17 @@ final class GetUserHandlerTest extends TestCase {
             ->method('getById')
             ->willReturn($user);
 
-        $handler = new class($repository) extends GetUserHandler {
-            public function __construct(UserRepository $repo) {
-                $this->userRepository = $repo;
+        $userRoleRepository = $this->createMock(UserRoleRepository::class);
+        $userRoleRepository
+            ->expects($this->once())
+            ->method('getRoles')
+            ->with(new UserId('550e8400-e29b-41d4-a716-446655440000'))
+            ->willReturn([]);
+
+        $handler = new class($repository, $userRoleRepository) extends GetUserHandler {
+            public function __construct(UserRepository $repo, UserRoleRepository $userRoleRepo) {
+                $this->repository = $repo;
+                $this->userRoleRepository = $userRoleRepo;
             }
         };
 
@@ -122,9 +137,12 @@ final class GetUserHandlerTest extends TestCase {
             ->method('getById')
             ->willThrowException(new NotFoundException('User not found'));
 
-        $handler = new class($repository) extends GetUserHandler {
-            public function __construct(UserRepository $repo) {
-                $this->userRepository = $repo;
+        $userRoleRepository = $this->createMock(UserRoleRepository::class);
+
+        $handler = new class($repository, $userRoleRepository) extends GetUserHandler {
+            public function __construct(UserRepository $repo, UserRoleRepository $userRoleRepo) {
+                $this->repository = $repo;
+                $this->userRoleRepository = $userRoleRepo;
             }
         };
 

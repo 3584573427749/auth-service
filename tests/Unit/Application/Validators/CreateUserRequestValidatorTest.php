@@ -15,6 +15,7 @@ final class CreateUserRequestValidatorTest extends TestCase {
             'email' => 'test@example.com',
             'firstName' => 'User',
             'lastName' => 'Name',
+            'roles' => [],
         ];
 
         $errors = CreateUserRequestValidator::validate($data);
@@ -26,6 +27,7 @@ final class CreateUserRequestValidatorTest extends TestCase {
         $data = [
             'firstName' => 'User',
             'lastName' => 'Name',
+            'roles' => [],
         ];
 
         $errors = CreateUserRequestValidator::validate($data);
@@ -39,6 +41,7 @@ final class CreateUserRequestValidatorTest extends TestCase {
             'email' => 'invalid-email',
             'firstName' => 'User',
             'lastName' => 'Name',
+            'roles' => [],
         ];
 
         $errors = CreateUserRequestValidator::validate($data);
@@ -51,6 +54,7 @@ final class CreateUserRequestValidatorTest extends TestCase {
         $data = [
             'email' => 'test@example.com',
             'lastName' => 'Name',
+            'roles' => [],
         ];
 
         $errors = CreateUserRequestValidator::validate($data);
@@ -64,6 +68,7 @@ final class CreateUserRequestValidatorTest extends TestCase {
             'email' => 'test@example.com',
             'firstName' => 'A',
             'lastName' => 'Name',
+            'roles' => [],
         ];
 
         $errors = CreateUserRequestValidator::validate($data);
@@ -76,6 +81,7 @@ final class CreateUserRequestValidatorTest extends TestCase {
         $data = [
             'email' => 'test@example.com',
             'firstName' => 'User',
+            'roles' => [],
         ];
 
         $errors = CreateUserRequestValidator::validate($data);
@@ -89,7 +95,8 @@ final class CreateUserRequestValidatorTest extends TestCase {
             'email' => 'test@example.com',
             'firstName' => 'User',
             'lastName' => 'A',
-        ];
+            'roles' => [],
+            ];
 
         $errors = CreateUserRequestValidator::validate($data);
 
@@ -102,6 +109,7 @@ final class CreateUserRequestValidatorTest extends TestCase {
             'email' => 'test@example.com',
             'firstName' => 'User',
             'lastName' => 'Name',
+            'roles' => [],
             'extra' => 'not allowed',
         ];
 
@@ -116,6 +124,7 @@ final class CreateUserRequestValidatorTest extends TestCase {
             'email' => 'invalid',
             'firstName' => 'A',
             'lastName' => 'B',
+            'roles' => [],
             'extra' => 'x',
         ];
 

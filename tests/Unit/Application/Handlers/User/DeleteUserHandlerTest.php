@@ -27,7 +27,7 @@ final class DeleteUserHandlerTest extends TestCase {
         $handler = new class($db, $repository) extends DeleteUserHandler {
             public function __construct(Connection $db, UserRepository $userRepository) {
                 $this->db = $db;
-                $this->userRepository = $userRepository;
+                $this->repository = $userRepository;
             }
         };
 
@@ -50,7 +50,7 @@ final class DeleteUserHandlerTest extends TestCase {
         $handler = new class($db, $repository) extends DeleteUserHandler {
             public function __construct(Connection $db, UserRepository $userRepository) {
                 $this->db = $db;
-                $this->userRepository = $userRepository;
+                $this->repository = $userRepository;
             }
         };
 

@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Application\Commands\User;
 
 class CreateUserCommand {
-    private function __construct(public string $email, public string $firstName, public string $lastName) {
+    /**
+     * @param string[] $roles
+     */
+    private function __construct(public string $email, public string $firstName, public string $lastName, public array $roles) {
 
     }
 
@@ -19,7 +22,8 @@ class CreateUserCommand {
                 |> strtolower(...);
         $firstName = trim($data['firstName']);
         $lastName = trim($data['lastName']);
+        $roles = $data['roles'] ?? [];
 
-        return new self($email, $firstName, $lastName);
+        return new self($email, $firstName, $lastName, $roles);
     }
 }

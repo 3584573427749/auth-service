@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Integration\Http\Users;
+namespace Tests\Integration\Http\User;
 
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Tests\Integration\BaseApiTestCases;
@@ -11,6 +11,8 @@ use Tests\Integration\OpenApi\OpenApiValidator;
 final class UpdateUserEndpointTest extends BaseApiTestCases {
     public function testReturns200WhenRequestIsValid() : void {
         $this->loadSchema('users');
+        $this->loadSchema('roles');
+        $this->loadSchema('user_roles');
 
         $this->seed('users', [
             [
@@ -24,6 +26,23 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
             ],
         ]);
 
+        $this->seed('roles', [
+            [
+                'id' => '11111111-1111-1111-1111-111111111111',
+                'name' => 'User',
+                'description' => 'Regular user',
+                'created_at' => '2026-06-10 10:00:00',
+                'updated_at' => null,
+           ],
+        ]);
+
+        $this->seed('user_roles', [
+            [
+                'user_id' => '550e8400-e29b-41d4-a716-446655440000',
+                'role_id' => '11111111-1111-1111-1111-111111111111',
+            ],
+        ]);
+
         $requestBody = [
             'id' => '550e8400-e29b-41d4-a716-446655440000',
             'email' => 'old@example.com',
@@ -32,6 +51,7 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
             'createdAt' => '2026-06-10T10:00:00+00:00',
             'updatedAt' => null,
             'deletedAt' => null,
+            'roles' => [],
         ];
 
         $validator = new OpenApiValidator();
@@ -85,6 +105,7 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
                 'createdAt' => '2026-06-10 10:00:00',
                 'updatedAt' => null,
                 'deletedAt' => null,
+                'roles' => [],
             ]);
 
         $response = $this->app->handle($request);
@@ -135,6 +156,7 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
                 'createdAt' => '2026-06-10 10:00:00',
                 'updatedAt' => null,
                 'deletedAt' => null,
+                'roles' => [],
             ]);
 
         $response = $this->app->handle($request);
@@ -176,6 +198,7 @@ final class UpdateUserEndpointTest extends BaseApiTestCases {
                 'createdAt' => '2026-06-10 10:00:00',
                 'updatedAt' => null,
                 'deletedAt' => null,
+                'roles' => [],
             ]);
 
         $response = $this->app->handle($request);

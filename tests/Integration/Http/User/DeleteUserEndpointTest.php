@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Integration\Http\Users;
+namespace Tests\Integration\Http\User;
 
 use Doctrine\DBAL\Exception;
 use Slim\Psr7\Factory\ServerRequestFactory;

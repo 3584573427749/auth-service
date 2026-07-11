@@ -33,7 +33,7 @@ final class UpdateUserActionTest extends TestCase {
             null,
         );
 
-        $dto = UserDTO::fromUser($user);
+        $dto = UserDTO::fromUser($user)->withRoles(['11111111-1111-1111-1111-111111111111']);
 
         $handler = $this->createMock(UpdateUserHandler::class);
 
@@ -53,6 +53,7 @@ final class UpdateUserActionTest extends TestCase {
                 'email' => 'test@example.com',
                 'firstName' => 'User',
                 'lastName' => 'Name',
+                'roles' => ['11111111-1111-1111-1111-111111111111'],
                 'createdAt' => '2026-01-01T10:00:00+00:00',
                 'updatedAt' => null,
                 'deletedAt' => null,
@@ -67,16 +68,13 @@ final class UpdateUserActionTest extends TestCase {
         $payload = $this->decodeJsonResponse($result);
 
         self::assertSame(200, $payload['statusCode']);
-
         self::assertArrayHasKey('data', $payload);
-
         self::assertSame('550e8400-e29b-41d4-a716-446655440000', $payload['data']['id']);
-
         self::assertSame('test@example.com', $payload['data']['email']);
-
         self::assertSame('User', $payload['data']['firstName']);
-
         self::assertSame('Name', $payload['data']['lastName']);
+        self::assertArrayHasKey('roles', $payload['data']);
+        self::assertSame(['11111111-1111-1111-1111-111111111111'], $payload['data']['roles']);
     }
 
     public function testUpdatesUserAndThrowsExceptionWhenRequestBodyIsInvalid() : void {
@@ -92,7 +90,7 @@ final class UpdateUserActionTest extends TestCase {
             null,
         );
 
-        $dto = UserDTO::fromUser($user);
+        $dto = UserDTO::fromUser($user)->withRoles(['11111111-1111-1111-1111-111111111111']);
 
         $handler = $this->createMock(UpdateUserHandler::class);
 
@@ -109,6 +107,7 @@ final class UpdateUserActionTest extends TestCase {
                 'id' => '550e8400-e29b-41d4-a716-446655440000',
                 'firstName' => 'User',
                 'lastName' => 'Name',
+                'roles' => ['11111111-1111-1111-1111-111111111111'],
                 'createdAt' => '2026-01-01T10:00:00+00:00',
                 'updatedAt' => null,
                 'deletedAt' => null,

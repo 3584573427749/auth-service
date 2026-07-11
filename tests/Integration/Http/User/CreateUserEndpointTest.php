@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Integration\Http\Users;
+namespace Tests\Integration\Http\User;
 
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Tests\Integration\BaseApiTestCases;
@@ -16,6 +16,7 @@ final class CreateUserEndpointTest extends BaseApiTestCases {
             'email' => 'test@example.com',
             'firstName' => 'User',
             'lastName' => 'Name',
+            'roles' => [],
         ];
         $validator = new OpenApiValidator();
 
