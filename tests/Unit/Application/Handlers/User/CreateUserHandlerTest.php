@@ -44,7 +44,7 @@ final class CreateUserHandlerTest extends TestCase {
         $handler = new class($db, $repository) extends CreateUserHandler {
             public function __construct(Connection $db, UserRepository $userRepository) {
                 $this->db = $db;
-                $this->userRepository = $userRepository;
+                $this->repository = $userRepository;
             }
         };
 
@@ -82,7 +82,7 @@ final class CreateUserHandlerTest extends TestCase {
         $handler = new class($db, $repository) extends CreateUserHandler {
             public function __construct(Connection $db, UserRepository $userRepository) {
                 $this->db = $db;
-                $this->userRepository = $userRepository;
+                $this->repository = $userRepository;
             }
         };
 
@@ -119,7 +119,7 @@ final class CreateUserHandlerTest extends TestCase {
         $handler = new class($db, $repository) extends CreateUserHandler {
             public function __construct(Connection $db, UserRepository $userRepository) {
                 $this->db = $db;
-                $this->userRepository = $userRepository;
+                $this->repository = $userRepository;
             }
         };
 

@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Auth Service API
-  version: 1.0.0
+  version: 1.1.0
   description: >-
     OpenAPI för autentiserings- och användarhanteringstjänster i simning.ax-miljön
 
@@ -697,6 +697,21 @@ paths:
       responses:
         '204':
           description: Role removed from user
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - error
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 400
+                  error:
+                    $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: User or role not found
           content:
@@ -799,6 +814,7 @@ components:
         - email
         - firstName
         - lastName
+        - roles
       properties:
         email:
           type: string
@@ -812,6 +828,13 @@ components:
           type: string
           minLength: 2
           example: Name
+        roles:
+          type: array
+          items:
+            type: string
+            format: uuid
+          example:
+            - 12345678-1234-1234-1234-1234567890ab
 
     UpdateUserRequest:
       type: object
@@ -821,9 +844,7 @@ components:
         - email
         - firstName
         - lastName
-        - createdAt
-        - updatedAt
-        - deletedAt
+        - roles
       properties:
         id:
           type: string
@@ -851,6 +872,14 @@ components:
           type: string
           format: date-time
           nullable: true
+        roles:
+          type: array
+          items:
+            type: string
+            format: uuid
+          example:
+            - 12345678-1234-1234-1234-1234567890ab
+
 
     CreateRoleRequest:
       type: object
@@ -928,8 +957,9 @@ components:
           type: array
           items:
             type: string
+            format: uuid
           example:
-            - user
+            - 12345678-1234-1234-1234-1234567890ab
         createdAt:
           type: string
           format: date-time

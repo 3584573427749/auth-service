@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Integration\Http\Users;
+namespace Tests\Integration\Http\User;
 
 use Doctrine\DBAL\Exception;
 use Slim\Psr7\Factory\ServerRequestFactory;
@@ -15,7 +15,7 @@ final class DeleteUserEndpointTest extends BaseApiTestCases {
      */
     public function testReturns204WhenUserExists() : void {
         $this->loadSchema('users');
-
+        $this->loadSchema('user_roles');
         $this->seed('users', [
             [
                 'id' => '550e8400-e29b-41d4-a716-446655440000',
@@ -28,7 +28,7 @@ final class DeleteUserEndpointTest extends BaseApiTestCases {
             ],
         ]);
 
-        $request = (new ServerRequestFactory())
+        $request = new ServerRequestFactory()
             ->createServerRequest(
                 'DELETE',
                 '/users/550e8400-e29b-41d4-a716-446655440000',

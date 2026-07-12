@@ -85,7 +85,7 @@ final class DeleteUserRolesEndpointTest extends BaseApiTestCases {
 
     public function testReturns400WithInvalidId() : void {
         $request = new ServerRequestFactory()
-            ->createServerRequest('DELETE', '/users/11111111/roles');
+            ->createServerRequest('DELETE', '/users/11111111/roles/22222222-2222-2222-2222-222222222222');
 
         $response = $this->app->handle($request);
 
@@ -94,7 +94,7 @@ final class DeleteUserRolesEndpointTest extends BaseApiTestCases {
         $validator = new OpenApiValidator();
 
         $validator->validateResponse(
-            '/users/{userId}/roles/{roleId}',
+            '/users/{id}/roles/{roleId}',
             'delete',
             $response,
         );

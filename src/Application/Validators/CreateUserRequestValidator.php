@@ -30,7 +30,18 @@ class CreateUserRequestValidator {
             $errors['lastName'] = 'Last name must be at least 2 characters.';
         }
 
-        if (count($data) > 3) {
+        if (isset($data['roles']) && !is_array($data['roles'])) {
+            $errors['roles'] = 'Roles must be an array.';
+        } else {
+            foreach ($data['roles'] ?? [] as $roleId) {
+                if (!is_string($roleId)) {
+                    $errors['roles'] = 'Roles must be an array of strings.';
+                    break;
+                }
+            }
+        }
+
+        if (count($data) > 4) {
             $errors['tooManyFields'] = 'Too many fields.';
         }
 

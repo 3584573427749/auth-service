@@ -7,16 +7,18 @@ namespace App\Application\Handlers\User;
 use App\Application\Commands\User\CreateUserCommand;
 use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\User;
+use App\Domain\Entities\UserRole;
 use App\Domain\Exception\UserAlreadyExistsException;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
+use App\Domain\ValueObjects\RoleId;
 use App\Domain\ValueObjects\UserId;
 
 class CreateUserHandler extends UserHandler {
     public function handle(CreateUserCommand $command) : UserDTO {
         $this->db->beginTransaction();
         try {
-            if ($this->userRepository->existsByEmail($command->email)) {
+            if ($this->repository->existsByEmail($command->email)) {
                 throw new UserAlreadyExistsException('Användaren finns redan');
             }
 
@@ -30,7 +32,12 @@ class CreateUserHandler extends UserHandler {
                 null,
             );
 
-            $this->userRepository->save($user);
+            $this->repository->save($user);
+
+            foreach ($command->roles as $roleId) {
+                $this->userRoleRepository->save(new UserRole($user->getId(), new RoleId($roleId)));
+            }
+
 
             $this->db->commit();
 

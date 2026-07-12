@@ -10,6 +10,7 @@ use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\User;
 use App\Domain\Exception\UserAlreadyExistsException;
 use App\Domain\Repositories\UserRepository;
+use App\Domain\Repositories\UserRoleRepository;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 
@@ -24,7 +25,7 @@ final class UpdateUserHandlerTest extends TestCase {
                 'email' => 'test@example.com',
                 'firstName' => 'User',
                 'lastName' => 'Name',
-                'createdAt' => '2026-01-01 10:00:00',
+                'roles' => [],
             ],
         );
 
@@ -59,10 +60,17 @@ final class UpdateUserHandlerTest extends TestCase {
                 return $user->getEmail()->toString() === 'test@example.com';
             }));
 
-        $handler = new class($db, $repository) extends UpdateUserHandler {
-            public function __construct(Connection $db, UserRepository $userRepository) {
+        $userRoleRepository = $this->createMock(UserRoleRepository::class);
+        $userRoleRepository
+            ->expects(self::once())
+            ->method('getRoles')
+            ->willReturn([]);
+
+        $handler = new class($db, $repository, $userRoleRepository) extends UpdateUserHandler {
+            public function __construct(Connection $db, UserRepository $userRepository, UserRoleRepository $userRoleRepository) {
                 $this->db = $db;
-                $this->userRepository = $userRepository;
+                $this->repository = $userRepository;
+                $this->userRoleRepository = $userRoleRepository;
             }
         };
 
@@ -87,7 +95,7 @@ final class UpdateUserHandlerTest extends TestCase {
                 'email' => 'test@example.com',
                 'firstName' => 'User',
                 'lastName' => 'Name',
-                'createdAt' => '2026-01-01 10:00:00',
+                'roles' => [],
             ],
         );
 
@@ -101,10 +109,21 @@ final class UpdateUserHandlerTest extends TestCase {
             ->with('test@example.com', '550e8400-e29b-41d4-a716-446655440000')
             ->willReturn(true);
 
-        $handler = new class($db, $repository) extends UpdateUserHandler {
-            public function __construct(Connection $db, UserRepository $userRepository) {
+        $userRoleRepository = $this->createMock(UserRoleRepository::class);
+        $userRoleRepository
+            ->expects(self::never())
+            ->method('getRoles');
+
+        $userRoleRepository = $this->createMock(UserRoleRepository::class);
+        $userRoleRepository
+            ->expects(self::never())
+            ->method('getRoles');
+
+        $handler = new class($db, $repository, $userRoleRepository) extends UpdateUserHandler {
+            public function __construct(Connection $db, UserRepository $userRepository, UserRoleRepository $userRoleRepository) {
                 $this->db = $db;
-                $this->userRepository = $userRepository;
+                $this->repository = $userRepository;
+                $this->userRoleRepository = $userRoleRepository;
             }
         };
 
@@ -123,7 +142,7 @@ final class UpdateUserHandlerTest extends TestCase {
                 'email' => 'test@example.com',
                 'firstName' => 'User',
                 'lastName' => 'Name',
-                'createdAt' => '2026-01-01 10:00:00',
+                'roles' => [],
             ],
         );
 
@@ -142,10 +161,16 @@ final class UpdateUserHandlerTest extends TestCase {
             ->method('save')
             ->willThrowException(new \RuntimeException('DB error'));
 
-        $handler = new class($db, $repository) extends UpdateUserHandler {
-            public function __construct(Connection $db, UserRepository $userRepository) {
+        $userRoleRepository = $this->createMock(UserRoleRepository::class);
+        $userRoleRepository
+            ->expects(self::never())
+            ->method('getRoles');
+
+        $handler = new class($db, $repository, $userRoleRepository) extends UpdateUserHandler {
+            public function __construct(Connection $db, UserRepository $userRepository, UserRoleRepository $userRoleRepository) {
                 $this->db = $db;
-                $this->userRepository = $userRepository;
+                $this->repository = $userRepository;
+                $this->userRoleRepository = $userRoleRepository;
             }
         };
 

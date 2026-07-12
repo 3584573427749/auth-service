@@ -21,6 +21,8 @@ interface UserRoleRepository {
      */
     public function getRoles(UserId $id) : array;
 
+    public function deleteByUser(UserId $id) : void;
+
     public function delete(UserRole $userRole) : void;
 
     public function save(UserRole $userRole) : void;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Integration\Http\Users;
+namespace Tests\Integration\Http\User;
 
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Tests\Integration\BaseApiTestCases;
@@ -11,6 +11,8 @@ use Tests\Integration\OpenApi\OpenApiValidator;
 final class GetUserEndpointTest extends BaseApiTestCases {
     public function testGetUserReturns200() : void {
         $this->loadSchema('users');
+        $this->loadSchema('roles');
+        $this->loadSchema('user_roles');
 
         $this->seed('users', [
             [
@@ -22,6 +24,23 @@ final class GetUserEndpointTest extends BaseApiTestCases {
                 'updated_at' => null,
                 'deleted_at' => null,
             ],
+        ]);
+
+        $this->seed('roles', [
+            [
+                'id' => '11111111-1111-1111-1111-111111111111',
+                'name' => 'User',
+                'description' => 'Regular user',
+                'created_at' => '2026-06-10 10:00:00',
+                'updated_at' => null,
+            ],
+        ]);
+
+        $this->seed('user_roles', [
+        [
+            'user_id' => '550e8400-e29b-41d4-a716-446655440000',
+            'role_id' => '11111111-1111-1111-1111-111111111111',
+        ],
         ]);
 
         $request = (new ServerRequestFactory())

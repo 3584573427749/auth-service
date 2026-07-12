@@ -177,4 +177,32 @@ final class DbalUserRoleRepositoryTest extends DatabaseBaseTestCase {
 
         self::assertSame([], $users);
     }
+
+    public function testDeleteByUserRemovesUserRoles() : void {
+        $this->seed('user_roles', [
+            [
+                'user_id' => '550e8400-e29b-41d4-a716-446655440000',
+                'role_id' => '660e8400-e29b-41d4-a716-446655440000',
+            ],
+            [
+                'user_id' => '550e8400-e29b-41d4-a716-446655440000',
+                'role_id' => '660e8400-e29b-41d4-a716-446655440001',
+            ],
+            [
+                'user_id' => '550e8400-e29b-41d4-a716-446655440001',
+                'role_id' => '660e8400-e29b-41d4-a716-446655440001',
+            ],
+        ]);
+
+        $this->repository->deleteByUser(
+            new UserId('550e8400-e29b-41d4-a716-446655440000'),
+        );
+
+        $count = $this->connection
+            ->executeQuery('SELECT COUNT(*) FROM user_roles')
+            ->fetchOne();
+
+        self::assertSame(1, (int)$count);
+
+    }
 }

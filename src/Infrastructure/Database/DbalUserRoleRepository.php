@@ -71,4 +71,8 @@ class DbalUserRoleRepository extends AbstractDbRepository implements UserRoleRep
             throw new UserRoleAlreadyExistsException('Rollen är redan tilldelad användaren');
         }
     }
+
+    public function deleteByUser(UserId $id) : void {
+        $this->connection->delete(self::TABLE, ['user_id' => $id->toString()]);
+    }
 }
