@@ -8,10 +8,6 @@ use App\Domain\ValueObjects\UserId;
 
 class UpdateUserCommand {
     /**
-     * @param UserId $id
-     * @param string $email
-     * @param string $firstName
-     * @param string $lastName
      * @param string[] $roles
      */
     private function __construct(

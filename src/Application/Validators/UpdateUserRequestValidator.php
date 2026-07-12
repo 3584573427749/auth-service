@@ -38,7 +38,7 @@ class UpdateUserRequestValidator {
         if (!isset($data['roles']) || !is_array($data['roles'])) {
             $errors['roles'] = 'Roles must be an array.';
         } else {
-            foreach ($data['roles']  as $roleId) {
+            foreach ($data['roles'] as $roleId) {
                 if (!is_string($roleId)) {
                     $errors['roles'] = 'Roles must be an array of strings.';
                     break;

@@ -15,7 +15,16 @@ class DeleteUserHandler extends UserHandler {
      * @throws NotFoundException
      */
     public function softDelete(UserId $id) : void {
-        $this->repository->softDelete($id);
+        try {
+            $this->db->beginTransaction();
+            $this->repository->softDelete($id);
+
+            $this->userRoleRepository->deleteByUser($id);
+            $this->db->commit();
+        } catch (NotFoundException $e) {
+            $this->db->rollBack();
+            throw $e;
+        }
     }
 
     /**
@@ -24,6 +33,15 @@ class DeleteUserHandler extends UserHandler {
      * @throws NotFoundException
      */
     public function removeUser(UserId $id) : void {
-        $this->repository->remove($id);
+        try {
+            $this->db->beginTransaction();
+            $this->userRoleRepository->deleteByUser($id);
+
+            $this->repository->remove($id);
+            $this->db->commit();
+        } catch (NotFoundException $e) {
+            $this->db->rollBack();
+            throw $e;
+        }
     }
 }
