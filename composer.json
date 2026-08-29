@@ -27,7 +27,7 @@
     "phpstan/phpstan": "^2.2",
     "friendsofphp/php-cs-fixer": "^3.95",
     "squizlabs/php_codesniffer": "^4.0",
-    "infection/infection": "^0.34.0",
+    "infection/infection": "^0.35.2",
     "rector/rector": "^2.5",
     "phpro/grumphp": "^2.22",
     "league/openapi-psr7-validator": "^0.24.0"
