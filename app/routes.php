@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Actions\Health\ShowHealthAction;
 use App\Http\Actions\Role\CreateRoleAction;
 use App\Http\Actions\Role\DeleteRoleAction;
 use App\Http\Actions\Role\GetAllRolesAction;
@@ -20,6 +21,7 @@ use App\Http\Actions\UserRole\GetUserRolesAction;
 use Slim\App;
 
 return function (App $app) : void {
+    $app->get('/health', ShowHealthAction::class);
 
     $app->post('/users', CreateUserAction::class);
     $app->get('/users', GetAllUsersAction::class);
