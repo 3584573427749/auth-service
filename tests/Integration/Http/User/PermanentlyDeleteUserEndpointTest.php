@@ -15,6 +15,7 @@ final class PermanentlyDeleteUserEndpointTest extends BaseApiTestCases {
      */
     public function testReturns204WhenUserExists() : void {
         $this->loadSchema('users');
+        $this->loadSchema('user_roles');
 
         $this->seed('users', [
             [
@@ -63,6 +64,7 @@ final class PermanentlyDeleteUserEndpointTest extends BaseApiTestCases {
 
     public function testReturns404WhenUserDoesNotExist() : void {
         $this->loadSchema('users');
+        $this->loadSchema('user_roles');
 
         $request = new ServerRequestFactory()
             ->createServerRequest('DELETE', '/users/550e8400-e29b-41d4-a716-446655440000/permanent');
