@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\ErrorHandler;
 
 use App\Domain\Exception\ForbiddenException;
+use App\Domain\Exception\GroupServiceUnavailableException;
 use App\Domain\Exception\InternalException;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\Exception\RecordExistsException;
@@ -41,6 +42,7 @@ class ErrorHandler {
             $exception instanceof RecordExistsException => 409,
             $exception instanceof ValidationException => 422,
             $exception instanceof InternalException => 500,
+            $exception instanceof GroupServiceUnavailableException => 503,
             default => 500,
         };
     }

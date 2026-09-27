@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
+use App\Application\Clients\GroupService\GroupServiceClient;
 use App\Application\ErrorHandler\ErrorHandler;
 use App\Application\Middleware\ErrorMiddleware;
+use App\Http\Clients\GroupService\HttpGroupServiceClient;
 use DI\ContainerBuilder;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use GuzzleHttp\ClientInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -34,5 +37,15 @@ return function (ContainerBuilder $builder) {
             return DriverManager::getConnection($connectionParams);
         },
 
+        // GroupServiceClient binding
+        GroupServiceClient::class => function (
+            ContainerInterface $c,
+        ) {
+            return new HttpGroupServiceClient(
+                $c->get(LoggerInterface::class),
+                $c->get(ClientInterface::class),
+                $_ENV['GROUP_SERVICE_URL'],
+            );
+        },
     ]);
 };
