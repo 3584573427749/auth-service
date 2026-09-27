@@ -22,36 +22,62 @@ class DeleteUserRoleHandler extends UserRoleHandler {
         RoleRepository $roleRepository,
         private GroupServiceClient $groupServiceClient,
     ) {
-        parent::__construct($db, $repository, $userRepository, $roleRepository);
+        parent::__construct(
+            $db,
+            $repository,
+            $userRepository,
+            $roleRepository,
+        );
     }
 
     public function handle(UserRoleCommand $command) : void {
         $this->db->beginTransaction();
+
         try {
-            $userRole = new UserRole(
-                new UserId($command->userId),
-                new RoleId($command->roleId),
-            );
+            $this->deleteRole($command);
 
-            $this->repository->delete($userRole);
-
-            // Check if user and role exists
-            $user = $this->userRepository->getById(new UserId($command->userId));
-            $role = $this->roleRepository->getById(new RoleId($command->roleId));
-
-            $this->repository->save($userRole);
-            if ($role->isLeader()) {
-                $this->groupServiceClient->syncLeader(
-                    $user->getId(),
-                    $user->getFirstName(),
-                    $user->getLastName(),
-                    false,
-                );
-            }
             $this->db->commit();
         } catch (\Throwable $e) {
             $this->db->rollBack();
+
             throw $e;
+        }
+    }
+
+    public function deleteAllRoles(UserId $userId) : void {
+        $roles = $this->repository->getRoles($userId);
+
+        foreach ($roles as $role) {
+            $this->deleteRole(
+                new UserRoleCommand(
+                    $userId->toString(),
+                    $role->getId()->toString(),
+                ),
+            );
+        }
+    }
+
+    private function deleteRole(UserRoleCommand $command) : void {
+        $userId = new UserId($command->userId);
+        $roleId = new RoleId($command->roleId);
+
+        $user = $this->userRepository->getById($userId);
+        $role = $this->roleRepository->getById($roleId);
+
+        $userRole = new UserRole(
+            $userId,
+            $roleId,
+        );
+
+        $this->repository->delete($userRole);
+
+        if ($role->isLeader()) {
+            $this->groupServiceClient->syncLeader(
+                $user->getId(),
+                $user->getFirstName(),
+                $user->getLastName(),
+                false,
+            );
         }
     }
 }

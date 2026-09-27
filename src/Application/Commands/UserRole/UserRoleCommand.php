@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Commands\UserRole;
 
 class UserRoleCommand {
-    private function __construct(public string $userId, public string $roleId) {
+    public function __construct(public string $userId, public string $roleId) {
 
     }
 

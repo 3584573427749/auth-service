@@ -4,22 +4,37 @@ declare(strict_types=1);
 
 namespace App\Application\Handlers\User;
 
+use App\Application\Handlers\UserRole\DeleteUserRoleHandler;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\Exception\UserInUseException;
+use App\Domain\Repositories\UserRepository;
+use App\Domain\Repositories\UserRoleRepository;
 use App\Domain\ValueObjects\UserId;
+use Doctrine\DBAL\Connection;
 
 class DeleteUserHandler extends UserHandler {
+    public function __construct(
+        Connection $db,
+        UserRepository $repository,
+        UserRoleRepository $userRoleRepository,
+        private DeleteUserRoleHandler $deleteUserRoleHandler,
+    ) {
+        parent::__construct($db, $repository, $userRoleRepository);
+    }
+
     /**
-     * SoftDelete, sätter deleted_at fältet i databasen till nuvarande tid.
-     * och tar bort alla poster ur kopplade tabeller.
+     * SoftDelete, sätter deleted_at fältet i databasen till nuvarande tid,
+     * tar bort alla poster ur kopplade tabeller,
+     * och avaktiverar användaren om den finns i group-service.
      * @throws NotFoundException
      */
     public function softDelete(UserId $id) : void {
         try {
             $this->db->beginTransaction();
-            $this->repository->softDelete($id);
 
-            $this->userRoleRepository->deleteByUser($id);
+            $this->deleteUserRoleHandler->deleteAllRoles($id);
+
+            $this->repository->softDelete($id);
             $this->db->commit();
         } catch (NotFoundException $e) {
             $this->db->rollBack();
@@ -35,7 +50,8 @@ class DeleteUserHandler extends UserHandler {
     public function removeUser(UserId $id) : void {
         try {
             $this->db->beginTransaction();
-            $this->userRoleRepository->deleteByUser($id);
+
+            $this->deleteUserRoleHandler->deleteAllRoles($id);
 
             $this->repository->remove($id);
             $this->db->commit();
