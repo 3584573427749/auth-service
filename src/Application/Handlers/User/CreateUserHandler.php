@@ -5,16 +5,21 @@ declare(strict_types=1);
 namespace App\Application\Handlers\User;
 
 use App\Application\Commands\User\CreateUserCommand;
+use App\Application\Handlers\UserRole\SaveUserRoleHandler;
 use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\User;
-use App\Domain\Entities\UserRole;
 use App\Domain\Exception\UserAlreadyExistsException;
+use App\Domain\Repositories\UserRepository;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
-use App\Domain\ValueObjects\RoleId;
 use App\Domain\ValueObjects\UserId;
+use Doctrine\DBAL\Connection;
 
 class CreateUserHandler extends UserHandler {
+    public function __construct(Connection $db, UserRepository $repository, private SaveUserRoleHandler $saveUserRoleHandler) {
+        parent::__construct($db, $repository);
+    }
+
     public function handle(CreateUserCommand $command) : UserDTO {
         $this->db->beginTransaction();
         try {
@@ -34,10 +39,7 @@ class CreateUserHandler extends UserHandler {
 
             $this->repository->save($user);
 
-            foreach ($command->roles as $roleId) {
-                $this->userRoleRepository->save(new UserRole($user->getId(), new RoleId($roleId)));
-            }
-
+            $this->saveUserRoleHandler->handleSaveAll($user->getId(), $command->roles);
 
             $this->db->commit();
 

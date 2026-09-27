@@ -28,30 +28,46 @@ class SaveUserRoleHandler extends UserRoleHandler {
     public function handle(UserRoleCommand $command) : void {
         $this->db->beginTransaction();
         try {
-            $userId = new UserId($command->userId);
-            $roleId = new RoleId($command->roleId);
+            $this->saveRole($command);
 
-            // Check if user and role exists
-            $user = $this->userRepository->getById($userId);
-            $role = $this->roleRepository->getById($roleId);
-            $userRole = new UserRole(
-                $userId,
-                $roleId,
-            );
-
-            $this->repository->save($userRole);
-            if ($role->isLeader()) {
-                $this->groupServiceClient->syncLeader(
-                    $user->getId(),
-                    $user->getFirstName(),
-                    $user->getLastName(),
-                    true,
-                );
-            }
             $this->db->commit();
         } catch (\Throwable $e) {
             $this->db->rollBack();
             throw $e;
         }
+    }
+
+    /**
+     * @param string[] $roleIdsToAdd
+     */
+    public function handleSaveAll(UserId $userId, array $roleIdsToAdd) : void {
+        foreach ($roleIdsToAdd as $roleId) {
+            $command = new UserRoleCommand($userId->toString(), $roleId);
+            $this->saveRole($command);
+        }
+    }
+
+    private function saveRole(UserRoleCommand $command) : void {
+        $userId = new UserId($command->userId);
+        $roleId = new RoleId($command->roleId);
+
+        // Check if user and role exists
+        $user = $this->userRepository->getById($userId);
+        $role = $this->roleRepository->getById($roleId);
+        $userRole = new UserRole(
+            $userId,
+            $roleId,
+        );
+
+        $this->repository->save($userRole);
+        if ($role->isLeader()) {
+            $this->groupServiceClient->syncLeader(
+                $user->getId(),
+                $user->getFirstName(),
+                $user->getLastName(),
+                true,
+            );
+        }
+
     }
 }

@@ -8,7 +8,6 @@ use App\Application\Handlers\UserRole\DeleteUserRoleHandler;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\Exception\UserInUseException;
 use App\Domain\Repositories\UserRepository;
-use App\Domain\Repositories\UserRoleRepository;
 use App\Domain\ValueObjects\UserId;
 use Doctrine\DBAL\Connection;
 
@@ -16,10 +15,9 @@ class DeleteUserHandler extends UserHandler {
     public function __construct(
         Connection $db,
         UserRepository $repository,
-        UserRoleRepository $userRoleRepository,
         private DeleteUserRoleHandler $deleteUserRoleHandler,
     ) {
-        parent::__construct($db, $repository, $userRoleRepository);
+        parent::__construct($db, $repository);
     }
 
     /**
