@@ -20,7 +20,8 @@
     "robmorgan/phinx": "^0.16",
     "monolog/monolog": "^3.10",
     "vlucas/phpdotenv": "^5.7",
-    "ramsey/uuid": "^4.9"
+    "ramsey/uuid": "^4.9",
+    "guzzlehttp/guzzle": "^8.2"
   },
   "require-dev": {
     "phpunit/phpunit": "^12.5",

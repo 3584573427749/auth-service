@@ -8,6 +8,8 @@ use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\RoleId;
 
 class Role implements \JsonSerializable {
+    public const LEADER = 'Ledare';
+
     public function __construct(
         private RoleId $id,
         private string $name,
@@ -103,5 +105,9 @@ class Role implements \JsonSerializable {
 
     public function setUpdatedAt(DateTimeValue $updatedAt) : void {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function isLeader() : bool {
+        return $this->name === self::LEADER;
     }
 }
