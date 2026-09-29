@@ -6,6 +6,8 @@ namespace Tests\Unit\Application\Handlers\User;
 
 use App\Application\Commands\User\UpdateUserCommand;
 use App\Application\Handlers\User\UpdateUserHandler;
+use App\Application\Handlers\UserRole\DeleteUserRoleHandler;
+use App\Application\Handlers\UserRole\SaveUserRoleHandler;
 use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\User;
 use App\Domain\Exception\UserAlreadyExistsException;
@@ -66,13 +68,17 @@ final class UpdateUserHandlerTest extends TestCase {
             ->method('getRoles')
             ->willReturn([]);
 
-        $handler = new class($db, $repository, $userRoleRepository) extends UpdateUserHandler {
-            public function __construct(Connection $db, UserRepository $userRepository, UserRoleRepository $userRoleRepository) {
-                $this->db = $db;
-                $this->repository = $userRepository;
-                $this->userRoleRepository = $userRoleRepository;
-            }
-        };
+        $saveUserRoleHandler = $this->createMock(SaveUserRoleHandler::class);
+        $saveUserRoleHandler
+            ->expects(self::once())
+            ->method('saveAll');
+
+        $deleteUserRoleHandler = $this->createMock(DeleteUserRoleHandler::class);
+        $deleteUserRoleHandler
+            ->expects(self::once())
+            ->method('deleteAll');
+
+        $handler = new UpdateUserHandler($db, $repository, $userRoleRepository, $saveUserRoleHandler, $deleteUserRoleHandler, );
 
         $result = $handler->handle($command);
 
@@ -119,13 +125,17 @@ final class UpdateUserHandlerTest extends TestCase {
             ->expects(self::never())
             ->method('getRoles');
 
-        $handler = new class($db, $repository, $userRoleRepository) extends UpdateUserHandler {
-            public function __construct(Connection $db, UserRepository $userRepository, UserRoleRepository $userRoleRepository) {
-                $this->db = $db;
-                $this->repository = $userRepository;
-                $this->userRoleRepository = $userRoleRepository;
-            }
-        };
+        $saveUserRoleHandler = $this->createMock(SaveUserRoleHandler::class);
+        $saveUserRoleHandler
+            ->expects(self::never())
+            ->method('saveAll');
+
+        $deleteUserRoleHandler = $this->createMock(DeleteUserRoleHandler::class);
+        $deleteUserRoleHandler
+            ->expects(self::never())
+            ->method('deleteAll');
+
+        $handler = new UpdateUserHandler($db, $repository, $userRoleRepository, $saveUserRoleHandler, $deleteUserRoleHandler);
 
         self::expectException(UserAlreadyExistsException::class);
 
@@ -166,13 +176,17 @@ final class UpdateUserHandlerTest extends TestCase {
             ->expects(self::never())
             ->method('getRoles');
 
-        $handler = new class($db, $repository, $userRoleRepository) extends UpdateUserHandler {
-            public function __construct(Connection $db, UserRepository $userRepository, UserRoleRepository $userRoleRepository) {
-                $this->db = $db;
-                $this->repository = $userRepository;
-                $this->userRoleRepository = $userRoleRepository;
-            }
-        };
+        $saveUserRoleHandler = $this->createMock(SaveUserRoleHandler::class);
+        $saveUserRoleHandler
+            ->expects(self::never())
+            ->method('saveAll');
+
+        $deleteUserRoleHandler = $this->createMock(DeleteUserRoleHandler::class);
+        $deleteUserRoleHandler
+            ->expects(self::never())
+            ->method('deleteAll');
+
+        $handler = new UpdateUserHandler($db, $repository, $userRoleRepository, $saveUserRoleHandler, $deleteUserRoleHandler);
 
         self::expectException(\RuntimeException::class);
 

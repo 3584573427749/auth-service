@@ -30,7 +30,7 @@ class DeleteUserHandler extends UserHandler {
         try {
             $this->db->beginTransaction();
 
-            $this->deleteUserRoleHandler->deleteAllRoles($id);
+            $this->deleteUserRoleHandler->deleteAll($id);
 
             $this->repository->softDelete($id);
             $this->db->commit();
@@ -49,7 +49,7 @@ class DeleteUserHandler extends UserHandler {
         try {
             $this->db->beginTransaction();
 
-            $this->deleteUserRoleHandler->deleteAllRoles($id);
+            $this->deleteUserRoleHandler->deleteAll($id);
 
             $this->repository->remove($id);
             $this->db->commit();

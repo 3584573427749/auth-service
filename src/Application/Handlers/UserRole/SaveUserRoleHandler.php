@@ -40,7 +40,7 @@ class SaveUserRoleHandler extends UserRoleHandler {
     /**
      * @param string[] $roleIdsToAdd
      */
-    public function handleSaveAll(UserId $userId, array $roleIdsToAdd) : void {
+    public function saveAll(UserId $userId, array $roleIdsToAdd) : void {
         foreach ($roleIdsToAdd as $roleId) {
             $command = new UserRoleCommand($userId->toString(), $roleId);
             $this->saveRole($command);

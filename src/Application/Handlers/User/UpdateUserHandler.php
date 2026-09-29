@@ -5,15 +5,28 @@ declare(strict_types=1);
 namespace App\Application\Handlers\User;
 
 use App\Application\Commands\User\UpdateUserCommand;
+use App\Application\Handlers\UserRole\DeleteUserRoleHandler;
+use App\Application\Handlers\UserRole\SaveUserRoleHandler;
 use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\Role;
-use App\Domain\Entities\UserRole;
 use App\Domain\Exception\UserAlreadyExistsException;
+use App\Domain\Repositories\UserRepository;
+use App\Domain\Repositories\UserRoleRepository;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
-use App\Domain\ValueObjects\RoleId;
+use Doctrine\DBAL\Connection;
 
 class UpdateUserHandler extends UserHandler {
+    public function __construct(
+        Connection $db,
+        UserRepository $repository,
+        private UserRoleRepository $userRoleRepository,
+        private SaveUserRoleHandler $saveUserRoleHandler,
+        private DeleteUserRoleHandler $deleteUserRoleHandler,
+    ) {
+        parent::__construct($db, $repository);
+    }
+
     public function handle(UpdateUserCommand $command) : UserDTO {
         $this->db->beginTransaction();
         try {
@@ -30,23 +43,33 @@ class UpdateUserHandler extends UserHandler {
 
             $this->repository->save($user);
 
-            $currentRoles = $this->userRoleRepository->getRoles($user->getId());
-            $currentRoleIds = array_map(static fn (Role $role) => $role->getId()->toString(), $currentRoles);
+            $currentRoles = $this->userRoleRepository->getRoles(
+                $user->getId(),
+            );
+
+            $currentRoleIds = array_map(
+                static fn (Role $role) => $role->getId()->toString(),
+                $currentRoles,
+            );
+
             $rolesToAdd = array_diff(
                 $command->roles,
                 $currentRoleIds,
             );
-            foreach ($rolesToAdd as $roleId) {
-                $this->userRoleRepository->save(new UserRole($user->getId(), new RoleId($roleId)));
-            }
 
             $rolesToRemove = array_diff(
                 $currentRoleIds,
                 $command->roles,
             );
-            foreach ($rolesToRemove as $roleId) {
-                $this->userRoleRepository->delete(new UserRole($user->getId(), new RoleId($roleId)));
-            }
+
+            $this->deleteUserRoleHandler->deleteAll(
+                $user->getId(),
+            );
+
+            $this->saveUserRoleHandler->saveAll(
+                $user->getId(),
+                $rolesToAdd,
+            );
 
             $this->db->commit();
 

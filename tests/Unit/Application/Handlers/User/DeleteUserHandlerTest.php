@@ -29,7 +29,7 @@ final class DeleteUserHandlerTest extends TestCase {
         $deleteUserRoleHandler = $this->createMock(DeleteUserRoleHandler::class);
         $deleteUserRoleHandler
             ->expects($this->once())
-            ->method('deleteAllRoles')
+            ->method('deleteAll')
             ->with($userId);
 
         $handler = new DeleteUserHandler($db, $repository, $deleteUserRoleHandler);
@@ -57,7 +57,7 @@ final class DeleteUserHandlerTest extends TestCase {
         $deleteUserRoleHandler = $this->createMock(DeleteUserRoleHandler::class);
         $deleteUserRoleHandler
             ->expects($this->once())
-            ->method('deleteAllRoles')
+            ->method('deleteAll')
             ->with($userId);
 
         $handler = new DeleteUserHandler($db, $repository, $deleteUserRoleHandler);
@@ -83,7 +83,7 @@ final class DeleteUserHandlerTest extends TestCase {
         $deleteUserRoleHandler = $this->createMock(DeleteUserRoleHandler::class);
         $deleteUserRoleHandler
             ->expects($this->once())
-            ->method('deleteAllRoles')
+            ->method('deleteAll')
             ->with($userId);
 
         $handler = new DeleteUserHandler($db, $repository, $deleteUserRoleHandler);
@@ -108,7 +108,7 @@ final class DeleteUserHandlerTest extends TestCase {
         $deleteUserRoleHandler = $this->createMock(DeleteUserRoleHandler::class);
         $deleteUserRoleHandler
             ->expects($this->once())
-            ->method('deleteAllRoles')
+            ->method('deleteAll')
             ->with($userId);
 
         $db->expects($this->once())

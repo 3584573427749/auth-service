@@ -44,7 +44,7 @@ class DeleteUserRoleHandler extends UserRoleHandler {
         }
     }
 
-    public function deleteAllRoles(UserId $userId) : void {
+    public function deleteAll(UserId $userId) : void {
         $roles = $this->repository->getRoles($userId);
 
         foreach ($roles as $role) {

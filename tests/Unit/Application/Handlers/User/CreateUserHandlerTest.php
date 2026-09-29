@@ -46,7 +46,7 @@ final class CreateUserHandlerTest extends TestCase {
         $saveUserRoleHandler = $this->createMock(SaveUserRoleHandler::class);
         $saveUserRoleHandler
             ->expects(self::once())
-            ->method('handleSaveAll')
+            ->method('saveAll')
             ->with(self::isInstanceOf(UserId::class), self::equalTo([]));
 
         $handler = new CreateUserHandler($db, $repository, $saveUserRoleHandler);
@@ -85,7 +85,7 @@ final class CreateUserHandlerTest extends TestCase {
         $saveUserRoleHandler = $this->createMock(SaveUserRoleHandler::class);
         $saveUserRoleHandler
             ->expects(self::never())
-            ->method('handleSaveAll');
+            ->method('saveAll');
 
         $handler = new CreateUserHandler($db, $repository, $saveUserRoleHandler);
 
@@ -168,7 +168,7 @@ final class CreateUserHandlerTest extends TestCase {
 
         $saveUserRoleHandler
             ->expects($this->once())
-            ->method('handleSaveAll')
+            ->method('saveAll')
             ->willThrowException(
                 new \RuntimeException('Role error'),
             );

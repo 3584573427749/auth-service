@@ -39,7 +39,7 @@ class CreateUserHandler extends UserHandler {
 
             $this->repository->save($user);
 
-            $this->saveUserRoleHandler->handleSaveAll($user->getId(), $command->roles);
+            $this->saveUserRoleHandler->saveAll($user->getId(), $command->roles);
 
             $this->db->commit();
 
