@@ -8,7 +8,7 @@ namespace Tests\Integration\Config;
 use PHPUnit\Framework\TestCase;
 
 final class EnvironmentFilesTest extends TestCase {
-    public function testEnvironmentFilesContainSameNumberOfKeys(): void {
+    public function testEnvironmentFilesContainSameNumberOfKeys() : void {
         $referenceKeys = $this->getKeys('.env');
 
         $environmentFiles = $this->getEnvironmentFiles();
@@ -19,20 +19,20 @@ final class EnvironmentFilesTest extends TestCase {
                 $this->getKeys($file),
                 sprintf(
                     '%s does not contain the same number of keys as .env',
-                    $file
-                )
+                    $file,
+                ),
             );
         }
     }
 
-    public function testEnvironmentFilesContainSameKeysAsEnv(): void {
+    public function testEnvironmentFilesContainSameKeysAsEnv() : void {
         $referenceKeys = $this->getKeys('.env');
 
         sort($referenceKeys);
 
         $files = array_filter(
             glob('.env.*') ?: [],
-            static fn(string $file): bool => is_file($file)
+            static fn (string $file) : bool => is_file($file),
         );
 
         foreach ($files as $file) {
@@ -45,22 +45,23 @@ final class EnvironmentFilesTest extends TestCase {
                 $keys,
                 sprintf(
                     '%s does not contain the same keys as .env',
-                    $file
-                )
+                    $file,
+                ),
             );
         }
     }
+
     /**
      * @return string[]
      */
-    private function getKeys(string $file): array {
+    private function getKeys(string $file) : array {
         self::assertFileExists($file);
 
         $keys = [];
 
         $lines = file(
             $file,
-            FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES
+            FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES,
         );
 
         if ($lines === false) {
@@ -85,13 +86,14 @@ final class EnvironmentFilesTest extends TestCase {
 
         return $keys;
     }
+
     /**
      * @return string[]
      */
-    private function getEnvironmentFiles(): array {
+    private function getEnvironmentFiles() : array {
         return array_filter(
             glob('.env.*') ?: [],
-            static fn(string $file): bool => is_file($file)
+            static fn (string $file) : bool => is_file($file),
         );
     }
 }

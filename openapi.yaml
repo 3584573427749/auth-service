@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Auth Service API
-  version: 1.1.1
+  version: 1.1.2
   description: >-
     OpenAPI för autentiserings- och användarhanteringstjänster i simning.ax-miljön
 
@@ -833,7 +833,89 @@ paths:
                     example: 404
                   error:
                     $ref: '#/components/schemas/ErrorResponse'
+  /auth/login:
+    post:
+      summary: Request OTP code
+      operationId: requestOtp
+      tags:
+        - Authentication
 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+
+      responses:
+        '200':
+          description: Request accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - data
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+
+                  data:
+                    $ref: '#/components/schemas/Login'
+
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/verify:
+    post:
+      summary: Verify OTP code
+      operationId: verifyOtp
+      tags:
+        - Authentication
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyOtpRequest'
+
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - statusCode
+                  - data
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+
+                  data:
+                    $ref: '#/components/schemas/VerifyOtp'
+
+        '400':
+          description: Invalid OTP
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
     ErrorResponse:
@@ -1046,3 +1128,54 @@ components:
           type: string
           format: date-time
           nullable: true
+    LoginRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+          example: test@example.com
+
+    Login:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          example: Om användaren finns har information skickats.
+
+    VerifyOtpRequest:
+      type: object
+      required:
+        - email
+        - code
+      properties:
+        email:
+          type: string
+          format: email
+          example: test@example.com
+
+        code:
+          type: string
+          minLength: 6
+          maxLength: 6
+          example: "123456"
+
+    VerifyOtp:
+      type: object
+      required:
+        - accessToken
+        - refreshToken
+        - user
+      properties:
+        accessToken:
+          type: string
+
+        refreshToken:
+          type: string
+
+        user:
+          $ref: '#/components/schemas/User'
