@@ -57,6 +57,10 @@ final class DateTimeValue implements JsonSerializable {
         return $this->value->format('Y-m-d H:i:s');
     }
 
+    public function isPast() : bool {
+        return $this->value < new DateTimeImmutable('now');
+    }
+
     public function jsonSerialize() : string {
         return $this->toString();
     }
