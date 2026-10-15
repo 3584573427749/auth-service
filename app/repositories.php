@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Domain\Repositories\OneTimeCodeRepository;
 use App\Domain\Repositories\RoleRepository;
 use App\Domain\Repositories\UserRepository;
 use App\Domain\Repositories\UserRoleRepository;
+use App\Infrastructure\Database\DbalOneTimeCodeRepository;
 use App\Infrastructure\Database\DbalRoleRepository;
 use App\Infrastructure\Database\DbalUserRepository;
 use App\Infrastructure\Database\DbalUserRoleRepository;
@@ -19,5 +21,6 @@ return function (ContainerBuilder $containerBuilder) {
         UserRepository::class => autowire(DbalUserRepository::class),
         RoleRepository::class => autowire(DbalRoleRepository::class),
         UserRoleRepository::class => autowire(DbalUserRoleRepository::class),
+        OneTimeCodeRepository::class => autowire(DbalOneTimeCodeRepository::class),
     ]);
 };

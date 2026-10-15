@@ -8,7 +8,7 @@ use App\Domain\Entities\User;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\UserId;
 
-readonly class UserDTO implements \JsonSerializable {
+class UserDTO implements \JsonSerializable {
     /**
      * @param array<string> $roles
      */

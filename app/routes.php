@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Http\Actions\Auth\RequestOneTimeCodeAction;
+use App\Http\Actions\Auth\VerifyOneTimeCodeAction;
 use App\Http\Actions\Health\ShowHealthAction;
 use App\Http\Actions\Role\CreateRoleAction;
 use App\Http\Actions\Role\DeleteRoleAction;
@@ -39,5 +41,9 @@ return function (App $app) : void {
     $app->get('/users/{id}/roles', GetUserRolesAction::class);
     $app->delete('/users/{id}/roles/{roleId}', DeleteUserRoleAction::class);
     $app->get('/roles/{id}/users', GetRoleUsersAction::class);
+
+    // Authentication routes
+    $app->post('/auth/login', RequestOneTimeCodeAction::class);
+    $app->post('/auth/verify', VerifyOneTimeCodeAction::class);
 
 };

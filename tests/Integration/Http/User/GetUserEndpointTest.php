@@ -37,10 +37,10 @@ final class GetUserEndpointTest extends BaseApiTestCases {
         ]);
 
         $this->seed('user_roles', [
-        [
-            'user_id' => '550e8400-e29b-41d4-a716-446655440000',
-            'role_id' => '11111111-1111-1111-1111-111111111111',
-        ],
+            [
+                'user_id' => '550e8400-e29b-41d4-a716-446655440000',
+                'role_id' => '11111111-1111-1111-1111-111111111111',
+            ],
         ]);
 
         $request = (new ServerRequestFactory())

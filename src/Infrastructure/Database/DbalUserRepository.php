@@ -8,6 +8,7 @@ use App\Domain\Entities\User;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\Exception\UserInUseException;
 use App\Domain\Repositories\UserRepository;
+use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\UserId;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
@@ -99,5 +100,22 @@ class DbalUserRepository extends AbstractDbRepository implements UserRepository 
         } catch (ForeignKeyConstraintViolationException $e) {
             throw new UserInUseException('Användaren används i en eller flera andra tabeller');
         }
+    }
+
+    public function getByEmail(Email $email) : User|null {
+        $db = $this->connection->createQueryBuilder();
+        $row = $db->select('*')
+            ->from(self::TABLE)
+            ->where('email=:email')
+            ->setParameter('email', $email)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        if ($row === false) {
+            return null;
+        }
+
+        return User::fromDBRow($row);
+
     }
 }

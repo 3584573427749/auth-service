@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\DataTransportObjects\Login;
+namespace App\Domain\DataTransportObjects\Auth;
 
 use App\Domain\DataTransportObjects\User\UserDTO;
 
-class VerifyOtpDTO implements \JsonSerializable {
+class VerifyOneTimeCodeDTO implements \JsonSerializable {
     public function __construct(
         private string $accessToken,
         private string $refreshToken,

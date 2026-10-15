@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Repositories;
 
 use App\Domain\Entities\User;
+use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\UserId;
 
 interface UserRepository {
@@ -20,6 +21,8 @@ interface UserRepository {
     public function getAll() : array;
 
     public function getById(UserId $id) : User;
+
+    public function getByEmail(Email $email) : User|null;
 
     public function softDelete(UserId $id) : void;
 

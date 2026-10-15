@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\DataTransportObjects\Login;
+namespace App\Domain\DataTransportObjects\Auth;
 
 class LoginDTO implements \JsonSerializable {
     public function __construct(private string $message) {
