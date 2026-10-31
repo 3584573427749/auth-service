@@ -11,6 +11,8 @@ use Tests\Integration\OpenApi\OpenApiValidator;
 final class CreateUserEndpointTest extends BaseApiTestCases {
     public function testReturns201WhenRequestIsValid() : void {
         $this->loadSchema('users');
+        $this->loadSchema('roles');
+        $this->loadSchema('user_roles');
 
         $requestBody = [
             'email' => 'test@example.com',

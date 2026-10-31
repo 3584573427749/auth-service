@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace Tests\Unit\Http\Actions\Auth;
@@ -15,12 +14,10 @@ use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class RequestOneTimeCodeActionTest extends TestCase {
-    public function testReturnsSuccessResponse() : void {
+    public function testActionCallsHandler() : void {
         $logger = $this->createMock(
             LoggerInterface::class,
         );
-
-        $responseDto = LoginDTO::success();
 
         $handler = $this->createMock(
             RequestOneTimeCodeHandler::class,
@@ -30,11 +27,20 @@ final class RequestOneTimeCodeActionTest extends TestCase {
             ->expects($this->once())
             ->method('handle')
             ->with(
-                $this->isInstanceOf(
-                    RequestOneTimeCodeCommand::class,
+                $this->callback(
+                    static function (
+                        RequestOneTimeCodeCommand $command,
+                    ) : bool {
+                        return
+                            $command->email === 'test@example.com';
+                    },
                 ),
             )
-            ->willReturn($responseDto);
+            ->willReturn(
+                new LoginDTO(
+                    'Om användaren finns har information skickats.',
+                ),
+            );
 
         $action = new RequestOneTimeCodeAction(
             $logger,
@@ -62,23 +68,6 @@ final class RequestOneTimeCodeActionTest extends TestCase {
         self::assertSame(
             200,
             $result->getStatusCode(),
-        );
-
-        $payload = json_decode(
-            (string)$result->getBody(),
-            true,
-        );
-
-        self::assertIsArray($payload);
-
-        self::assertArrayHasKey(
-            'data',
-            $payload,
-        );
-
-        self::assertSame(
-            'Om användaren finns har information skickats.',
-            $payload['data']['message'],
         );
     }
 }

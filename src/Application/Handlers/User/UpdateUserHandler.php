@@ -20,11 +20,11 @@ class UpdateUserHandler extends UserHandler {
     public function __construct(
         Connection $db,
         UserRepository $repository,
-        private UserRoleRepository $userRoleRepository,
+        UserRoleRepository $userRoleRepository,
         private SaveUserRoleHandler $saveUserRoleHandler,
         private DeleteUserRoleHandler $deleteUserRoleHandler,
     ) {
-        parent::__construct($db, $repository);
+        parent::__construct($db, $repository, $userRoleRepository);
     }
 
     public function handle(UpdateUserCommand $command) : UserDTO {

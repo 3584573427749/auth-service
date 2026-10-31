@@ -8,6 +8,7 @@ use App\Application\Handlers\User\DeleteUserHandler;
 use App\Application\Handlers\UserRole\DeleteUserRoleHandler;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\Repositories\UserRepository;
+use App\Domain\Repositories\UserRoleRepository;
 use App\Domain\ValueObjects\UserId;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
@@ -26,13 +27,15 @@ final class DeleteUserHandlerTest extends TestCase {
             ->method('softDelete')
             ->with($userId);
 
+        $userRoleRepository = $this->createMock(UserRoleRepository::class);
+
         $deleteUserRoleHandler = $this->createMock(DeleteUserRoleHandler::class);
         $deleteUserRoleHandler
             ->expects($this->once())
             ->method('deleteAll')
             ->with($userId);
 
-        $handler = new DeleteUserHandler($db, $repository, $deleteUserRoleHandler);
+        $handler = new DeleteUserHandler($db, $repository, $userRoleRepository, $deleteUserRoleHandler);
 
         $handler->softDelete($userId);
     }
@@ -54,13 +57,15 @@ final class DeleteUserHandlerTest extends TestCase {
             ->method('softDelete')
             ->willThrowException(new NotFoundException('User not found'));
 
+        $userRoleRepository = $this->createMock(UserRoleRepository::class);
+
         $deleteUserRoleHandler = $this->createMock(DeleteUserRoleHandler::class);
         $deleteUserRoleHandler
             ->expects($this->once())
             ->method('deleteAll')
             ->with($userId);
 
-        $handler = new DeleteUserHandler($db, $repository, $deleteUserRoleHandler);
+        $handler = new DeleteUserHandler($db, $repository, $userRoleRepository, $deleteUserRoleHandler);
 
         $this->expectException(NotFoundException::class);
 
@@ -80,13 +85,15 @@ final class DeleteUserHandlerTest extends TestCase {
             ->method('remove')
             ->with($userId);
 
+        $userRoleRepository = $this->createMock(UserRoleRepository::class);
+
         $deleteUserRoleHandler = $this->createMock(DeleteUserRoleHandler::class);
         $deleteUserRoleHandler
             ->expects($this->once())
             ->method('deleteAll')
             ->with($userId);
 
-        $handler = new DeleteUserHandler($db, $repository, $deleteUserRoleHandler);
+        $handler = new DeleteUserHandler($db, $repository, $userRoleRepository, $deleteUserRoleHandler);
 
         $handler->removeUser($userId);
     }
@@ -105,6 +112,8 @@ final class DeleteUserHandlerTest extends TestCase {
             ->with($userId)
             ->willThrowException(new NotFoundException('User not found'));
 
+        $userRoleRepository = $this->createMock(UserRoleRepository::class);
+
         $deleteUserRoleHandler = $this->createMock(DeleteUserRoleHandler::class);
         $deleteUserRoleHandler
             ->expects($this->once())
@@ -116,7 +125,7 @@ final class DeleteUserHandlerTest extends TestCase {
         $db->expects(self::never())
             ->method('commit');
 
-        $handler = new DeleteUserHandler($db, $repository, $deleteUserRoleHandler);
+        $handler = new DeleteUserHandler($db, $repository, $userRoleRepository, $deleteUserRoleHandler);
 
         $this->expectException(NotFoundException::class);
 

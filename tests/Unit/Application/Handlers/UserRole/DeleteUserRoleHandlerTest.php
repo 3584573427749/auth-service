@@ -214,4 +214,101 @@ final class DeleteUserRoleHandlerTest extends TestCase {
 
         $handler->handle($command);
     }
+
+    public function testDeleteAllWithNoRoles() : void {
+        $userId = new UserId(
+            '550e8400-e29b-41d4-a716-446655440000',
+        );
+
+        $repository = $this->createMock(
+            UserRoleRepository::class,
+        );
+
+        $repository
+            ->expects($this->once())
+            ->method('getRoles')
+            ->with($userId)
+            ->willReturn([]);
+
+        $connection = $this->createMock(Connection::class);
+
+        $connection
+            ->expects($this->never())
+            ->method('beginTransaction');
+
+        $connection
+            ->expects($this->never())
+            ->method('commit');
+
+        $userRepository = $this->createMock(UserRepository::class);
+
+        $roleRepository = $this->createMock(RoleRepository::class);
+
+        $groupServiceClient = $this->createMock(GroupServiceClient::class);
+
+        $handler = new DeleteUserRoleHandler(
+            $connection,
+            $repository,
+            $userRepository,
+            $roleRepository,
+            $groupServiceClient,
+        );
+
+        $handler->deleteAll($userId);
+    }
+
+    public function testDeleteAllDeletesAllRoles() : void {
+        $userId = new UserId(
+            '550e8400-e29b-41d4-a716-446655440000',
+        );
+
+        $role1 = new Role(
+            new RoleId(
+                '660e8400-e29b-41d4-a716-446655440000',
+            ),
+            'Leader',
+            'Leader',
+            10,
+            new DateTimeValue('now'),
+            null,
+        );
+
+        $role2 = new Role(
+            new RoleId(
+                '660e8400-e29b-41d4-a716-446655440001',
+            ),
+            'User',
+            'User',
+            1,
+            new DateTimeValue('now'),
+            null,
+        );
+
+        $repository = $this->createMock(
+            UserRoleRepository::class,
+        );
+
+        $repository
+            ->expects($this->once())
+            ->method('getRoles')
+            ->with($userId)
+            ->willReturn([
+                $role1,
+                $role2,
+            ]);
+
+        $repository
+            ->expects($this->exactly(2))
+            ->method('delete');
+
+        $handler = new DeleteUserRoleHandler(
+            $this->createMock(Connection::class),
+            $repository,
+            $this->createMock(UserRepository::class),
+            $this->createMock(RoleRepository::class),
+            $this->createMock(GroupServiceClient::class),
+        );
+
+        $handler->deleteAll($userId);
+    }
 }

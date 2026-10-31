@@ -10,6 +10,7 @@ use App\Application\Handlers\UserRole\SaveUserRoleHandler;
 use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Exception\UserAlreadyExistsException;
 use App\Domain\Repositories\UserRepository;
+use App\Domain\Repositories\UserRoleRepository;
 use App\Domain\ValueObjects\UserId;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
@@ -43,13 +44,15 @@ final class CreateUserHandlerTest extends TestCase {
                 return $user->getEmail()->toString() === 'test@example.com';
             }));
 
+        $userRoleRepository = $this->createMock(UserRoleRepository::class);
+
         $saveUserRoleHandler = $this->createMock(SaveUserRoleHandler::class);
         $saveUserRoleHandler
             ->expects(self::once())
             ->method('saveAll')
             ->with(self::isInstanceOf(UserId::class), self::equalTo([]));
 
-        $handler = new CreateUserHandler($db, $repository, $saveUserRoleHandler);
+        $handler = new CreateUserHandler($db, $repository, $userRoleRepository, $saveUserRoleHandler);
 
         $result = $handler->handle($command);
 
@@ -82,12 +85,14 @@ final class CreateUserHandlerTest extends TestCase {
             ->method('existsByEmail')
             ->willReturn(true);
 
+        $userRoleRepository = $this->createMock(UserRoleRepository::class);
+
         $saveUserRoleHandler = $this->createMock(SaveUserRoleHandler::class);
         $saveUserRoleHandler
             ->expects(self::never())
             ->method('saveAll');
 
-        $handler = new CreateUserHandler($db, $repository, $saveUserRoleHandler);
+        $handler = new CreateUserHandler($db, $repository, $userRoleRepository, $saveUserRoleHandler);
 
         self::expectException(UserAlreadyExistsException::class);
 
@@ -162,6 +167,8 @@ final class CreateUserHandlerTest extends TestCase {
             ->expects($this->once())
             ->method('save');
 
+        $userRoleRepository = $this->createMock(UserRoleRepository::class);
+
         $saveUserRoleHandler = $this->createMock(
             SaveUserRoleHandler::class,
         );
@@ -173,15 +180,9 @@ final class CreateUserHandlerTest extends TestCase {
                 new \RuntimeException('Role error'),
             );
 
-        $handler = new CreateUserHandler(
-            $db,
-            $repository,
-            $saveUserRoleHandler,
-        );
+        $handler = new CreateUserHandler($db, $repository, $userRoleRepository, $saveUserRoleHandler, );
 
-        $this->expectException(
-            \RuntimeException::class,
-        );
+        $this->expectException(\RuntimeException::class, );
 
         $handler->handle($command);
     }

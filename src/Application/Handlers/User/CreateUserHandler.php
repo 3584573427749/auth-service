@@ -10,14 +10,15 @@ use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\User;
 use App\Domain\Exception\UserAlreadyExistsException;
 use App\Domain\Repositories\UserRepository;
+use App\Domain\Repositories\UserRoleRepository;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\UserId;
 use Doctrine\DBAL\Connection;
 
 class CreateUserHandler extends UserHandler {
-    public function __construct(Connection $db, UserRepository $repository, private SaveUserRoleHandler $saveUserRoleHandler) {
-        parent::__construct($db, $repository);
+    public function __construct(Connection $db, UserRepository $repository, UserRoleRepository $userRoleRepository, private SaveUserRoleHandler $saveUserRoleHandler) {
+        parent::__construct($db, $repository, $userRoleRepository);
     }
 
     public function handle(CreateUserCommand $command) : UserDTO {

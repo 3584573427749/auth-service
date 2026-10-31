@@ -292,6 +292,52 @@ final class DbalUserRepositoryTest extends DatabaseBaseTestCase {
         self::assertFalse($result);
     }
 
+    public function testGetByEmailReturnsUser() : void {
+        $this->seed('users', [
+            [
+                'id' => '550e8400-e29b-41d4-a716-446655440000',
+                'email' => 'test@example.com',
+                'first_name' => 'User',
+                'last_name' => 'Name',
+                'created_at' => '2026-01-01 00:00:00',
+                'updated_at' => null,
+                'deleted_at' => null,
+            ],
+        ]);
+
+        $user = $this->repository->getByEmail(
+            Email::fromString('test@example.com'),
+        );
+
+        self::assertInstanceOf(
+            User::class,
+            $user,
+        );
+
+        self::assertSame(
+            'test@example.com',
+            $user->getEmail()->toString(),
+        );
+
+        self::assertSame(
+            'User',
+            $user->getFirstName(),
+        );
+
+        self::assertSame(
+            'Name',
+            $user->getLastName(),
+        );
+    }
+
+    public function testGetByEmailReturnsNullWhenUserDoesNotExist() : void {
+        $user = $this->repository->getByEmail(
+            Email::fromString('missing@example.com'),
+        );
+
+        self::assertNull($user);
+    }
+
     protected function setUp() : void {
         parent::setUp();
 

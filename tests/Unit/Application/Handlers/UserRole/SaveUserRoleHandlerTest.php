@@ -224,4 +224,98 @@ final class SaveUserRoleHandlerTest extends TestCase {
 
         $handler->handle($command);
     }
+
+    public function testSaveAllWithNoRoles() : void {
+        $userId = new UserId(
+            '550e8400-e29b-41d4-a716-446655440000',
+        );
+
+        $repository = $this->createMock(
+            UserRoleRepository::class,
+        );
+
+        $repository
+            ->expects($this->never())
+            ->method('save');
+
+        $handler = new SaveUserRoleHandler(
+            $this->createMock(Connection::class),
+            $repository,
+            $this->createMock(UserRepository::class),
+            $this->createMock(RoleRepository::class),
+            $this->createMock(GroupServiceClient::class),
+        );
+
+        $handler->saveAll(
+            $userId,
+            [],
+        );
+    }
+
+    public function testSaveAllSavesAllRoles() : void {
+        $userId = new UserId(
+            '550e8400-e29b-41d4-a716-446655440000',
+        );
+
+        $user = new User(
+            $userId,
+            new Email('test@example.com'),
+            'User',
+            'Name',
+            new DateTimeValue('2026-01-01 00:00:00'),
+            null,
+            null,
+        );
+
+        $role = new Role(
+            new RoleId(
+                '660e8400-e29b-41d4-a716-446655440000',
+            ),
+            'User',
+            'User role',
+            1,
+            new DateTimeValue('now'),
+            null,
+        );
+
+        $repository = $this->createMock(
+            UserRoleRepository::class,
+        );
+
+        $repository
+            ->expects($this->exactly(2))
+            ->method('save');
+
+        $userRepository = $this->createMock(
+            UserRepository::class,
+        );
+
+        $userRepository
+            ->method('getById')
+            ->willReturn($user);
+
+        $roleRepository = $this->createMock(
+            RoleRepository::class,
+        );
+
+        $roleRepository
+            ->method('getById')
+            ->willReturn($role);
+
+        $handler = new SaveUserRoleHandler(
+            $this->createMock(Connection::class),
+            $repository,
+            $userRepository,
+            $roleRepository,
+            $this->createMock(GroupServiceClient::class),
+        );
+
+        $handler->saveAll(
+            $userId,
+            [
+                '660e8400-e29b-41d4-a716-446655440000',
+                '660e8400-e29b-41d4-a716-446655440001',
+            ],
+        );
+    }
 }

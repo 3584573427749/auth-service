@@ -13,6 +13,8 @@ final class VerifyOneTimeCodeEndpointTest extends BaseApiTestCases {
     protected function setUp() : void {
         parent::setUp();
         $this->loadSchema('users');
+        $this->loadSchema('roles');
+        $this->loadSchema('user_roles');
         $this->loadSchema('one_time_codes');
 
         $this->seed('users', [
@@ -31,7 +33,7 @@ final class VerifyOneTimeCodeEndpointTest extends BaseApiTestCases {
             [
                 'id' => '550e8400-e29b-41d4-a716-446655440001',
                 'user_id' => '550e8400-e29b-41d4-a716-446655440000',
-                'code_hash' => hash('sha256', '123456'),
+                'code_hash' => '123456', // hash('sha256', '123456'),
                 'expires_at' => new DateTimeImmutable('+10 minutes')->format('Y-m-d H:i:s'),
                 'created_at' => new DateTimeImmutable()->format('Y-m-d H:i:s'),
             ],

@@ -35,6 +35,5 @@ class UpdateUserAction extends UserAction {
         $dto = $this->handler->handle($userCommand);
 
         return $this->respondWithData($dto, 200);
-
     }
 }

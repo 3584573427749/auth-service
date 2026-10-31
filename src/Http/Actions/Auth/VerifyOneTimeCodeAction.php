@@ -6,7 +6,6 @@ namespace App\Http\Actions\Auth;
 
 use App\Application\Commands\Auth\VerifyOneTimeCodeCommand;
 use App\Application\Handlers\Auth\VerifyOneTimeCodeHandler;
-use App\Domain\DataTransportObjects\Auth\VerifyOneTimeCodeDTO;
 use App\Http\Actions\Action;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Log\LoggerInterface;
@@ -21,11 +20,10 @@ class VerifyOneTimeCodeAction extends Action {
             (array)$this->request->getParsedBody(),
         );
 
-        $user = $this->handler->handle($command, );
+        $otcDTO = $this->handler->handle($command, );
 
-        $response = new VerifyOneTimeCodeDTO('accessCode', 'refreshCode', $user);
         return $this->respondWithData(
-            $response,
+            $otcDTO,
         );
     }
 }
