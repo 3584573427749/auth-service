@@ -19,6 +19,7 @@ final class FirebaseJwtServiceTest extends TestCase {
             str_repeat('secret', 10),
             'auth-service',
             900,
+            900,
         );
 
         $token = $service->createAccessToken(
@@ -40,6 +41,7 @@ final class FirebaseJwtServiceTest extends TestCase {
         $service = new FirebaseJwtService(
             str_repeat('secret', 10),
             'auth-service',
+            900,
             900,
         );
 
@@ -98,12 +100,98 @@ final class FirebaseJwtServiceTest extends TestCase {
             'secret',
             'auth-service',
             900,
+            900,
         );
 
         $this->expectException(\Throwable::class);
 
         $service->verify(
             'this-is-not-a-valid-token',
+        );
+    }
+
+    public function testCreateRefreshTokenReturnsRefreshToken() : void {
+        $service = new FirebaseJwtService(
+            str_repeat('secret', 10),
+            'auth-service',
+            900,
+            3600,
+        );
+
+        $token = $service->createRefreshToken(
+            $this->createUser(),
+        );
+
+        $claims = $service->verify($token);
+
+        self::assertSame(
+            '550e8400-e29b-41d4-a716-446655440000',
+            $claims['sub'],
+        );
+
+        self::assertSame(
+            'refresh',
+            $claims['type'],
+        );
+
+        self::assertSame(
+            'auth-service',
+            $claims['iss'],
+        );
+
+        self::assertArrayHasKey(
+            'iat',
+            $claims,
+        );
+
+        self::assertArrayHasKey(
+            'exp',
+            $claims,
+        );
+    }
+
+    public function testIsAccessTokenReturnsTrueForAccessToken() : void {
+        $service = new FirebaseJwtService(
+            str_repeat('secret', 10),
+            'auth-service',
+            900,
+            3600,
+        );
+
+        $token = $service->createAccessToken(
+            $this->createUser(),
+            [
+                $this->createRole(),
+            ],
+        );
+
+        self::assertTrue(
+            $service->isAccessToken($token),
+        );
+
+        self::assertFalse(
+            $service->isRefreshToken($token),
+        );
+    }
+
+    public function testIsRefreshTokenReturnsTrueForRefreshToken() : void {
+        $service = new FirebaseJwtService(
+            str_repeat('secret', 10),
+            'auth-service',
+            900,
+            3600,
+        );
+
+        $token = $service->createRefreshToken(
+            $this->createUser(),
+        );
+
+        self::assertTrue(
+            $service->isRefreshToken($token),
+        );
+
+        self::assertFalse(
+            $service->isAccessToken($token),
         );
     }
 

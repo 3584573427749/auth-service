@@ -15,16 +15,14 @@ class FirebaseJwtService implements JwtService {
         private string $secret,
         private string $issuer,
         private int $lifetime,
+        private int $refreshLifetime,
     ) {
     }
 
     /**
      * @param array<int, Role> $roles
      */
-    public function createAccessToken(
-        User $user,
-        array $roles,
-    ) : string {
+    public function createAccessToken(User $user, array $roles) : string {
         $issuedAt = time();
 
         $payload = [
@@ -36,12 +34,14 @@ class FirebaseJwtService implements JwtService {
                 static fn (Role $role) : string => $role->getName(),
                 $roles,
             ),
+            'type' => 'access',
             'iss' => $this->issuer,
             'iat' => $issuedAt,
             'exp' => $issuedAt + $this->lifetime,
         ];
 
         echo $this->secret;
+
         return JWT::encode(
             $payload,
             $this->secret,
@@ -52,15 +52,41 @@ class FirebaseJwtService implements JwtService {
     /**
      * @return array<string, mixed>
      */
-    public function verify(
-        string $token,
-    ) : array {
-        return (array) JWT::decode(
+    public function verify(string $token) : array {
+        return (array)JWT::decode(
             $token,
             new Key(
                 $this->secret,
                 'HS256',
             ),
         );
+    }
+
+    public function createRefreshToken(User $user) : string {
+        $issuedAt = time();
+
+        $payload = [
+            'sub' => $user->getId()->toString(),
+            'type' => 'refresh',
+            'iss' => $this->issuer,
+            'iat' => $issuedAt,
+            'exp' => $issuedAt + $this->refreshLifetime,
+        ];
+
+        return JWT::encode(
+            $payload,
+            $this->secret,
+            'HS256',
+        );
+    }
+
+    public function isAccessToken(string $token) : bool {
+        return $this->verify($token)['type'] === 'access';
+    }
+
+    public function isRefreshToken(
+        string $token,
+    ) : bool {
+        return $this->verify($token)['type'] === 'refresh';
     }
 }

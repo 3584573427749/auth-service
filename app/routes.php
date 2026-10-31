@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Actions\Auth\RefreshAccessTokenAction;
 use App\Http\Actions\Auth\RequestOneTimeCodeAction;
 use App\Http\Actions\Auth\VerifyOneTimeCodeAction;
 use App\Http\Actions\Health\ShowHealthAction;
@@ -45,5 +46,6 @@ return function (App $app) : void {
     // Authentication routes
     $app->post('/auth/login', RequestOneTimeCodeAction::class);
     $app->post('/auth/verify', VerifyOneTimeCodeAction::class);
+    $app->post('/auth/refresh', RefreshAccessTokenAction::class);
 
 };

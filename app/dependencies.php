@@ -60,6 +60,7 @@ return function (ContainerBuilder $builder) {
                 $_ENV['JWT_SECRET'],
                 $_ENV['JWT_ISSUER'],
                 (int)$_ENV['JWT_ACCESS_TOKEN_LIFETIME'],
+                (int)$_ENV['JWT_REFRESH_TOKEN_LIFETIME'],
             );
         },
     ]);
