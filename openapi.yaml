@@ -901,7 +901,7 @@ paths:
                     example: 200
 
                   data:
-                    $ref: '#/components/schemas/VerifyOtp'
+                    $ref: '#/components/schemas/AuthenticationDTO'
 
         '400':
           description: Invalid OTP
@@ -1164,7 +1164,7 @@ components:
           maxLength: 6
           example: "123456"
 
-    VerifyOtp:
+    AuthenticationDTO:
       type: object
       required:
         - accessToken

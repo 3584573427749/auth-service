@@ -7,7 +7,7 @@ namespace Tests\Unit\Http\Actions\Auth;
 
 use App\Application\Commands\Auth\VerifyOneTimeCodeCommand;
 use App\Application\Handlers\Auth\VerifyOneTimeCodeHandler;
-use App\Domain\DataTransportObjects\Auth\VerifyOneTimeCodeDTO;
+use App\Domain\DataTransportObjects\Auth\AuthenticationDTO;
 use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\User;
 use App\Domain\ValueObjects\DateTimeValue;
@@ -41,7 +41,7 @@ final class VerifyOneTimeCodeActionTest extends TestCase {
             LoggerInterface::class,
         );
 
-        $otpDto = new VerifyOneTimeCodeDTO(
+        $otpDto = new AuthenticationDTO(
             'access-token',
             'refresh-token',
             UserDTO::fromUser($this->createUser()),

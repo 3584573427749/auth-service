@@ -6,7 +6,7 @@ namespace App\Application\Handlers\Auth;
 
 use App\Application\Commands\Auth\VerifyOneTimeCodeCommand;
 use App\Application\Services\JwtService;
-use App\Domain\DataTransportObjects\Auth\VerifyOneTimeCodeDTO;
+use App\Domain\DataTransportObjects\Auth\AuthenticationDTO;
 use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\Role;
 use App\Domain\Exception\ValidationException;
@@ -24,7 +24,7 @@ class VerifyOneTimeCodeHandler extends OneTimeCodeHandler {
         parent::__construct($userRepository, $oneTimeCodeRepository);
     }
 
-    public function handle(VerifyOneTimeCodeCommand $command) : VerifyOneTimeCodeDTO {
+    public function handle(VerifyOneTimeCodeCommand $command) : AuthenticationDTO {
         $user = $this->userRepository->getByEmail(
             $command->email,
         );
@@ -76,7 +76,7 @@ class VerifyOneTimeCodeHandler extends OneTimeCodeHandler {
             $roles,
         );
 
-        return new VerifyOneTimeCodeDTO(
+        return new AuthenticationDTO(
             $accessToken,
             'refreshtoken',
             UserDTO::fromUser($user)->withRoles(

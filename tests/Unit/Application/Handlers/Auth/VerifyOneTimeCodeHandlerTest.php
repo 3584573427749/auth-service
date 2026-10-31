@@ -7,7 +7,7 @@ namespace Tests\Unit\Application\Handlers\Auth;
 use App\Application\Commands\Auth\VerifyOneTimeCodeCommand;
 use App\Application\Handlers\Auth\VerifyOneTimeCodeHandler;
 use App\Application\Services\JwtService;
-use App\Domain\DataTransportObjects\Auth\VerifyOneTimeCodeDTO;
+use App\Domain\DataTransportObjects\Auth\AuthenticationDTO;
 use App\Domain\Entities\OneTimeCode;
 use App\Domain\Entities\Role;
 use App\Domain\Entities\User;
@@ -103,7 +103,7 @@ final class VerifyOneTimeCodeHandlerTest extends TestCase {
         );
 
         self::assertInstanceOf(
-            VerifyOneTimeCodeDTO::class,
+            AuthenticationDTO::class,
             $result,
         );
     }

@@ -6,7 +6,7 @@ namespace App\Domain\DataTransportObjects\Auth;
 
 use App\Domain\DataTransportObjects\User\UserDTO;
 
-class VerifyOneTimeCodeDTO implements \JsonSerializable {
+class AuthenticationDTO implements \JsonSerializable {
     public function __construct(
         private string $accessToken,
         private string $refreshToken,
