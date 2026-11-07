@@ -21,13 +21,9 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class RefreshAccessTokenActionTest extends TestCase {
     public function testActionReturnsAuthenticationResponse() : void {
-        $logger = $this->createMock(
-            LoggerInterface::class,
-        );
+        $logger = $this->createMock(LoggerInterface::class);
 
-        $handler = $this->createMock(
-            RefreshAccessTokenHandler::class,
-        );
+        $handler = $this->createMock(RefreshAccessTokenHandler::class);
         $userDTO = UserDTO::fromUser(
             new User(
                 new UserId('550e8400-e29b-41d4-a716-446655440000'),
@@ -58,19 +54,14 @@ final class RefreshAccessTokenActionTest extends TestCase {
                 ),
             );
 
-        $action = new RefreshAccessTokenAction(
-            $logger,
-            $handler,
-        );
+        $action = new RefreshAccessTokenAction($logger, $handler, );
 
         $request = (new ServerRequestFactory())
             ->createServerRequest(
                 'POST',
                 '/auth/refresh',
             )
-            ->withParsedBody([
-                'refreshToken' => 'refresh-token',
-            ]);
+            ->withParsedBody(['refreshToken' => 'refresh-token', ]);
 
         $response = (new ResponseFactory())
             ->createResponse();
@@ -81,38 +72,24 @@ final class RefreshAccessTokenActionTest extends TestCase {
             [],
         );
 
-        self::assertInstanceOf(
-            ResponseInterface::class,
-            $result,
-        );
+        self::assertInstanceOf(ResponseInterface::class, $result);
 
         self::assertSame(
             200,
             $result->getStatusCode(),
         );
 
-        $payload = json_decode(
-            (string)$result->getBody(),
-            true,
-        );
+        $payload = json_decode((string)$result->getBody(), true);
 
-        self::assertIsArray(
-            $payload,
-        );
+        self::assertIsArray($payload);
 
-        self::assertSame(
-            'access-token',
-            $payload['data']['accessToken'],
-        );
+        self::assertSame('access-token', $payload['data']['accessToken']);
 
-        self::assertSame(
-            'refresh-token',
-            $payload['data']['refreshToken'],
-        );
+        self::assertArrayNotHasKey('refreshToken', $payload['data']);
 
-        self::assertSame(
-            'test@example.com',
-            $payload['data']['user']['email'],
-        );
+        self::assertSame('test@example.com', $payload['data']['user']['email']);
+        self::assertStringContainsString('refreshToken=', $result->getHeaderLine('Set-Cookie'));
+        self::assertStringContainsString('HttpOnly', $result->getHeaderLine('Set-Cookie'));
+        self::assertStringContainsString('Secure', $result->getHeaderLine('Set-Cookie'));
     }
 }

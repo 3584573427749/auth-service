@@ -14,13 +14,16 @@ class AuthenticationDTO implements \JsonSerializable {
     ) {
     }
 
+    public function getRefreshToken() : string {
+        return $this->refreshToken;
+    }
+
     /**
      * @return array<string ,mixed>
      */
     public function jsonSerialize() : array {
         return [
             'accessToken' => $this->accessToken,
-            'refreshToken' => $this->refreshToken,
             'user' => $this->user,
         ];
     }

@@ -25,31 +25,21 @@ class VerifyOneTimeCodeHandler extends OneTimeCodeHandler {
     }
 
     public function handle(VerifyOneTimeCodeCommand $command) : AuthenticationDTO {
-        $user = $this->userRepository->getByEmail(
-            $command->email,
-        );
+        $user = $this->userRepository->getByEmail($command->email, );
 
         if ($user === null) {
-            throw new ValidationException(
-                'Ogiltig kod',
-            );
+            throw new ValidationException('Ogiltig kod', );
         }
 
         $oneTimeCode = $this->oneTimeCodeRepository
-            ->getActiveCodeByUserId(
-                $user->getId(),
-            );
+            ->getActiveCodeByUserId($user->getId(), );
 
         if ($oneTimeCode->isConsumed()) {
-            throw new ValidationException(
-                'Koden har redan använts',
-            );
+            throw new ValidationException('Koden har redan använts', );
         }
 
         if ($oneTimeCode->isExpired()) {
-            throw new ValidationException(
-                'Koden har gått ut',
-            );
+            throw new ValidationException('Koden har gått ut', );
         }
 
         /*        $hash = hash(
@@ -60,9 +50,7 @@ class VerifyOneTimeCodeHandler extends OneTimeCodeHandler {
         $hash = $command->code;
 
         if ($hash !== $oneTimeCode->getCodeHash()) {
-            throw new ValidationException(
-                'Ogiltig kod',
-            );
+            throw new ValidationException('Ogiltig kod', );
         }
 
         $oneTimeCode->consume();

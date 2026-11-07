@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Actions;
 
+use App\Domain\DataTransportObjects\Auth\AuthenticationDTO;
 use App\Domain\Exception\DomainRecordNotFoundException;
+use Dflydev\FigCookies\FigResponseCookies;
+use Dflydev\FigCookies\Modifier\SameSite;
+use Dflydev\FigCookies\SetCookie;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
@@ -76,5 +80,19 @@ abstract class Action {
         return $this->response
             ->withHeader('Content-Type', 'application/json')
             ->withStatus($payload->getStatusCode());
+    }
+
+    protected function setRefreshTokenCookie(Response $response, AuthenticationDTO $dto) : Response {
+        $response = FigResponseCookies::set(
+            $response,
+            SetCookie::create('refreshToken')
+                ->withValue($dto->getRefreshToken())
+                ->withHttpOnly(true)
+                ->withSecure(true)
+                ->withSameSite(SameSite::strict())
+                ->withPath('/auth/refresh'),
+        );
+
+        return $response;
     }
 }

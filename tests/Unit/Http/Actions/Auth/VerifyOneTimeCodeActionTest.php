@@ -116,5 +116,12 @@ final class VerifyOneTimeCodeActionTest extends TestCase {
             'test@example.com',
             $payload['data']['user']['email'],
         );
+        self::assertArrayNotHasKey('refreshToken', $payload['data']);
+
+        self::assertSame('test@example.com', $payload['data']['user']['email']);
+        self::assertStringContainsString('refreshToken=', $result->getHeaderLine('Set-Cookie'));
+        self::assertStringContainsString('HttpOnly', $result->getHeaderLine('Set-Cookie'));
+        self::assertStringContainsString('Secure', $result->getHeaderLine('Set-Cookie'));
+
     }
 }

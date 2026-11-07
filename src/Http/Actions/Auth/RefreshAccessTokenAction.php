@@ -18,8 +18,10 @@ class RefreshAccessTokenAction extends Action {
     protected function action() : Response {
         $command = RefreshAccessTokenCommand::fromRequest((array)$this->request->getParsedBody());
 
-        $response = $this->handler->handle($command);
+        $dto = $this->handler->handle($command);
 
-        return $this->respondWithData($response);
+        $response = $this->respondWithData($dto);
+
+        return $this->setRefreshTokenCookie($response, $dto);
     }
 }

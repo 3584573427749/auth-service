@@ -20,10 +20,10 @@ class VerifyOneTimeCodeAction extends Action {
             (array)$this->request->getParsedBody(),
         );
 
-        $otcDTO = $this->handler->handle($command, );
+        $dto = $this->handler->handle($command);
 
-        return $this->respondWithData(
-            $otcDTO,
-        );
+        $response = $this->respondWithData($dto);
+
+        return $this->setRefreshTokenCookie($response, $dto);
     }
 }
