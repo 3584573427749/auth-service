@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Actions\Auth\LogoutAction;
 use App\Http\Actions\Auth\RefreshAccessTokenAction;
 use App\Http\Actions\Auth\RequestOneTimeCodeAction;
 use App\Http\Actions\Auth\VerifyOneTimeCodeAction;
@@ -47,5 +48,6 @@ return function (App $app) : void {
     $app->post('/auth/login', RequestOneTimeCodeAction::class);
     $app->post('/auth/verify', VerifyOneTimeCodeAction::class);
     $app->post('/auth/refresh', RefreshAccessTokenAction::class);
+    $app->delete('/auth/refresh', LogoutAction::class);
 
 };
