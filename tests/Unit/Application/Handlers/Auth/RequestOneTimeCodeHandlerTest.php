@@ -6,6 +6,7 @@ namespace Application\Handlers\Auth;
 
 use App\Application\Commands\Auth\RequestOneTimeCodeCommand;
 use App\Application\Handlers\Auth\RequestOneTimeCodeHandler;
+use App\Application\Services\MailService;
 use App\Domain\DataTransportObjects\Auth\LoginDTO;
 use App\Domain\Entities\OneTimeCode;
 use App\Domain\Entities\User;
@@ -40,10 +41,18 @@ final class RequestOneTimeCodeHandlerTest extends TestCase {
             ->expects($this->never())
             ->method('save');
 
+        $mailService = $this->createMock(
+            MailService::class,
+        );
+
+        $mailService
+            ->expects($this->never())
+            ->method('sendOneTimeCode');
 
         $handler = new RequestOneTimeCodeHandler(
             $userRepository,
             $repository,
+            $mailService,
         );
 
         $response = $handler->handle($command);
@@ -84,9 +93,18 @@ final class RequestOneTimeCodeHandlerTest extends TestCase {
                 ),
             );
 
+        $mailService = $this->createMock(
+            MailService::class,
+        );
+
+        $mailService
+            ->expects($this->once())
+            ->method('sendOneTimeCode');
+
         $handler = new RequestOneTimeCodeHandler(
             $userRepository,
             $repository,
+            $mailService,
         );
 
         $handler->handle(
@@ -147,7 +165,15 @@ final class RequestOneTimeCodeHandlerTest extends TestCase {
                 ),
             );
 
-        $handler = new RequestOneTimeCodeHandler($userRepository, $repository, );
+        $mailService = $this->createMock(
+            MailService::class,
+        );
+
+        $mailService
+            ->expects($this->once())
+            ->method('sendOneTimeCode');
+
+        $handler = new RequestOneTimeCodeHandler($userRepository, $repository, $mailService);
 
         $handler->handle(new RequestOneTimeCodeCommand('test@example.com'));
     }
@@ -176,9 +202,18 @@ final class RequestOneTimeCodeHandlerTest extends TestCase {
                 ),
             );
 
+        $mailService = $this->createMock(
+            MailService::class,
+        );
+
+        $mailService
+            ->expects($this->never())
+            ->method('sendOneTimeCode');
+
         $handler = new RequestOneTimeCodeHandler(
             $userRepository,
             $repository,
+            $mailService,
         );
 
         $this->expectException(

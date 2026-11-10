@@ -7,6 +7,7 @@ namespace Tests\Unit\Application\Handlers\Auth;
 use App\Application\Commands\Auth\VerifyOneTimeCodeCommand;
 use App\Application\Handlers\Auth\VerifyOneTimeCodeHandler;
 use App\Application\Services\JwtService;
+use App\Application\Services\MailService;
 use App\Domain\DataTransportObjects\Auth\AuthenticationDTO;
 use App\Domain\Entities\OneTimeCode;
 use App\Domain\Entities\Role;
@@ -88,9 +89,14 @@ final class VerifyOneTimeCodeHandlerTest extends TestCase {
             ->with($user, $roles)
             ->willReturn('jwt-token');
 
+        $mailService = $this->createMock(
+            MailService::class,
+        );
+
         $handler = new VerifyOneTimeCodeHandler(
             $userRepository,
             $oneTimeCodeRepository,
+            $mailService,
             $userRoleRepository,
             $jwtService,
         );
@@ -136,9 +142,14 @@ final class VerifyOneTimeCodeHandlerTest extends TestCase {
             ->method('getActiveCodeByUserId')
             ->willReturn($oneTimeCode);
 
+        $mailService = $this->createMock(
+            MailService::class,
+        );
+
         $handler = new VerifyOneTimeCodeHandler(
             $userRepository,
             $oneTimeCodeRepository,
+            $mailService,
             $this->createMock(UserRoleRepository::class),
             $this->createMock(JwtService::class),
         );
@@ -183,9 +194,14 @@ final class VerifyOneTimeCodeHandlerTest extends TestCase {
             ->method('getActiveCodeByUserId')
             ->willReturn($oneTimeCode);
 
+        $mailService = $this->createMock(
+            MailService::class,
+        );
+
         $handler = new VerifyOneTimeCodeHandler(
             $userRepository,
             $oneTimeCodeRepository,
+            $mailService,
             $this->createMock(UserRoleRepository::class),
             $this->createMock(JwtService::class),
         );
@@ -230,9 +246,14 @@ final class VerifyOneTimeCodeHandlerTest extends TestCase {
             ->method('getActiveCodeByUserId')
             ->willReturn($oneTimeCode);
 
+        $mailService = $this->createMock(
+            MailService::class,
+        );
+
         $handler = new VerifyOneTimeCodeHandler(
             $userRepository,
             $oneTimeCodeRepository,
+            $mailService,
             $this->createMock(UserRoleRepository::class),
             $this->createMock(JwtService::class),
         );
@@ -277,9 +298,14 @@ final class VerifyOneTimeCodeHandlerTest extends TestCase {
             ->expects($this->never())
             ->method('getActiveCodeByUserId');
 
+        $mailService = $this->createMock(
+            MailService::class,
+        );
+
         $handler = new VerifyOneTimeCodeHandler(
             $userRepository,
             $oneTimeCodeRepository,
+            $mailService,
             $this->createMock(UserRoleRepository::class),
             $this->createMock(JwtService::class),
         );

@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace App\Application\Handlers\Auth;
 
+use App\Application\Services\MailService;
 use App\Domain\Repositories\OneTimeCodeRepository;
 use App\Domain\Repositories\UserRepository;
 
 abstract class OneTimeCodeHandler {
-    public function __construct(protected UserRepository $userRepository, protected OneTimeCodeRepository $oneTimeCodeRepository) {
+    public function __construct(
+        protected UserRepository $userRepository,
+        protected OneTimeCodeRepository $oneTimeCodeRepository,
+        protected MailService $mailService,
+    ) {
 
     }
 }

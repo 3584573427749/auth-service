@@ -29,7 +29,7 @@ class RequestOneTimeCodeHandler extends OneTimeCodeHandler {
         $oneTimeCode = new OneTimeCode(
             new OneTimeCodeId(),
             $user->getId(),
-            (string) $otp, //hash('sha256', $otp), // Annars kan vi inte veta vilket lösenordet är!
+            (string) hash('sha256', $otp),
             new DateTimeValue('+10 minutes'),
             null,
             new DateTimeValue('now'),
@@ -37,11 +37,10 @@ class RequestOneTimeCodeHandler extends OneTimeCodeHandler {
 
         $this->oneTimeCodeRepository->save($oneTimeCode);
 
-        // TODO:
-        // $this->mailService->sendOtp(
-        //     $user->getEmail(),
-        //     $otp
-        // );
+        $this->mailService->sendOneTimeCode(
+            $user->getEmail()->toString(),
+            $otp,
+        );
 
         return LoginDTO::success();
     }

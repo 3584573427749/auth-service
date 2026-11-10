@@ -160,4 +160,35 @@ final class RefreshAccessTokenHandlerTest extends TestCase {
             null,
         );
     }
+
+    public function testHandleThrowsValidationExceptionForExpiredToken() : void {
+        $jwtService = $this->createMock(
+            JwtService::class,
+        );
+
+        $jwtService
+            ->expects($this->once())
+            ->method('verify')
+            ->willThrowException(
+                new \Firebase\JWT\ExpiredException(
+                    'Expired token',
+                ),
+            );
+
+        $handler = new RefreshAccessTokenHandler(
+            $jwtService,
+            $this->createMock(UserRepository::class),
+            $this->createMock(UserRoleRepository::class),
+        );
+
+        $this->expectException(
+            ValidationException::class,
+        );
+
+        $handler->handle(
+            new RefreshAccessTokenCommand(
+                'expired-token',
+            ),
+        );
+    }
 }

@@ -6,7 +6,9 @@ use App\Application\Clients\GroupService\GroupServiceClient;
 use App\Application\ErrorHandler\ErrorHandler;
 use App\Application\Middleware\ErrorMiddleware;
 use App\Application\Services\JwtService;
+use App\Application\Services\MailService;
 use App\Http\Clients\GroupService\HttpGroupServiceClient;
+use App\Infrastructure\Services\AppLogMailService;
 use App\Infrastructure\Services\FirebaseJwtService;
 use DI\ContainerBuilder;
 use Doctrine\DBAL\Connection;
@@ -61,6 +63,14 @@ return function (ContainerBuilder $builder) {
                 $_ENV['JWT_ISSUER'],
                 (int)$_ENV['JWT_ACCESS_TOKEN_LIFETIME'],
                 (int)$_ENV['JWT_REFRESH_TOKEN_LIFETIME'],
+            );
+        },
+        // Mailservice
+        MailService::class => static function (
+            ContainerInterface $c,
+        ) : MailService {
+            return new AppLogMailService(
+                $c->get(LoggerInterface::class),
             );
         },
     ]);

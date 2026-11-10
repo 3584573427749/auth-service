@@ -6,6 +6,7 @@ namespace App\Application\Handlers\Auth;
 
 use App\Application\Commands\Auth\VerifyOneTimeCodeCommand;
 use App\Application\Services\JwtService;
+use App\Application\Services\MailService;
 use App\Domain\DataTransportObjects\Auth\AuthenticationDTO;
 use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\Role;
@@ -18,10 +19,11 @@ class VerifyOneTimeCodeHandler extends OneTimeCodeHandler {
     public function __construct(
         UserRepository $userRepository,
         OneTimeCodeRepository $oneTimeCodeRepository,
+        MailService $mailService,
         private UserRoleRepository $userRoleRepository,
         private JwtService $jwtService,
     ) {
-        parent::__construct($userRepository, $oneTimeCodeRepository);
+        parent::__construct($userRepository, $oneTimeCodeRepository, $mailService);
     }
 
     public function handle(VerifyOneTimeCodeCommand $command) : AuthenticationDTO {
