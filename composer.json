@@ -18,8 +18,8 @@
     "slim/psr7": "^1.8",
     "doctrine/dbal": "^4.4",
     "robmorgan/phinx": "^0.16",
-    "monolog/monolog": "^3.10",
-    "vlucas/phpdotenv": "^5.8",
+    "monolog/monolog": "^3.12",
+    "vlucas/phpdotenv": "^5.7",
     "ramsey/uuid": "^4.9",
     "guzzlehttp/guzzle": "^8.3"
   },
