@@ -7,4 +7,4 @@ on:
 
 jobs:
   openapi:
-    uses: 3584573427749/.github/.github/workflows/openapi-check.yml@main
+    uses: simning-ax/.github/.github/workflows/openapi-check.yml@main
