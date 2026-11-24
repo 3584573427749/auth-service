@@ -13,12 +13,11 @@ use App\Domain\Entities\UserRole;
 use App\Domain\Exception\GroupServiceUnavailableException;
 use App\Domain\Repositories\RoleRepository;
 use App\Domain\Repositories\UserRepository;
-use App\Domain\Repositories\UserRoleRepository;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\RoleId;
 use App\Domain\ValueObjects\UserId;
-use Doctrine\DBAL\Connection;
+use App\Infrastructure\Database\DbalUserRoleRepository;
 use PHPUnit\Framework\TestCase;
 
 final class SaveUserRoleHandlerTest extends TestCase {
@@ -29,7 +28,7 @@ final class SaveUserRoleHandlerTest extends TestCase {
             'roleId' => '660e8400-e29b-41d4-a716-446655440000', ],
         );
 
-        $repository = $this->createMock(UserRoleRepository::class);
+        $repository = $this->createMock(DbalUserRoleRepository::class);
 
         $repository
             ->expects($this->once())
@@ -52,7 +51,6 @@ final class SaveUserRoleHandlerTest extends TestCase {
         $groupServiceClient = $this->createMock(GroupServiceClient::class);
 
         $handler = new SaveUserRoleHandler(
-            $this->createMock(Connection::class),
             $repository,
             $userRepository,
             $roleRepository,
@@ -68,17 +66,16 @@ final class SaveUserRoleHandlerTest extends TestCase {
             'roleId' => '660e8400-e29b-41d4-a716-446655440000',
         ]);
 
-        $connection = $this->createMock(Connection::class);
+        $repository = $this->createMock(DbalUserRoleRepository::class);
 
-        $connection
+        $repository
             ->expects($this->once())
             ->method('beginTransaction');
 
-        $connection
+        $repository
             ->expects($this->once())
             ->method('commit');
 
-        $repository = $this->createMock(UserRoleRepository::class);
 
         $repository
             ->expects($this->once())
@@ -130,7 +127,6 @@ final class SaveUserRoleHandlerTest extends TestCase {
             );
 
         $handler = new SaveUserRoleHandler(
-            $connection,
             $repository,
             $userRepository,
             $roleRepository,
@@ -146,21 +142,20 @@ final class SaveUserRoleHandlerTest extends TestCase {
             'roleId' => '660e8400-e29b-41d4-a716-446655440000',
         ]);
 
-        $connection = $this->createMock(Connection::class);
+        $repository = $this->createMock(DbalUserRoleRepository::class);
 
-        $connection
+        $repository
             ->expects($this->once())
             ->method('beginTransaction');
 
-        $connection
+        $repository
             ->expects($this->never())
             ->method('commit');
 
-        $connection
+        $repository
             ->expects($this->once())
             ->method('rollBack');
 
-        $repository = $this->createMock(UserRoleRepository::class);
 
         $repository
             ->expects($this->once())
@@ -211,7 +206,6 @@ final class SaveUserRoleHandlerTest extends TestCase {
             );
 
         $handler = new SaveUserRoleHandler(
-            $connection,
             $repository,
             $userRepository,
             $roleRepository,

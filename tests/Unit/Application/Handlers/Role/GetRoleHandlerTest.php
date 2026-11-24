@@ -40,11 +40,7 @@ final class GetRoleHandlerTest extends TestCase {
             ->method('getAll')
             ->willReturn([$role1, $role2]);
 
-        $handler = new class($repository) extends GetRoleHandler {
-            public function __construct(RoleRepository $repository) {
-                $this->repository = $repository;
-            }
-        };
+        $handler = new GetRoleHandler($repository);
 
         $result = $handler->getAll();
 
@@ -62,11 +58,7 @@ final class GetRoleHandlerTest extends TestCase {
             ->method('getAll')
             ->willReturn([]);
 
-        $handler = new class($repository) extends GetRoleHandler {
-            public function __construct(RoleRepository $repository) {
-                $this->repository = $repository;
-            }
-        };
+        $handler = new GetRoleHandler($repository);
 
         $result = $handler->getAll();
 
@@ -90,11 +82,7 @@ final class GetRoleHandlerTest extends TestCase {
             ->method('getById')
             ->willReturn($role);
 
-        $handler = new class($repository) extends GetRoleHandler {
-            public function __construct(RoleRepository $repository) {
-                $this->repository = $repository;
-            }
-        };
+        $handler = new GetRoleHandler($repository);
 
         $result = $handler->getById(
             new RoleId('550e8400-e29b-41d4-a716-446655440000'),
@@ -111,11 +99,7 @@ final class GetRoleHandlerTest extends TestCase {
             ->method('getById')
             ->willThrowException(new NotFoundException('Role not found'));
 
-        $handler = new class($repository) extends GetRoleHandler {
-            public function __construct(RoleRepository $repo) {
-                $this->repository = $repo;
-            }
-        };
+        $handler = new GetRoleHandler($repository);
 
         $this->expectException(NotFoundException::class);
 

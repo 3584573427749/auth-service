@@ -49,12 +49,7 @@ final class GetUserHandlerTest extends TestCase {
             ->method('getRoles')
             ->willReturn([]);
 
-        $handler = new class($repository, $userRoleRepository) extends GetUserHandler {
-            public function __construct(UserRepository $userRepository, UserRoleRepository $userRoleRepository) {
-                $this->repository = $userRepository;
-                $this->userRoleRepository = $userRoleRepository;
-            }
-        };
+        $handler = new GetUserHandler($repository, $userRoleRepository);
 
         $result = $handler->getAll();
 
@@ -67,17 +62,14 @@ final class GetUserHandlerTest extends TestCase {
 
     public function testGetAllReturnsEmptyArrayWhenNoUsers() : void {
         $repository = $this->createMock(UserRepository::class);
+        $userRoleRepository = $this->createMock(UserRoleRepository::class);
 
         $repository
             ->expects($this->once())
             ->method('getAll')
             ->willReturn([]);
 
-        $handler = new class($repository) extends GetUserHandler {
-            public function __construct(UserRepository $userRepository) {
-                $this->repository = $userRepository;
-            }
-        };
+        $handler = new GetUserHandler($repository, $userRoleRepository) ;
 
         $result = $handler->getAll();
 
@@ -109,12 +101,7 @@ final class GetUserHandlerTest extends TestCase {
             ->with(new UserId('550e8400-e29b-41d4-a716-446655440000'))
             ->willReturn([]);
 
-        $handler = new class($repository, $userRoleRepository) extends GetUserHandler {
-            public function __construct(UserRepository $repo, UserRoleRepository $userRoleRepo) {
-                $this->repository = $repo;
-                $this->userRoleRepository = $userRoleRepo;
-            }
-        };
+        $handler = new GetUserHandler($repository, $userRoleRepository);
 
         $result = $handler->getById(
             new UserId('550e8400-e29b-41d4-a716-446655440000'),
@@ -139,12 +126,7 @@ final class GetUserHandlerTest extends TestCase {
 
         $userRoleRepository = $this->createMock(UserRoleRepository::class);
 
-        $handler = new class($repository, $userRoleRepository) extends GetUserHandler {
-            public function __construct(UserRepository $repo, UserRoleRepository $userRoleRepo) {
-                $this->repository = $repo;
-                $this->userRoleRepository = $userRoleRepo;
-            }
-        };
+        $handler = new GetUserHandler($repository, $userRoleRepository);
 
         $this->expectException(NotFoundException::class);
 

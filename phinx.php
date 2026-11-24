@@ -18,7 +18,7 @@ return [
             'host' => $_ENV['DB_HOST'],
             'name' => $_ENV['DB_NAME'],
             'user' => $_ENV['DB_USER'],
-            'pass' => $_ENV['DB_PASS'],
+            'pass' => $_ENV['DB_PASSWORD'],
             'port' => (int)$_ENV['DB_PORT'] ?: 3307,
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',

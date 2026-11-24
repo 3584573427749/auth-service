@@ -13,15 +13,14 @@ use App\Domain\Repositories\UserRepository;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\UserId;
-use Doctrine\DBAL\Connection;
 
 class CreateUserHandler extends UserHandler {
-    public function __construct(Connection $db, UserRepository $repository, private SaveUserRoleHandler $saveUserRoleHandler) {
-        parent::__construct($db, $repository);
+    public function __construct(UserRepository $repository, private SaveUserRoleHandler $saveUserRoleHandler) {
+        parent::__construct($repository);
     }
 
     public function handle(CreateUserCommand $command) : UserDTO {
-        $this->db->beginTransaction();
+        $this->repository->beginTransaction();
         try {
             if ($this->repository->existsByEmail($command->email)) {
                 throw new UserAlreadyExistsException('Användaren finns redan');
@@ -41,10 +40,10 @@ class CreateUserHandler extends UserHandler {
 
             $this->saveUserRoleHandler->saveAll($user->getId(), $command->roles);
 
-            $this->db->commit();
+            $this->repository->commit();
 
         } catch (\Throwable $e) {
-            $this->db->rollBack();
+            $this->repository->rollBack();
             throw $e;
         }
         $userDto = UserDTO::fromUser($user);

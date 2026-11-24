@@ -9,14 +9,12 @@ use App\Application\Handlers\Role\UpdateRoleHandler;
 use App\Domain\DataTransportObjects\Role\RoleDTO;
 use App\Domain\Entities\Role;
 use App\Domain\Exception\RoleAlreadyExistsException;
-use App\Domain\Repositories\RoleRepository;
-use Doctrine\DBAL\Connection;
+use App\Infrastructure\Database\DbalRoleRepository;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateRoleHandlerTest extends TestCase {
     public function testHandleUpdateRoleSuccessfully() : void {
-        $db = $this->createMock(Connection::class);
-        $repository = $this->createMock(RoleRepository::class);
+        $repository = $this->createMock(DbalRoleRepository::class);
 
         $command = UpdateRoleCommand::fromRequest(
             [
@@ -36,10 +34,6 @@ final class UpdateRoleHandlerTest extends TestCase {
             'created_at' => '2026-01-01 10:00:00',
         ]);
 
-        $db->expects(self::once())->method('beginTransaction');
-        $db->expects(self::once())->method('commit');
-        $db->expects(self::never())->method('rollBack');
-
         $repository
             ->expects(self::once())
             ->method('getById')
@@ -53,12 +47,7 @@ final class UpdateRoleHandlerTest extends TestCase {
                 return $role->getName() === 'Test role';
             }));
 
-        $handler = new class($db, $repository) extends UpdateRoleHandler {
-            public function __construct(Connection $db, RoleRepository $repository) {
-                $this->db = $db;
-                $this->repository = $repository;
-            }
-        };
+        $handler = new UpdateRoleHandler($repository);
 
         $result = $handler->handle($command);
 
@@ -71,8 +60,7 @@ final class UpdateRoleHandlerTest extends TestCase {
     }
 
     public function testHandleThrowsExceptionIfRoleNameExists() : void {
-        $db = $this->createMock(Connection::class);
-        $repository = $this->createMock(RoleRepository::class);
+        $repository = $this->createMock(DbalRoleRepository::class);
 
         $command = UpdateRoleCommand::fromRequest(
             [
@@ -83,22 +71,13 @@ final class UpdateRoleHandlerTest extends TestCase {
             ],
         );
 
-        $db->expects(self::once())->method('beginTransaction');
-        $db->expects(self::never())->method('commit');
-        $db->expects(self::once())->method('rollBack');
-
         $repository
             ->expects(self::once())
             ->method('getById')
             ->with('550e8400-e29b-41d4-a716-446655440000')
             ->willThrowException(new RoleAlreadyExistsException('Test role'));
 
-        $handler = new class($db, $repository) extends UpdateRoleHandler {
-            public function __construct(Connection $db, RoleRepository $repository) {
-                $this->db = $db;
-                $this->repository = $repository;
-            }
-        };
+        $handler = new UpdateRoleHandler($repository);
 
         self::expectException(RoleAlreadyExistsException::class);
 
@@ -106,8 +85,7 @@ final class UpdateRoleHandlerTest extends TestCase {
     }
 
     public function testHandleRollsBackOnSaveError() : void {
-        $db = $this->createMock(Connection::class);
-        $repository = $this->createMock(RoleRepository::class);
+        $repository = $this->createMock(DbalRoleRepository::class);
 
         $command = UpdateRoleCommand::fromRequest(
             [
@@ -127,10 +105,6 @@ final class UpdateRoleHandlerTest extends TestCase {
             'created_at' => '2026-01-01 10:00:00',
         ]);
 
-        $db->expects(self::once())->method('beginTransaction');
-        $db->expects(self::never())->method('commit');
-        $db->expects(self::once())->method('rollBack');
-
         $repository
             ->expects(self::once())
             ->method('getById')
@@ -142,12 +116,7 @@ final class UpdateRoleHandlerTest extends TestCase {
             ->method('save')
             ->willThrowException(new \RuntimeException('DB error'));
 
-        $handler = new class($db, $repository) extends UpdateRoleHandler {
-            public function __construct(Connection $db, RoleRepository $repository) {
-                $this->db = $db;
-                $this->repository = $repository;
-            }
-        };
+        $handler = new UpdateRoleHandler($repository);
 
         self::expectException(\RuntimeException::class);
 

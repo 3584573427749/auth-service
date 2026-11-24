@@ -24,12 +24,7 @@ final class DeleteRoleHandlerTest extends TestCase {
             ->method('delete')
             ->with($roleId);
 
-        $handler = new class($db, $repository) extends DeleteRoleHandler {
-            public function __construct(Connection $db, RoleRepository $roleRepository) {
-                $this->db = $db;
-                $this->repository = $roleRepository;
-            }
-        };
+        $handler = new DeleteRoleHandler($repository);
 
         $handler->handle($roleId);
     }
