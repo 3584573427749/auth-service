@@ -24,8 +24,8 @@ final class SaveUserRoleHandlerTest extends TestCase {
     public function testHandleCreatesAndSavesUserRole() : void {
         $command = UserRoleCommand::fromRequest(
             [
-            'userId' => '550e8400-e29b-41d4-a716-446655440000',
-            'roleId' => '660e8400-e29b-41d4-a716-446655440000', ],
+                'userId' => '550e8400-e29b-41d4-a716-446655440000',
+                'roleId' => '660e8400-e29b-41d4-a716-446655440000', ],
         );
 
         $repository = $this->createMock(DbalUserRoleRepository::class);
@@ -75,7 +75,6 @@ final class SaveUserRoleHandlerTest extends TestCase {
         $repository
             ->expects($this->once())
             ->method('commit');
-
 
         $repository
             ->expects($this->once())
@@ -156,7 +155,6 @@ final class SaveUserRoleHandlerTest extends TestCase {
             ->expects($this->once())
             ->method('rollBack');
 
-
         $repository
             ->expects($this->once())
             ->method('save');
@@ -217,5 +215,32 @@ final class SaveUserRoleHandlerTest extends TestCase {
         );
 
         $handler->handle($command);
+    }
+
+    public function testSaveAllCreatesOneUserRolePerRoleId() : void {
+        $repository = $this->createMock(DbalUserRoleRepository::class);
+
+        $repository
+            ->expects(self::exactly(2))
+            ->method('save');
+
+        $userRepository = $this->createMock(UserRepository::class);
+        $roleRepository = $this->createMock(RoleRepository::class);
+        $groupServiceClient = $this->createMock(GroupServiceClient::class);
+
+        $handler = new SaveUserRoleHandler(
+            $repository,
+            $userRepository,
+            $roleRepository,
+            $groupServiceClient,
+        );
+
+        $handler->saveAll(
+            new UserId('550e8400-e29b-41d4-a716-446655440000'),
+            [
+                '660e8400-e29b-41d4-a716-446655440000',
+                '660e8400-e29b-41d4-a716-446655440001',
+            ],
+        );
     }
 }

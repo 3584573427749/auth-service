@@ -89,6 +89,79 @@ final class UpdateUserHandlerTest extends TestCase {
         self::assertSame('Name', $json['lastName']);
     }
 
+    public function testHandleUpdateUserWithMultipleRolesSuccessfully() : void {
+        $repository = $this->createMock(DbalUserRepository::class);
+
+        $command = UpdateUserCommand::fromRequest(
+            [
+                'id' => '550e8400-e29b-41d4-a716-446655440000',
+                'email' => 'test@example.com',
+                'firstName' => 'User',
+                'lastName' => 'Name',
+                'roles' => ['550e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440001'],
+            ],
+        );
+
+        $user = User::fromDBRow([
+            'id' => '550e8400-e29b-41d4-a716-446655440000',
+            'email' => 'test@example.com',
+            'first_name' => 'User',
+            'last_name' => 'Name',
+            'created_at' => '2026-01-01 10:00:00',
+        ]);
+
+        $repository->expects(self::once())->method('beginTransaction');
+        $repository->expects(self::once())->method('commit');
+        $repository->expects(self::never())->method('rollBack');
+
+        $repository
+            ->expects(self::once())
+            ->method('emailExistsWithOtherUser')
+            ->with('test@example.com', '550e8400-e29b-41d4-a716-446655440000')
+            ->willReturn(false);
+
+        $repository
+            ->expects(self::once())
+            ->method('getById')
+            ->with('550e8400-e29b-41d4-a716-446655440000')
+            ->willReturn($user);
+
+        $repository
+            ->expects(self::once())
+            ->method('save')
+            ->with(self::callback(function ($user) {
+                return $user->getEmail()->toString() === 'test@example.com';
+            }));
+
+        $userRoleRepository = $this->createMock(UserRoleRepository::class);
+        $userRoleRepository
+            ->expects(self::once())
+            ->method('getRoles')
+            ->willReturn([]);
+
+        $saveUserRoleHandler = $this->createMock(SaveUserRoleHandler::class);
+        $saveUserRoleHandler
+            ->expects(self::once())
+            ->method('saveAll');
+
+        $deleteUserRoleHandler = $this->createMock(DeleteUserRoleHandler::class);
+        $deleteUserRoleHandler
+            ->expects(self::once())
+            ->method('deleteAll');
+
+        $handler = new UpdateUserHandler($repository, $userRoleRepository, $saveUserRoleHandler, $deleteUserRoleHandler, );
+
+        $result = $handler->handle($command);
+
+        self::assertInstanceOf(UserDTO::class, $result);
+
+        $json = $result->jsonSerialize();
+
+        self::assertSame('test@example.com', $json['email']);
+        self::assertSame('User', $json['firstName']);
+        self::assertSame('Name', $json['lastName']);
+    }
+
     public function testHandleThrowsExceptionIfUserExists() : void {
         $repository = $this->createMock(DbalUserRepository::class);
 
