@@ -13,7 +13,7 @@ use App\Domain\ValueObjects\RoleId;
 
 class CreateRoleHandler extends RoleHandler {
     public function handle(CreateRoleCommand $command) : RoleDTO {
-        $this->db->beginTransaction();
+        $this->repository->beginTransaction();
         try {
             $role = new Role(
                 new RoleId(),
@@ -26,13 +26,13 @@ class CreateRoleHandler extends RoleHandler {
 
             $this->repository->save($role);
 
-            $this->db->commit();
+            $this->repository->commit();
 
         } catch (RoleAlreadyExistsException $e) {
-            $this->db->rollBack();
+            $this->repository->rollBack();
             throw $e;
         } catch (\Throwable $e) {
-            $this->db->rollBack();
+            $this->repository->rollBack();
             throw $e;
         }
 

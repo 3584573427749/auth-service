@@ -16,7 +16,6 @@ use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
 use App\Domain\ValueObjects\RoleId;
 use App\Domain\ValueObjects\UserId;
-use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\TestCase;
 
 final class GetUserRoleHandlerTest extends TestCase {
@@ -45,7 +44,6 @@ final class GetUserRoleHandlerTest extends TestCase {
         $roleRepository = $this->createMock(RoleRepository::class);
 
         $handler = new GetUserRolesHandler(
-            $this->createMock(Connection::class),
             $repository,
             $userRepository,
             $roleRepository,
@@ -71,7 +69,6 @@ final class GetUserRoleHandlerTest extends TestCase {
         $roleRepository = $this->createMock(RoleRepository::class);
 
         $handler = new GetUserRolesHandler(
-            $this->createMock(Connection::class),
             $repository,
             $userRepository,
             $roleRepository,
@@ -111,7 +108,6 @@ final class GetUserRoleHandlerTest extends TestCase {
         $roleRepository = $this->createMock(RoleRepository::class);
 
         $handler = new GetUserRolesHandler(
-            $this->createMock(Connection::class),
             $repository,
             $userRepository,
             $roleRepository,
@@ -137,7 +133,6 @@ final class GetUserRoleHandlerTest extends TestCase {
         $roleRepository = $this->createMock(RoleRepository::class);
 
         $handler = new GetUserRolesHandler(
-            $this->createMock(Connection::class),
             $repository,
             $userRepository,
             $roleRepository,

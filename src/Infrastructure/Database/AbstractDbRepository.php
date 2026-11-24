@@ -7,30 +7,27 @@ namespace App\Infrastructure\Database;
 use Doctrine\DBAL\Connection;
 
 abstract class AbstractDbRepository {
-    protected Connection $connection;
-
-    public function __construct(Connection $connection) {
-        $this->connection = $connection;
+    public function __construct(protected Connection $connection) {
     }
 
     /**
      * Starta transaktion
      */
-    protected function beginTransaction() : void {
+    public function beginTransaction() : void {
         $this->connection->beginTransaction();
     }
 
     /**
      * Commit transaktion
      */
-    protected function commit() : void {
+    public function commit() : void {
         $this->connection->commit();
     }
 
     /**
      * Rollback transaktion
      */
-    protected function rollback() : void {
+    public function rollBack() : void {
         $this->connection->rollBack();
     }
 }

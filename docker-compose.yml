@@ -1,7 +1,9 @@
 services:
   auth-service:
     container_name: auth-service
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     ports:
       - "8080:8080"
     volumes:

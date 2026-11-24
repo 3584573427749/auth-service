@@ -15,6 +15,7 @@ final class DeleteUserEndpointTest extends BaseApiTestCases {
      */
     public function testReturns204WhenUserExists() : void {
         $this->loadSchema('users');
+        $this->loadSchema('roles');
         $this->loadSchema('user_roles');
         $this->seed('users', [
             [
@@ -66,6 +67,8 @@ final class DeleteUserEndpointTest extends BaseApiTestCases {
 
     public function testReturns404WhenUserDoesNotExist() : void {
         $this->loadSchema('users');
+        $this->loadSchema('roles');
+        $this->loadSchema('user_roles');
 
         $request = (new ServerRequestFactory())
             ->createServerRequest(
@@ -75,17 +78,10 @@ final class DeleteUserEndpointTest extends BaseApiTestCases {
 
         $response = $this->app->handle($request);
 
-        self::assertSame(
-            404,
-            $response->getStatusCode(),
-        );
+        self::assertSame(404, $response->getStatusCode(), );
 
         $validator = new OpenApiValidator();
 
-        $validator->validateResponse(
-            '/users/{id}',
-            'delete',
-            $response,
-        );
+        $validator->validateResponse('/users/{id}', 'delete', $response, );
     }
 }

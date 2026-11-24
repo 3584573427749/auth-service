@@ -7,9 +7,8 @@ namespace Tests\Unit\Application\Handlers\User;
 use App\Application\Handlers\User\DeleteUserHandler;
 use App\Application\Handlers\UserRole\DeleteUserRoleHandler;
 use App\Domain\Exception\NotFoundException;
-use App\Domain\Repositories\UserRepository;
 use App\Domain\ValueObjects\UserId;
-use Doctrine\DBAL\Connection;
+use App\Infrastructure\Database\DbalUserRepository;
 use PHPUnit\Framework\TestCase;
 
 final class DeleteUserHandlerTest extends TestCase {
@@ -18,8 +17,7 @@ final class DeleteUserHandlerTest extends TestCase {
             '550e8400-e29b-41d4-a716-446655440000',
         );
 
-        $db = $this->createMock(Connection::class);
-        $repository = $this->createMock(UserRepository::class);
+        $repository = $this->createMock(DbalUserRepository::class);
 
         $repository
             ->expects($this->once())
@@ -32,7 +30,7 @@ final class DeleteUserHandlerTest extends TestCase {
             ->method('deleteAll')
             ->with($userId);
 
-        $handler = new DeleteUserHandler($db, $repository, $deleteUserRoleHandler);
+        $handler = new DeleteUserHandler($repository, $deleteUserRoleHandler);
 
         $handler->softDelete($userId);
     }
@@ -42,13 +40,12 @@ final class DeleteUserHandlerTest extends TestCase {
             '550e8400-e29b-41d4-a716-446655440000',
         );
 
-        $db = $this->createMock(Connection::class);
-        $db->expects($this->once())
+        $repository = $this->createMock(DbalUserRepository::class);
+        $repository->expects($this->once())
             ->method('rollBack');
-        $db->expects(self::never())
+        $repository->expects(self::never())
             ->method('commit');
 
-        $repository = $this->createMock(UserRepository::class);
         $repository
             ->expects($this->once())
             ->method('softDelete')
@@ -60,7 +57,7 @@ final class DeleteUserHandlerTest extends TestCase {
             ->method('deleteAll')
             ->with($userId);
 
-        $handler = new DeleteUserHandler($db, $repository, $deleteUserRoleHandler);
+        $handler = new DeleteUserHandler($repository, $deleteUserRoleHandler);
 
         $this->expectException(NotFoundException::class);
 
@@ -72,8 +69,7 @@ final class DeleteUserHandlerTest extends TestCase {
             '550e8400-e29b-41d4-a716-446655440000',
         );
 
-        $db = $this->createMock(Connection::class);
-        $repository = $this->createMock(UserRepository::class);
+        $repository = $this->createMock(DbalUserRepository::class);
 
         $repository
             ->expects($this->once())
@@ -86,7 +82,7 @@ final class DeleteUserHandlerTest extends TestCase {
             ->method('deleteAll')
             ->with($userId);
 
-        $handler = new DeleteUserHandler($db, $repository, $deleteUserRoleHandler);
+        $handler = new DeleteUserHandler($repository, $deleteUserRoleHandler);
 
         $handler->removeUser($userId);
     }
@@ -96,8 +92,7 @@ final class DeleteUserHandlerTest extends TestCase {
             '550e8400-e29b-41d4-a716-446655440000',
         );
 
-        $db = $this->createMock(Connection::class);
-        $repository = $this->createMock(UserRepository::class);
+        $repository = $this->createMock(DbalUserRepository::class);
 
         $repository
             ->expects($this->once())
@@ -111,12 +106,12 @@ final class DeleteUserHandlerTest extends TestCase {
             ->method('deleteAll')
             ->with($userId);
 
-        $db->expects($this->once())
+        $repository->expects($this->once())
             ->method('rollBack');
-        $db->expects(self::never())
+        $repository->expects(self::never())
             ->method('commit');
 
-        $handler = new DeleteUserHandler($db, $repository, $deleteUserRoleHandler);
+        $handler = new DeleteUserHandler($repository, $deleteUserRoleHandler);
 
         $this->expectException(NotFoundException::class);
 

@@ -8,6 +8,12 @@ use App\Domain\Entities\Role;
 use App\Domain\ValueObjects\RoleId;
 
 interface RoleRepository {
+    public function beginTransaction() : void;
+
+    public function commit() : void;
+
+    public function rollBack() : void;
+
     public function save(Role $role) : void;
 
     /**
