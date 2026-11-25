@@ -7,7 +7,7 @@ on:
 
 jobs:
   release:
-    uses: 3584573427749/.github/.github/workflows/release-backend-service.yml@main
+    uses: simning-ax/.github/.github/workflows/release-backend-service.yml@main
     permissions:
       contents: read
       packages: write

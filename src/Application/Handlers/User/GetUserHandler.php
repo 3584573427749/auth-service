@@ -6,9 +6,18 @@ namespace App\Application\Handlers\User;
 
 use App\Domain\DataTransportObjects\User\UserDTO;
 use App\Domain\Entities\Role;
+use App\Domain\Repositories\UserRepository;
+use App\Domain\Repositories\UserRoleRepository;
 use App\Domain\ValueObjects\UserId;
 
 class GetUserHandler extends UserHandler {
+    public function __construct(
+        UserRepository $repository,
+        private UserRoleRepository $userRoleRepository,
+    ) {
+        parent::__construct($repository);
+    }
+
     /**
      * @return UserDTO[]
      */

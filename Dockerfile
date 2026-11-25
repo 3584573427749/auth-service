@@ -1,22 +1,48 @@
-FROM php:8.5-fpm-alpine
+#
+# Builder stage
+#
+FROM composer:2 AS builder
 
-RUN apk add --no-cache bash git curl mariadb-client oniguruma-dev \
-    && docker-php-ext-install pdo pdo_mysql
-
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-WORKDIR /var/www
+WORKDIR /app
 
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --prefer-dist --no-interaction
+
+RUN composer install \
+    --no-dev \
+    --prefer-dist \
+    --no-interaction \
+    --no-scripts \
+    --optimize-autoloader
 
 COPY . .
 
-# Entrypoint för att köra uppstartsskriptet
+RUN composer dump-autoload \
+    --no-dev \
+    --classmap-authoritative
+
+
+#
+# Runtime stage
+#
+FROM php:8.5.13-fpm-alpine
+
+RUN apk add --no-cache \
+    bash \
+    curl \
+    mariadb-client \
+    oniguruma-dev \
+    && docker-php-ext-install pdo pdo_mysql
+
+WORKDIR /var/www
+
+COPY --from=builder /app /var/www
+
 COPY docker/*.sh /
+
 RUN chmod +x /*.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]
 EXPOSE 8080
+
+CMD ["php-fpm"]

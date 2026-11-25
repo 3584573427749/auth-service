@@ -11,7 +11,7 @@ use App\Domain\ValueObjects\DateTimeValue;
 
 class UpdateRoleHandler extends RoleHandler {
     public function handle(UpdateRoleCommand $command) : RoleDTO {
-        $this->db->beginTransaction();
+        $this->repository->beginTransaction();
         try {
             $role = $this->repository->getById($command->id);
 
@@ -23,16 +23,16 @@ class UpdateRoleHandler extends RoleHandler {
 
             $this->repository->save($role);
 
-            $this->db->commit();
+            $this->repository->commit();
 
             $roleDto = RoleDTO::fromRole($role);
 
             return $roleDto;
         } catch (RoleAlreadyExistsException $e) {
-            $this->db->rollBack();
+            $this->repository->rollBack();
             throw $e;
         } catch (\Throwable $e) {
-            $this->db->rollBack();
+            $this->repository->rollBack();
             throw $e;
         }
 

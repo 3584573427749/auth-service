@@ -10,16 +10,14 @@ use App\Domain\Exception\UserInUseException;
 use App\Domain\Repositories\UserRepository;
 use App\Domain\Repositories\UserRoleRepository;
 use App\Domain\ValueObjects\UserId;
-use Doctrine\DBAL\Connection;
 
 class DeleteUserHandler extends UserHandler {
     public function __construct(
-        Connection $db,
         UserRepository $repository,
         UserRoleRepository $userRoleRepository,
         private DeleteUserRoleHandler $deleteUserRoleHandler,
     ) {
-        parent::__construct($db, $repository, $userRoleRepository);
+        parent::__construct($repository);
     }
 
     /**
@@ -30,14 +28,14 @@ class DeleteUserHandler extends UserHandler {
      */
     public function softDelete(UserId $id) : void {
         try {
-            $this->db->beginTransaction();
+            $this->repository->beginTransaction();
 
             $this->deleteUserRoleHandler->deleteAll($id);
 
             $this->repository->softDelete($id);
-            $this->db->commit();
+            $this->repository->commit();
         } catch (NotFoundException $e) {
-            $this->db->rollBack();
+            $this->repository->rollBack();
             throw $e;
         }
     }
@@ -49,14 +47,14 @@ class DeleteUserHandler extends UserHandler {
      */
     public function removeUser(UserId $id) : void {
         try {
-            $this->db->beginTransaction();
+            $this->repository->beginTransaction();
 
             $this->deleteUserRoleHandler->deleteAll($id);
 
             $this->repository->remove($id);
-            $this->db->commit();
+            $this->repository->commit();
         } catch (NotFoundException $e) {
-            $this->db->rollBack();
+            $this->repository->rollBack();
             throw $e;
         }
     }

@@ -8,7 +8,7 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 use Tests\Integration\BaseApiTestCases;
 use Tests\Integration\OpenApi\OpenApiValidator;
 
-final class GetAllUsersEndpointTest extends BaseApiTestCases {
+final class GetAllusersEndpointTest extends BaseApiTestCases {
     public function testReturnsAllUsers() : void {
         $this->loadSchema('users');
         $this->loadSchema('roles');

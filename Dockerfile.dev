@@ -1,0 +1,27 @@
+FROM php:8.5.13-fpm-alpine
+
+RUN apk add --no-cache \
+    bash \
+    git \
+    curl \
+    nginx \
+    mariadb-client \
+    oniguruma-dev \
+    && docker-php-ext-install \
+        pdo \
+        pdo_mysql
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www
+
+COPY docker/*.sh /
+COPY docker/nginx/default.conf /etc/nginx/http.d/default.conf
+
+RUN chmod +x /*.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+
+EXPOSE 8080
+
+CMD ["/start.sh"]

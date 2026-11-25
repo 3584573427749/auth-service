@@ -12,27 +12,25 @@ use App\Domain\Repositories\UserRepository;
 use App\Domain\Repositories\UserRoleRepository;
 use App\Domain\ValueObjects\RoleId;
 use App\Domain\ValueObjects\UserId;
-use Doctrine\DBAL\Connection;
 
 class SaveUserRoleHandler extends UserRoleHandler {
     public function __construct(
-        Connection $db,
         UserRoleRepository $repository,
         UserRepository $userRepository,
         RoleRepository $roleRepository,
         private GroupServiceClient $groupServiceClient,
     ) {
-        parent::__construct($db, $repository, $userRepository, $roleRepository);
+        parent::__construct($repository, $userRepository, $roleRepository);
     }
 
     public function handle(UserRoleCommand $command) : void {
-        $this->db->beginTransaction();
+        $this->repository->beginTransaction();
         try {
             $this->saveRole($command);
 
-            $this->db->commit();
+            $this->repository->commit();
         } catch (\Throwable $e) {
-            $this->db->rollBack();
+            $this->repository->rollBack();
             throw $e;
         }
     }

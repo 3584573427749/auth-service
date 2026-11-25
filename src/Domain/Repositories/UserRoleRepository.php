@@ -11,6 +11,12 @@ use App\Domain\ValueObjects\RoleId;
 use App\Domain\ValueObjects\UserId;
 
 interface UserRoleRepository {
+    public function beginTransaction() : void;
+
+    public function commit() : void;
+
+    public function rollBack() : void;
+
     /**
      * @return User[]
      */

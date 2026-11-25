@@ -14,21 +14,19 @@ use App\Domain\Repositories\UserRepository;
 use App\Domain\Repositories\UserRoleRepository;
 use App\Domain\ValueObjects\DateTimeValue;
 use App\Domain\ValueObjects\Email;
-use Doctrine\DBAL\Connection;
 
 class UpdateUserHandler extends UserHandler {
     public function __construct(
-        Connection $db,
         UserRepository $repository,
         UserRoleRepository $userRoleRepository,
         private SaveUserRoleHandler $saveUserRoleHandler,
         private DeleteUserRoleHandler $deleteUserRoleHandler,
     ) {
-        parent::__construct($db, $repository, $userRoleRepository);
+        parent::__construct($repository);
     }
 
     public function handle(UpdateUserCommand $command) : UserDTO {
-        $this->db->beginTransaction();
+        $this->repository->beginTransaction();
         try {
             if ($this->repository->emailExistsWithOtherUser($command->email, $command->id)) {
                 throw new UserAlreadyExistsException('Användaren finns redan');
@@ -71,13 +69,13 @@ class UpdateUserHandler extends UserHandler {
                 $rolesToAdd,
             );
 
-            $this->db->commit();
+            $this->repository->commit();
 
             $userDto = UserDTO::fromUser($user)->withRoles($command->roles);
 
             return $userDto;
         } catch (\Throwable $e) {
-            $this->db->rollBack();
+            $this->repository->rollBack();
             throw $e;
         }
 

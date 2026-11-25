@@ -79,17 +79,10 @@ final class DeleteUserEndpointTest extends BaseApiTestCases {
 
         $response = $this->app->handle($request);
 
-        self::assertSame(
-            404,
-            $response->getStatusCode(),
-        );
+        self::assertSame(404, $response->getStatusCode(), );
 
         $validator = new OpenApiValidator();
 
-        $validator->validateResponse(
-            '/users/{id}',
-            'delete',
-            $response,
-        );
+        $validator->validateResponse('/users/{id}', 'delete', $response, );
     }
 }
