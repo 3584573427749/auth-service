@@ -21,6 +21,7 @@ grumphp:
     git_blacklist:
       keywords:
         - ' var_dump('
+        - ' echo'
         - ' dump('
         - ' dd('
         - ' die('

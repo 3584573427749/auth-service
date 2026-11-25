@@ -40,8 +40,6 @@ class FirebaseJwtService implements JwtService {
             'exp' => $issuedAt + $this->lifetime,
         ];
 
-        echo $this->secret;
-
         return JWT::encode(
             $payload,
             $this->secret,

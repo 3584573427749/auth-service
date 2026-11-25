@@ -17,6 +17,9 @@ $dotenv->load();
 $containerBuilder = new ContainerBuilder();
 
 (require __DIR__ . '/dependencies.php')($containerBuilder);
+if ($_ENV['APP_ENV'] === 'test') {
+    (require __DIR__ . '/dependencies-test.php')($containerBuilder);
+}
 
 $repositories = require __DIR__ . '/repositories.php';
 $repositories($containerBuilder);
