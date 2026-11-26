@@ -12,7 +12,7 @@ require __DIR__ . '/../vendor/autoload.php';
 $containerBuilder = new ContainerBuilder();
 
 (require __DIR__ . '/dependencies.php')($containerBuilder);
-if ($_ENV['APP_ENV'] === 'test') {
+if (($_ENV['APP_ENV'] ?? 'production') === 'test') {
     (require __DIR__ . '/dependencies-test.php')($containerBuilder);
 }
 
