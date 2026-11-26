@@ -29,7 +29,7 @@ return function (ContainerBuilder $builder) {
                 'user' => $_ENV['DB_USER'],
                 'password' => $_ENV['DB_PASSWORD'],
                 'host' => $_ENV['DB_HOST'],
-                'port' => $_ENV['DB_PORT'] ?? 3306,
+                'port' => $_ENV['DB_PORT'] ?? 3307,
                 'driver' => 'pdo_mysql',
                 'charset' => 'utf8mb4',
             ];
