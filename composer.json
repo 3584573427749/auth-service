@@ -22,8 +22,6 @@
     "vlucas/phpdotenv": "^5.7",
     "ramsey/uuid": "^4.10",
     "guzzlehttp/guzzle": "^8.5",
-    "ramsey/uuid": "^4.9",
-    "guzzlehttp/guzzle": "^8.2",
     "firebase/php-jwt": "^7.2",
     "dflydev/fig-cookies": "^3.2"
   },
