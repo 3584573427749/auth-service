@@ -9,11 +9,6 @@ use Slim\Factory\AppFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$dotenv = Dotenv\Dotenv::createImmutable(
-    dirname(__DIR__),
-);
-
-$dotenv->load();
 $containerBuilder = new ContainerBuilder();
 
 (require __DIR__ . '/dependencies.php')($containerBuilder);

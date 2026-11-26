@@ -41,8 +41,6 @@ COPY docker/*.sh /
 
 RUN chmod +x /*.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
-
 EXPOSE 8080
 
 CMD ["php-fpm"]
